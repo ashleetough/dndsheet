@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Field Record — Trent Yubin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #16180f;
+    --bg-2: #1d2016;
+    --card: #23261c;
+    --card-2: #2a2e21;
+    --line: #3a3e2e;
+    --ink: #e9e3d0;
+    --ink-dim: #9a9d84;
+    --brass: #c19a56;
+    --brass-dim: #8a713f;
+    --olive: #6f7a4a;
+    --red: #b8493b;
+    --green: #6d9057;
+    --amber: #c1954a;
+    --radius: 3px;
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);}
+  body{
+    font-family:'Archivo',sans-serif;
+    padding-bottom:40px;
+    background-image:
+      radial-gradient(circle at 15% 8%, rgba(193,154,86,0.05), transparent 40%),
+      radial-gradient(circle at 90% 90%, rgba(111,122,74,0.06), transparent 45%);
+  }
+  .wrap{max-width:520px;margin:0 auto;padding:14px 14px 0;}
+
+  /* ---- header / stamp ---- */
+  .letterhead{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    padding:10px 2px 12px;border-bottom:1px dashed var(--line);
+    margin-bottom:14px;
+  }
+  .lh-left{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+    color:var(--brass-dim);text-transform:uppercase;
+  }
+  .name-input{
+    font-family:'Special Elite',monospace;font-size:26px;color:var(--ink);
+    background:transparent;border:none;outline:none;width:100%;padding:2px 0;
+    border-bottom:1px solid transparent;
+  }
+  .name-input:focus{border-bottom:1px solid var(--brass);}
+  .subline{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+  .chip-input{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:4px 7px;outline:none;min-width:0;
+  }
+  .chip-input:focus{border-color:var(--brass-dim);color:var(--ink);}
+  .chip-input.small{width:44px;text-align:center;}
+
+  .stamp{
+    flex-shrink:0;width:70px;height:70px;border-radius:50%;
+    border:2px solid var(--stamp-color, var(--green));
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    transform:rotate(-8deg);
+    font-family:'Special Elite',monospace;color:var(--stamp-color, var(--green));
+    font-size:9px;letter-spacing:.05em;line-height:1.2;text-transform:uppercase;
+    box-shadow:0 0 0 1px var(--stamp-color, var(--green)) inset;
+    opacity:.85;
+  }
+
+  /* ---- core stat bar ---- */
+  .core-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+  .core-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:8px 6px;text-align:center;
+  }
+  .core-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--ink-dim);text-transform:uppercase;}
+  .core-value{
+    font-family:'Special Elite',monospace;font-size:20px;color:var(--brass);
+    background:transparent;border:none;outline:none;width:100%;text-align:center;margin-top:2px;
+  }
+
+  .hp-block{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:10px 12px;margin-bottom:12px;
+  }
+  .hp-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .hp-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--ink-dim);text-transform:uppercase;}
+  .hp-nums{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink);display:flex;align-items:center;gap:4px;}
+  .hp-nums input{
+    width:38px;background:var(--card-2);border:1px solid var(--line);color:var(--ink);
+    font-family:'JetBrains Mono',monospace;font-size:13px;text-align:center;border-radius:2px;padding:2px;
+  }
+  .hp-bar-track{height:9px;background:var(--card-2);border-radius:5px;overflow:hidden;border:1px solid var(--line);}
+  .hp-bar-fill{height:100%;background:var(--green);transition:width .25s, background .25s;}
+  .hp-btns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;}
+  .hp-btn{
+    flex:1;min-width:40px;font-family:'JetBrains Mono',monospace;font-size:12px;
+    background:var(--card-2);border:1px solid var(--line);color:var(--ink);
+    padding:6px 0;border-radius:2px;cursor:pointer;
+  }
+  .hp-btn.dmg{color:var(--red);}
+  .hp-btn.heal{color:var(--green);}
+  .hp-btn:active{background:var(--line);}
+  .tmp-row{display:flex;align-items:center;gap:6px;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);}
+  .tmp-row input{width:36px;background:var(--card-2);border:1px solid var(--line);color:var(--ink);text-align:center;border-radius:2px;padding:2px;}
+
+  .death-saves{display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:8px;border-top:1px dashed var(--line);}
+  .ds-group{display:flex;align-items:center;gap:6px;}
+  .ds-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase;}
+  .ds-dot{width:13px;height:13px;border-radius:50%;border:1.5px solid var(--line);cursor:pointer;}
+  .ds-dot.success.filled{background:var(--green);border-color:var(--green);}
+  .ds-dot.fail.filled{background:var(--red);border-color:var(--red);}
+
+  /* ---- top trackers: inspiration + superiority dice ---- */
+  .tracker-row{display:flex;gap:8px;margin-bottom:12px;align-items:stretch;}
+  .tracker-block{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;flex:0 0 auto;
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:8px 12px;
+  }
+  .tracker-block-wide{flex:1;flex-direction:column;align-items:stretch;gap:6px;}
+  .tracker-block-top{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .insp-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--ink-dim);text-transform:uppercase;}
+  .insp-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--brass-dim);cursor:pointer;flex-shrink:0;}
+  .insp-dot.on{background:var(--brass);border-color:var(--brass);box-shadow:0 0 8px rgba(193,154,86,.5);}
+
+  /* ---- tabs ---- */
+  .tabs{display:flex;gap:4px;margin-bottom:12px;border-bottom:1px solid var(--line);}
+  .tab{
+    flex:1;text-align:center;padding:9px 2px;font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);
+    cursor:pointer;border-bottom:2px solid transparent;
+  }
+  .tab.active{color:var(--brass);border-bottom-color:var(--brass);}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  /* ---- abilities ---- */
+  .ability-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+  .ability-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:8px 4px;text-align:center;}
+  .ability-name{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.1em;color:var(--ink-dim);text-transform:uppercase;}
+  .ability-mod{font-family:'Special Elite',monospace;font-size:19px;color:var(--brass);margin:2px 0;}
+  .ability-score-input{
+    width:34px;background:var(--card-2);border:1px solid var(--line);color:var(--ink);
+    font-family:'JetBrains Mono',monospace;font-size:11px;text-align:center;border-radius:2px;padding:2px;
+  }
+
+  .section-title{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.14em;color:var(--brass-dim);text-transform:uppercase;margin:16px 2px 6px;}
+
+  .row-line{
+    display:flex;align-items:center;gap:8px;padding:6px 4px;border-bottom:1px solid var(--line);
+    font-family:'Archivo',sans-serif;font-size:13px;
+  }
+  .row-line:last-child{border-bottom:none;}
+  .prof-box{
+    width:15px;height:15px;border:1.5px solid var(--brass-dim);border-radius:50%;flex-shrink:0;cursor:pointer;
+  }
+  .prof-box.on{background:var(--brass);border-color:var(--brass);}
+  .prof-box.expertise{
+    background:var(--brass);border-color:var(--brass);
+    box-shadow:0 0 0 2px var(--bg), 0 0 0 3.5px var(--brass);
+  }
+  .row-name{flex:1;color:var(--ink);}
+  .row-bonus{font-family:'JetBrains Mono',monospace;color:var(--brass);width:34px;text-align:right;}
+  .row-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);width:30px;}
+
+  .dot-legend{
+    display:flex;align-items:center;flex-wrap:wrap;gap:4px;
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-dim);margin-bottom:8px;
+  }
+  .dot-legend .prof-box{cursor:default;}
+
+  .passive-box{
+    display:flex;justify-content:space-between;align-items:center;
+    background:var(--card-2);border:1px solid var(--line);border-radius:var(--radius);
+    padding:8px 12px;margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);
+  }
+  .passive-box b{color:var(--brass);font-size:14px;}
+
+  /* ---- lists (attacks/inventory) ---- */
+  .currency-row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:16px;}
+  .cur-cell{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:6px 4px;text-align:center;}
+  .cur-cell label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--ink-dim);text-transform:uppercase;margin-bottom:3px;}
+  .cur-cell input{width:100%;background:transparent;border:none;outline:none;color:var(--brass);font-family:'JetBrains Mono',monospace;font-size:14px;text-align:center;}
+
+  .list-item{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:8px 10px;margin-bottom:7px;
+  }
+  .li-top{display:flex;gap:6px;align-items:center;}
+  .li-name{
+    flex:1;background:transparent;border:none;outline:none;color:var(--ink);
+    font-family:'Archivo',sans-serif;font-weight:600;font-size:13.5px;border-bottom:1px solid transparent;
+  }
+  .li-name:focus{border-bottom:1px solid var(--brass-dim);}
+  .li-del{
+    background:none;border:none;color:var(--red);font-size:16px;cursor:pointer;padding:2px 6px;line-height:1;
+  }
+  .li-sub{display:flex;gap:6px;margin-top:6px;}
+  .li-sub input{
+    background:var(--card-2);border:1px solid var(--line);color:var(--ink-dim);
+    font-family:'JetBrains Mono',monospace;font-size:11px;border-radius:2px;padding:5px 6px;flex:1;min-width:0;
+  }
+  .li-sub input.qty{flex:0 0 46px;text-align:center;}
+  .add-btn{
+    width:100%;padding:9px;background:var(--card-2);border:1px dashed var(--brass-dim);
+    color:var(--brass-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;
+    text-transform:uppercase;border-radius:var(--radius);cursor:pointer;margin-top:2px;margin-bottom:16px;
+  }
+  .add-btn:active{background:var(--line);}
+
+  textarea{
+    width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);
+    font-family:'Archivo',sans-serif;font-size:13px;line-height:1.5;border-radius:var(--radius);
+    padding:10px;resize:vertical;min-height:90px;margin-bottom:14px;outline:none;
+  }
+  textarea:focus{border-color:var(--brass-dim);}
+
+  .save-flag{
+    position:fixed;bottom:14px;left:50%;transform:translateX(-50%) translateY(20px);
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-dim);background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:5px 14px;opacity:0;transition:opacity .3s, transform .3s;pointer-events:none;
+    max-width:88vw;text-align:center;z-index:50;
+  }
+  .save-flag.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  .levelup-banner{
+    background:var(--card-2);border:1px solid var(--brass-dim);border-radius:var(--radius);
+    padding:12px;margin-bottom:16px;
+  }
+  .lu-title{font-family:'Special Elite',monospace;font-size:14px;color:var(--brass);margin-bottom:6px;}
+  .levelup-banner ul{margin:0 0 10px;padding-left:18px;font-size:12.5px;color:var(--ink);line-height:1.6;}
+  .lu-actions{display:flex;gap:8px;}
+  .lu-btn{
+    flex:1;font-family:'JetBrains Mono',monospace;font-size:11px;padding:7px 0;border-radius:2px;cursor:pointer;
+    border:1px solid var(--line);background:var(--card);color:var(--ink);
+  }
+  .lu-btn.apply{border-color:var(--brass-dim);color:var(--brass);}
+  .lu-btn:active{background:var(--line);}
+
+  .su-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .su-dots{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+  .su-dot{width:17px;height:17px;border-radius:3px;border:1.5px solid var(--brass-dim);cursor:pointer;transform:rotate(45deg);}
+  .su-dot.filled{background:var(--brass);border-color:var(--brass);}
+
+  .feature-card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:9px 10px;margin-bottom:8px;
+  }
+  .feature-card.dragging{
+    box-shadow:0 8px 20px rgba(0,0,0,.4);border-color:var(--brass);opacity:.95;
+  }
+  .fc-placeholder{
+    border:1.5px dashed var(--brass-dim);border-radius:var(--radius);margin-bottom:8px;background:rgba(193,154,86,0.06);
+  }
+  .feature-card.used{opacity:.55;}
+  .feature-card.used .fc-name{text-decoration:line-through;text-decoration-color:var(--red);}
+
+  .rest-btn-row{display:flex;gap:8px;margin-bottom:10px;}
+  .rest-btn{
+    flex:1;padding:8px 0;background:var(--card-2);border:1px solid var(--brass-dim);color:var(--brass);
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.05em;border-radius:var(--radius);cursor:pointer;
+  }
+  .rest-btn:active{background:var(--line);}
+
+  .fc-rest-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding-top:7px;border-top:1px dashed var(--line);flex-wrap:wrap;}
+  .fc-rest-row-quiet{border-top:none;padding-top:2px;margin-top:2px;justify-content:flex-start;}
+  .fc-rest-select{
+    background:var(--card-2);border:1px solid var(--line);color:var(--ink-dim);
+    font-family:'JetBrains Mono',monospace;font-size:10px;border-radius:2px;padding:4px 6px;flex:1;min-width:0;
+  }
+  .fc-rest-locked{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--brass-dim);letter-spacing:.03em;
+  }
+  .fc-rest-change{
+    color:var(--ink-dim);text-decoration:underline;cursor:pointer;margin-left:4px;
+  }
+  .fc-rest-add-link{
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);opacity:.55;
+    text-decoration:underline;cursor:pointer;
+  }
+  .fc-used-label{
+    display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    color:var(--ink-dim);flex-shrink:0;cursor:pointer;white-space:nowrap;
+  }
+  .fc-used-label input{width:15px;height:15px;accent-color:var(--brass);cursor:pointer;}
+
+  .fc-handle{
+    order:-1;flex-shrink:0;cursor:grab;color:var(--ink-dim);font-size:16px;line-height:1;
+    padding:2px 6px 2px 0;touch-action:none;user-select:none;
+  }
+  .fc-handle:active{cursor:grabbing;color:var(--brass);}
+  .fc-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .fc-name{
+    flex:1 1 100%;background:transparent;border:none;outline:none;color:var(--ink);
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:14px;border-bottom:1px solid transparent;
+    order:1;
+  }
+  .fc-name:focus{border-bottom:1px solid var(--brass-dim);}
+  .fc-tag{
+    flex:0 1 auto;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--brass);background:var(--card-2);border:1px solid var(--brass-dim);
+    border-radius:10px;padding:3px 8px;max-width:70%;text-align:center;order:2;
+  }
+  .fc-detail{
+    width:100%;margin-top:6px;background:transparent;border:none;outline:none;
+    color:var(--ink-dim);font-family:'Archivo',sans-serif;font-size:12.5px;line-height:1.5;
+    padding:0;white-space:pre-wrap;order:4;
+  }
+  .fc-detail:empty::before{content:attr(data-placeholder);color:var(--ink-dim);opacity:.6;}
+  .fc-del{background:none;border:none;color:var(--red);font-size:15px;cursor:pointer;padding:2px 4px;line-height:1;flex-shrink:0;order:3;margin-left:auto;}
+
+  .maneuver-item{padding:7px 4px;border-bottom:1px solid var(--line);font-size:12px;color:var(--ink-dim);line-height:1.5;}
+  .maneuver-item:last-child{border-bottom:none;}
+  .maneuver-item b{color:var(--ink);font-family:'Archivo',sans-serif;font-size:13px;}
+
+  .prog-item{
+    display:flex;gap:8px;padding:6px 4px;border-bottom:1px solid var(--line);font-size:12.5px;color:var(--ink-dim);align-items:flex-start;
+  }
+  .prog-item:last-child{border-bottom:none;}
+  .prog-lv{font-family:'JetBrains Mono',monospace;color:var(--brass-dim);flex-shrink:0;width:34px;padding-top:1px;}
+  .prog-text{flex:1;outline:none;line-height:1.5;border-bottom:1px solid transparent;}
+  .prog-text:focus{border-bottom:1px solid var(--brass-dim);color:var(--ink);}
+  .prog-del{background:none;border:none;color:var(--red);font-size:15px;cursor:pointer;padding:0 4px;line-height:1.4;flex-shrink:0;}
+
+  .future-toggle{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.05em;color:var(--brass-dim);
+    text-decoration:underline;cursor:pointer;margin:10px 2px 4px;
+  }
+  .prog-item-future{
+    display:flex;gap:8px;padding:6px 4px;border-bottom:1px solid var(--line);font-size:12px;
+    color:var(--ink-dim);opacity:.55;
+  }
+  .prog-item-future:last-child{border-bottom:none;}
+  .prog-item-future .prog-lv{font-family:'JetBrains Mono',monospace;color:var(--ink-dim);flex-shrink:0;width:34px;}
+
+  .backup-row{display:flex;gap:8px;margin-bottom:8px;}
+  .backup-note{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-dim);line-height:1.5;margin-bottom:16px;}
+
+  .save-flag.save-flag-error{
+    color:var(--red);border-color:var(--red);background:var(--card-2);
+    text-transform:none;letter-spacing:normal;font-size:11px;white-space:normal;
+    border-radius:10px;pointer-events:auto;
+  }
+
+  .reset-link{
+    text-align:center;margin:6px 0 30px;font-family:'JetBrains Mono',monospace;font-size:10px;
+    color:var(--ink-dim);text-decoration:underline;cursor:pointer;letter-spacing:.05em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="letterhead">
+    <div class="lh-left">
+      <div class="eyebrow">Field Record</div>
+      <input id="f-name" class="name-input" value="Trent Yubin">
+      <div class="subline">
+        <input id="f-race" class="chip-input" value="Human">
+        <input id="f-class" class="chip-input" value="Fighter (Battle Master)">
+        <input id="f-bg" class="chip-input" value="Courier Brigade">
+        <span class="chip-input" style="display:flex;align-items:center;gap:4px;">LV <input id="f-level" class="chip-input small" style="border:none;background:transparent;padding:0;" type="number" value="3" min="1" max="20"></span>
+      </div>
+    </div>
+    <div id="stamp" class="stamp">ACTIVE<br>DUTY</div>
+  </div>
+
+  <div class="core-row">
+    <div class="core-card">
+      <div class="core-label">AC</div>
+      <input id="f-ac" class="core-value" type="number" value="15">
+    </div>
+    <div class="core-card">
+      <div class="core-label">Speed</div>
+      <input id="f-speed" class="core-value" type="number" value="30">
+    </div>
+    <div class="core-card">
+      <div class="core-label">Init</div>
+      <div class="core-value" id="f-init">+2</div>
+    </div>
+    <div class="core-card">
+      <div class="core-label">Prof</div>
+      <div class="core-value" id="f-prof">+2</div>
+    </div>
+  </div>
+
+  <div class="hp-block">
+    <div class="hp-top">
+      <div class="hp-label">Hit Points</div>
+      <div class="hp-nums"><input id="f-hpcur" type="number" value="22"> / <input id="f-hpmax" type="number" value="22"></div>
+    </div>
+    <div class="hp-bar-track"><div class="hp-bar-fill" id="hp-bar" style="width:100%"></div></div>
+    <div class="hp-btns">
+      <button class="hp-btn dmg" data-d="-5">-5</button>
+      <button class="hp-btn dmg" data-d="-1">-1</button>
+      <button class="hp-btn heal" data-d="1">+1</button>
+      <button class="hp-btn heal" data-d="5">+5</button>
+    </div>
+    <div class="tmp-row">Temp HP <input id="f-hptmp" type="number" value="0"></div>
+    <div class="death-saves">
+      <div class="ds-group">
+        <span class="ds-label">Success</span>
+        <div class="ds-dot success" data-i="0"></div><div class="ds-dot success" data-i="1"></div><div class="ds-dot success" data-i="2"></div>
+      </div>
+      <div class="ds-group">
+        <span class="ds-label">Fail</span>
+        <div class="ds-dot fail" data-i="0"></div><div class="ds-dot fail" data-i="1"></div><div class="ds-dot fail" data-i="2"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tracker-row">
+    <div class="tracker-block">
+      <span class="insp-label">Inspiration</span>
+      <div class="insp-dot" id="insp-dot"></div>
+    </div>
+    <div class="tracker-block tracker-block-wide">
+      <div class="tracker-block-top">
+        <span class="insp-label">Superiority <span id="su-die" style="text-transform:none;letter-spacing:0;"></span></span>
+        <button class="hp-btn" id="su-reset" style="flex:0 0 52px;padding:4px 0;font-size:10px;">Reset</button>
+      </div>
+      <div class="su-dots" id="su-dots"></div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="abilities">Abilities</div>
+    <div class="tab" data-tab="skills">Skills</div>
+    <div class="tab" data-tab="class">Features</div>
+    <div class="tab" data-tab="gear">Gear</div>
+    <div class="tab" data-tab="notes">Notes</div>
+  </div>
+
+  <div class="panel active" id="panel-abilities">
+    <div class="ability-grid" id="ability-grid"></div>
+    <div class="section-title">Saving Throws</div>
+    <div id="save-list"></div>
+  </div>
+
+  <div class="panel" id="panel-skills">
+    <div class="section-title">Skills</div>
+    <div class="dot-legend"><span class="prof-box" style="width:11px;height:11px;"></span> none &nbsp; <span class="prof-box on" style="width:11px;height:11px;"></span> proficient &nbsp; <span class="prof-box expertise" style="width:11px;height:11px;"></span> expertise (tap a dot to cycle)</div>
+    <div id="skill-list"></div>
+    <div class="passive-box">Passive Perception <b id="passive-perc">13</b></div>
+  </div>
+
+  <div class="panel" id="panel-class">
+    <div id="levelup-banner" class="levelup-banner" style="display:none;">
+      <div class="lu-title">Level Up — <span id="lu-range"></span></div>
+      <ul id="lu-features"></ul>
+      <div class="lu-actions">
+        <button class="lu-btn apply" id="lu-apply-hp">Apply +<span id="lu-hp-amt">0</span> Max HP</button>
+        <button class="lu-btn dismiss" id="lu-dismiss">Dismiss</button>
+      </div>
+    </div>
+
+    <div class="section-title">Features &amp; Feats</div>
+    <div class="rest-btn-row">
+      <button class="rest-btn" id="rest-short">↺ Short Rest</button>
+      <button class="rest-btn" id="rest-long">↺ Long Rest</button>
+    </div>
+    <div id="feature-blocks"></div>
+    <button class="add-btn" id="add-feature">+ Add Feature / Feat</button>
+
+    <div class="passive-box" style="margin-bottom:16px;">Maneuvers Known <b id="maneuvers-known">3</b></div>
+
+    <div class="section-title">Class Progression</div>
+    <div id="progression-list"></div>
+    <div class="future-toggle" id="future-toggle">▶ Show future levels</div>
+    <div id="future-progression-list" style="display:none;"></div>
+  </div>
+
+  <div class="panel" id="panel-gear">
+    <div class="section-title">Currency</div>
+    <div class="currency-row">
+      <div class="cur-cell"><label>CP</label><input id="cur-cp" type="number"></div>
+      <div class="cur-cell"><label>SP</label><input id="cur-sp" type="number"></div>
+      <div class="cur-cell"><label>EP</label><input id="cur-ep" type="number"></div>
+      <div class="cur-cell"><label>GP</label><input id="cur-gp" type="number"></div>
+      <div class="cur-cell"><label>PP</label><input id="cur-pp" type="number"></div>
+    </div>
+    <div class="section-title">Attacks</div>
+    <div id="attack-list"></div>
+    <button class="add-btn" id="add-attack">+ Add Attack</button>
+    <div class="section-title">Inventory</div>
+    <div id="item-list"></div>
+    <button class="add-btn" id="add-item">+ Add Item</button>
+  </div>
+
+  <div class="panel" id="panel-notes">
+    <div class="section-title">Notes</div>
+    <textarea id="f-notes" placeholder="Personality, bonds, flaws, session notes..."></textarea>
+    <div class="section-title">Backup</div>
+    <div class="backup-row">
+      <button class="hp-btn" id="export-btn">Download Backup</button>
+      <button class="hp-btn" id="import-btn">Load Backup</button>
+    </div>
+    <input type="file" id="import-file" accept="application/json" style="display:none;">
+    <div class="backup-note">Downloads a .json file of everything on this sheet. Keep a copy somewhere safe — it lets you restore or move your data if this link ever changes.</div>
+  </div>
+
+  <div class="reset-link" id="reset-link">Reset to blank sheet</div>
+</div>
+
+<div class="save-flag" id="save-flag">Saved</div>
+
+<script>
+const ABILS = ['STR','DEX','CON','INT','WIS','CHA'];
+const SKILLS = [
+  ['Acrobatics','DEX'],['Animal Handling','WIS'],['Arcana','INT'],['Athletics','STR'],
+  ['Deception','CHA'],['History','INT'],['Insight','WIS'],['Intimidation','CHA'],
+  ['Investigation','INT'],['Medicine','WIS'],['Nature','INT'],['Perception','WIS'],
+  ['Performance','CHA'],['Persuasion','CHA'],['Religion','INT'],['Sleight of Hand','DEX'],
+  ['Stealth','DEX'],['Survival','WIS']
+];
+
+// Fighter (Battle Master) class features by level — general Fighter path + Battle Master archetype
+const LEVEL_FEATURES = {
+  1: [
+    'Fighting Style — choose one combat style (Trent: Defense, +1 AC while wearing armour)',
+    "Second Wind — bonus action, 1/short rest: regain 1d10 + Fighter level HP"
+  ],
+  2: ['Action Surge — 1/short or long rest: take one additional action on your turn'],
+  3: [
+    'Martial Archetype: Battle Master — gain Combat Superiority: 3 maneuvers known, 4 superiority dice (d8), regain all on a short or long rest. Maneuver save DC = 8 + prof bonus + STR or DEX mod',
+    "Student of War — proficiency with one type of artisan's tools"
+  ],
+  4: ['Ability Score Improvement — +2 to one score (or +1/+1 to two), max 20, or take a feat instead'],
+  5: ['Extra Attack — attack twice, instead of once, whenever you take the Attack action on your turn'],
+  6: ['Ability Score Improvement — +2 to one score (or +1/+1 to two), max 20, or take a feat instead'],
+  7: ['Know Your Enemy — after observing or interacting with a creature outside combat for at least 1 minute, learn how it compares to you in two chosen traits (e.g. STR, AC, HP, level), if its CR is no more than 5 higher/lower than your level'],
+  8: ['Ability Score Improvement — +2 to one score (or +1/+1 to two), max 20, or take a feat instead'],
+  9: ['Indomitable — 1/long rest: reroll a failed saving throw and use the new result'],
+  10: ['Improved Combat Superiority — superiority die increases from d8 to d10; maneuvers known increases to 5, superiority dice to 5'],
+  11: ['Extra Attack (2) — attack three times, instead of once, whenever you take the Attack action'],
+  12: ['Ability Score Improvement — +2 to one score (or +1/+1 to two), max 20, or take a feat instead'],
+  13: ['Indomitable — now usable 2/long rest'],
+  14: ['Ability Score Improvement — +2 to one score (or +1/+1 to two), max 20, or take a feat instead'],
+  15: [
+    'Relentless — if you have no superiority dice remaining, you regain one when you roll initiative',
+    'Improved Combat Superiority — superiority die increases from d10 to d12 (7 maneuvers known, 6 dice from this tier)'
+  ],
+  16: ['Ability Score Improvement — +2 to one score (or +1/+1 to two), max 20, or take a feat instead'],
+  17: [
+    'Action Surge — now usable 2/short or long rest',
+    'Indomitable — now usable 3/long rest'
+  ],
+  18: ['Battle Master capstone feature (archetype-specific — check current sourcebook wording)'],
+  19: ['Ability Score Improvement — +2 to one score (or +1/+1 to two), max 20, or take a feat instead'],
+  20: ['Extra Attack (3) — attack four times, instead of once, whenever you take the Attack action']
+};
+const MANEUVERS_KNOWN = { 3:3, 7:5, 10:5, 15:7, 18:7 };
+function maneuversKnown(level){
+  let n=0;
+  Object.keys(MANEUVERS_KNOWN).forEach(lv=>{ if(level>=parseInt(lv)) n=MANEUVERS_KNOWN[lv]; });
+  return n;
+}
+function superiorityCount(level){ if(level<3) return 0; if(level<7) return 4; if(level<15) return 5; return 6; }
+function superiorityDie(level){ if(level<10) return 'd8'; if(level<18) return 'd10'; return 'd12'; }
+
+const DEFAULT_STATE = {
+  name:'Trent Yubin', race:'Human', classLabel:'Fighter (Battle Master)', background:'Courier Brigade', level:3,
+  ac:15, speed:30, inspiration:false,
+  abilities:{STR:16,DEX:15,CON:9,INT:9,WIS:12,CHA:11},
+  hp:{max:22,cur:22,tmp:0},
+  deathSaves:{success:0,fail:0},
+  saveProfs:['STR','CON'],
+  skillProfs:['Acrobatics','Athletics','Perception','Sleight of Hand','Stealth','Survival'],
+  skillExpertise:['Athletics'],
+  attacks:[
+    {name:'Rapier', bonus:'+5', dmg:'1d8+3 pierce'},
+    {name:'Hand Axe', bonus:'+5', dmg:'1d6+3 slash (20ft throw)'}
+  ],
+  inventory:[
+    {name:"Courier's Uniform", qty:1, notes:''},
+    {name:'Padlock', qty:1, notes:''},
+    {name:'Map', qty:1, notes:'Pocket map, Courier Brigade paths marked'},
+    {name:'Satchel of mail', qty:1, notes:'3 packages inside'},
+    {name:'Backpack', qty:1, notes:"Explorer's pack"},
+    {name:'Bedroll', qty:1, notes:''},
+    {name:'Mess kit', qty:1, notes:''},
+    {name:'Tinderbox', qty:1, notes:''},
+    {name:'Torch', qty:10, notes:''},
+    {name:'Rations (1 day)', qty:10, notes:''},
+    {name:'Waterskin', qty:1, notes:'Full'},
+    {name:'Hempen rope (50ft)', qty:1, notes:''},
+    {name:"Cobbler's tools", qty:1, notes:''},
+    {name:"Climber's kit", qty:1, notes:''},
+    {name:'Origami crane', qty:1, notes:'Personal keepsake'},
+    {name:"Chisuay's Heavenly Tea", qty:1, notes:''}
+  ],
+  currency:{cp:0, sp:0, ep:0, gp:161, pp:0},
+  featureBlocks:[
+    {name:'Fighting Style: Defense', tag:'Class Feature', detail:'+1 AC while wearing armour (already included in AC 15)'},
+    {name:'Second Wind', tag:'1 / short rest', detail:'Bonus action — regain 1d10 + Fighter level HP', restType:'short', restLocked:true, used:false},
+    {name:'Action Surge', tag:'1 / short-long rest', detail:'Take one additional action on your turn', restType:'both', restLocked:true, used:false},
+    {name:'Combat Superiority', tag:'Battle Master', detail:"You have 4 superiority dice (d8s). Spend them to fuel the maneuvers below — they refill completely after a short or long rest. Maneuver save DC = 8 + prof 2 + STR mod 3 = 13."},
+    {name:'Ability Score Improvement', tag:'Feat / ASI choice', detail:'Chose +1 STR (now 16, +3 mod) along with proficiency and expertise in Athletics (double proficiency bonus on Athletics checks).'},
+    {name:'Evasive Footwork', tag:'Maneuver · on your move', detail:"When: as part of your movement (e.g. repositioning or retreating after attacking).\nDo: spend 1 superiority die, roll it, add the result to your AC until you stop moving.\nWhy: makes you harder to hit while you're on the move, e.g. running past or away from an enemy."},
+    {name:'Goading Attack', tag:'Maneuver · on a hit', detail:"When: right after you hit with a weapon attack.\nDo: spend 1 superiority die, roll it, add it to the damage you just dealt. The target then makes a WIS save (DC 13).\nWhy: if they fail the save, they have disadvantage attacking anyone except you until your next turn — use it to pull an enemy off a squishier ally."},
+    {name:'Rally', tag:'Maneuver · bonus action', detail:"When: on your turn, as a bonus action (doesn't cost your main action or attack).\nDo: spend 1 superiority die, roll it, add your CHA modifier. Pick one ally within 60ft — they gain that many temporary HP.\nWhy: good before a fight kicks off, or to patch up an ally who's run low, without spending your whole turn."},
+    {name:'Student of War', tag:'Class Feature', detail:"Proficiency with Cobbler's tools"},
+    {name:'Savage Attacker', tag:'Feat · 1/turn', detail:'When you roll damage for a melee weapon attack, reroll the damage dice and use either total'},
+    {name:'Languages & Tools', tag:'Proficiency', detail:"Common, Naku Naku · Cobbler's tools, Climber's kit"}
+  ],
+  features:'',
+  notes:"ALLIES & ORGANIZATIONS: Knights of the Postal Service — Courier Brigade\nCode: \"Deliverance through delivery\"\nPostmaster General Escalante leads elite couriers from Fort Harglo, Gale Fields\n\nBACKSTORY: Farm boy from Okiri Village. Eldest son meant to inherit the family Sheep Dragon farm. Enlisted in the Courier Brigade instead of taking over. Brother Ken Yubin took over the farm.\nFather: Yubin | Mother: Hana Yubin | Brother: Ken Yubin\n\nAPPEARANCE: Age 19, 170cm, 80kg, blue eyes, tan skin, blonde hair\n\nPERSONALITY: Young, naive, values travel and leisure, klepto\nIDEALS: Path of least resistance\nBONDS: Wanting to see everything the island has to offer\nFLAWS: Self motivated",
+  syncedLevel:3,
+  progression:[1,2,3].flatMap(lv=>LEVEL_FEATURES[lv].map(t=>({level:lv,text:t}))),
+  superiority:{used:0},
+  showFutureLevels:false,
+  pendingLevelUp:null
+};
+
+let state = null;
+const STORAGE_KEY = 'trent_yubin_character_sheet';
+
+function mod(score){ return Math.floor((score-10)/2); }
+function fmt(n){ return (n>=0?'+':'') + n; }
+function profBonus(level){ return Math.floor((level-1)/4) + 2; }
+
+async function loadState(){
+  try{
+    const res = await window.storage.get(STORAGE_KEY, false);
+    if(res && res.value){
+      state = JSON.parse(res.value);
+      if(state.syncedLevel===undefined) state.syncedLevel = state.level;
+      if(!state.progression) state.progression = [];
+      if(!state.superiority) state.superiority = {used:0};
+      if(!state.currency) state.currency = {cp:0,sp:0,ep:0,gp:0,pp:0};
+      if(!state.featureBlocks) state.featureBlocks = [];
+      if(!state.skillExpertise) state.skillExpertise = [];
+      if(state.showFutureLevels===undefined) state.showFutureLevels = false;
+      if(state.pendingLevelUp===undefined) state.pendingLevelUp = null;
+      return;
+    }
+  }catch(e){ /* key not found or storage unavailable */ }
+  state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+}
+
+let saveTimer=null;
+let saveRetries=0;
+let backgroundRetryTimer=null;
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  clearTimeout(backgroundRetryTimer);
+  saveTimer=setTimeout(()=>attemptSave(), 400);
+}
+async function attemptSave(){
+  try{
+    const result = await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
+    if(!result) throw new Error('Storage set returned no result');
+    saveRetries=0;
+    flashSaved(true);
+  }catch(e){
+    console.error('Save failed', e);
+    saveRetries++;
+    if(saveRetries>=3){
+      flashSaved(false); // sticky error banner, keeps retrying quietly underneath
+    }
+    const delay = Math.min(30000, 1000 * Math.pow(2, Math.min(saveRetries,5)));
+    clearTimeout(backgroundRetryTimer);
+    backgroundRetryTimer=setTimeout(()=>attemptSave(), delay);
+  }
+}
+function flashSaved(success){
+  const el=document.getElementById('save-flag');
+  if(success){
+    el.textContent='Saved';
+    el.classList.remove('save-flag-error');
+    el.classList.add('show');
+    clearTimeout(flashSaved._t);
+    flashSaved._t=setTimeout(()=>el.classList.remove('show'), 900);
+  } else {
+    el.innerHTML = 'Save failed, retrying… <span id="retry-now" style="text-decoration:underline;cursor:pointer;">Retry now</span> · use Backup below';
+    el.classList.add('save-flag-error', 'show');
+    clearTimeout(flashSaved._t); // sticky — stays until a save succeeds
+    const retryBtn=document.getElementById('retry-now');
+    if(retryBtn) retryBtn.addEventListener('click', ()=>{ clearTimeout(backgroundRetryTimer); attemptSave(); });
+  }
+}
+
+function updateStamp(){
+  const pct = state.hp.max>0 ? state.hp.cur/state.hp.max : 0;
+  const stamp=document.getElementById('stamp');
+  let color, text;
+  if(state.hp.cur<=0){ color='var(--red)'; text='DOWN'; }
+  else if(pct<=0.25){ color='var(--red)'; text='CRITICAL'; }
+  else if(pct<=0.5){ color='var(--amber)'; text='WOUNDED'; }
+  else { color='var(--green)'; text='ACTIVE<br>DUTY'; }
+  stamp.style.setProperty('--stamp-color', color);
+  stamp.innerHTML=text;
+}
+
+function renderCore(){
+  document.getElementById('f-name').value=state.name;
+  document.getElementById('f-race').value=state.race;
+  document.getElementById('f-class').value=state.classLabel;
+  document.getElementById('f-bg').value=state.background;
+  const lvlEl=document.getElementById('f-level');
+  if(document.activeElement!==lvlEl) lvlEl.value=state.level;
+  document.getElementById('f-ac').value=state.ac;
+  document.getElementById('f-speed').value=state.speed;
+  document.getElementById('f-init').textContent=fmt(mod(state.abilities.DEX));
+  document.getElementById('f-prof').textContent=fmt(profBonus(state.level));
+  document.getElementById('f-hpcur').value=state.hp.cur;
+  document.getElementById('f-hpmax').value=state.hp.max;
+  document.getElementById('f-hptmp').value=state.hp.tmp;
+  const pct=Math.max(0,Math.min(1, state.hp.max>0?state.hp.cur/state.hp.max:0));
+  const bar=document.getElementById('hp-bar');
+  bar.style.width=(pct*100)+'%';
+  bar.style.background = pct<=0.25?'var(--red)':pct<=0.5?'var(--amber)':'var(--green)';
+  document.getElementById('insp-dot').classList.toggle('on', !!state.inspiration);
+  document.querySelectorAll('.ds-dot.success').forEach((d,i)=>d.classList.toggle('filled', i<state.deathSaves.success));
+  document.querySelectorAll('.ds-dot.fail').forEach((d,i)=>d.classList.toggle('filled', i<state.deathSaves.fail));
+  updateStamp();
+}
+
+function renderAbilities(){
+  const grid=document.getElementById('ability-grid');
+  grid.innerHTML='';
+  ABILS.forEach(a=>{
+    const div=document.createElement('div');
+    div.className='ability-card';
+    div.innerHTML=`
+      <div class="ability-name">${a}</div>
+      <div class="ability-mod" id="mod-${a}">${fmt(mod(state.abilities[a]))}</div>
+      <input class="ability-score-input" data-a="${a}" type="number" value="${state.abilities[a]}">
+    `;
+    grid.appendChild(div);
+  });
+  grid.querySelectorAll('.ability-score-input').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      const a=inp.dataset.a;
+      state.abilities[a]=parseInt(inp.value)||0;
+      document.getElementById(`mod-${a}`).textContent=fmt(mod(state.abilities[a]));
+      renderCore(); renderSaves(); renderSkills();
+      scheduleSave();
+    });
+  });
+}
+
+function renderSaves(){
+  const wrap=document.getElementById('save-list');
+  wrap.innerHTML='';
+  const pb=profBonus(state.level);
+  ABILS.forEach(a=>{
+    const isProf=state.saveProfs.includes(a);
+    const bonus=mod(state.abilities[a]) + (isProf?pb:0);
+    const row=document.createElement('div');
+    row.className='row-line';
+    row.innerHTML=`
+      <div class="prof-box ${isProf?'on':''}" data-a="${a}"></div>
+      <div class="row-name">${a} Save</div>
+      <div class="row-bonus">${fmt(bonus)}</div>
+    `;
+    row.querySelector('.prof-box').addEventListener('click', function(){
+      const idx=state.saveProfs.indexOf(a);
+      if(idx>=0) state.saveProfs.splice(idx,1); else state.saveProfs.push(a);
+      renderSaves(); scheduleSave();
+    });
+    wrap.appendChild(row);
+  });
+}
+
+function renderSkills(){
+  const wrap=document.getElementById('skill-list');
+  wrap.innerHTML='';
+  const pb=profBonus(state.level);
+  SKILLS.forEach(([name, abil])=>{
+    const isProf=state.skillProfs.includes(name);
+    const isExpert=state.skillExpertise.includes(name);
+    const profMult = isExpert ? 2 : (isProf ? 1 : 0);
+    const bonus=mod(state.abilities[abil]) + pb*profMult;
+    const dotClass = isExpert ? 'expertise' : (isProf ? 'on' : '');
+    const row=document.createElement('div');
+    row.className='row-line';
+    row.innerHTML=`
+      <div class="prof-box ${dotClass}" data-n="${name}" title="Tap: none → proficient → expertise"></div>
+      <div class="row-name">${name}</div>
+      <div class="row-sub">${abil}</div>
+      <div class="row-bonus">${fmt(bonus)}</div>
+    `;
+    row.querySelector('.prof-box').addEventListener('click', function(){
+      const profIdx=state.skillProfs.indexOf(name);
+      const expIdx=state.skillExpertise.indexOf(name);
+      if(expIdx>=0){
+        // expertise -> none
+        state.skillExpertise.splice(expIdx,1);
+        state.skillProfs.splice(profIdx,1);
+      } else if(profIdx>=0){
+        // proficient -> expertise
+        state.skillExpertise.push(name);
+      } else {
+        // none -> proficient
+        state.skillProfs.push(name);
+      }
+      renderSkills(); scheduleSave();
+    });
+    wrap.appendChild(row);
+  });
+  const percProfMult = state.skillExpertise.includes('Perception') ? 2 : (state.skillProfs.includes('Perception') ? 1 : 0);
+  const percBonus = mod(state.abilities.WIS) + pb*percProfMult;
+  document.getElementById('passive-perc').textContent = 10+percBonus;
+}
+
+function renderAttacks(){
+  const wrap=document.getElementById('attack-list');
+  wrap.innerHTML='';
+  state.attacks.forEach((atk,i)=>{
+    const div=document.createElement('div');
+    div.className='list-item';
+    div.innerHTML=`
+      <div class="li-top">
+        <input class="li-name" data-i="${i}" data-f="name" value="${escapeHtml(atk.name)}" placeholder="Weapon name">
+        <button class="li-del" data-i="${i}">×</button>
+      </div>
+      <div class="li-sub">
+        <input data-i="${i}" data-f="bonus" value="${escapeHtml(atk.bonus)}" placeholder="Atk bonus">
+        <input data-i="${i}" data-f="dmg" value="${escapeHtml(atk.dmg)}" placeholder="Damage / notes">
+      </div>
+    `;
+    wrap.appendChild(div);
+  });
+  wrap.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      state.attacks[inp.dataset.i][inp.dataset.f]=inp.value;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.li-del').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.attacks.splice(parseInt(btn.dataset.i),1);
+      renderAttacks(); scheduleSave();
+    });
+  });
+}
+
+function renderItems(){
+  const c=state.currency||{cp:0,sp:0,ep:0,gp:0,pp:0};
+  ['cp','sp','ep','gp','pp'].forEach(k=>{
+    const el=document.getElementById('cur-'+k);
+    if(document.activeElement!==el) el.value=c[k]||0;
+  });
+  const wrap=document.getElementById('item-list');
+  wrap.innerHTML='';
+  state.inventory.forEach((it,i)=>{
+    const div=document.createElement('div');
+    div.className='list-item';
+    div.innerHTML=`
+      <div class="li-top">
+        <input class="li-name" data-i="${i}" data-f="name" value="${escapeHtml(it.name)}" placeholder="Item name">
+        <button class="li-del" data-i="${i}">×</button>
+      </div>
+      <div class="li-sub">
+        <input class="qty" data-i="${i}" data-f="qty" type="number" value="${it.qty}">
+        <input data-i="${i}" data-f="notes" value="${escapeHtml(it.notes||'')}" placeholder="Notes">
+      </div>
+    `;
+    wrap.appendChild(div);
+  });
+  wrap.querySelectorAll('input').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      const field=inp.dataset.f;
+      state.inventory[inp.dataset.i][field]= field==='qty' ? (parseInt(inp.value)||0) : inp.value;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.li-del').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.inventory.splice(parseInt(btn.dataset.i),1);
+      renderItems(); scheduleSave();
+    });
+  });
+}
+
+function renderClass(){
+  const count=superiorityCount(state.level);
+  const die=superiorityDie(state.level);
+  document.getElementById('su-die').textContent = count>0 ? `(${count} × ${die})` : '(none yet — 3rd level)';
+  const dotsWrap=document.getElementById('su-dots');
+  dotsWrap.innerHTML='';
+  for(let i=0;i<count;i++){
+    const d=document.createElement('div');
+    d.className='su-dot' + (i<state.superiority.used?' filled':'');
+    d.dataset.i=i;
+    d.addEventListener('click', ()=>{
+      state.superiority.used = state.superiority.used===i+1 ? i : i+1;
+      renderClass(); scheduleSave();
+    });
+    dotsWrap.appendChild(d);
+  }
+
+  const progWrap=document.getElementById('progression-list');
+  progWrap.innerHTML='';
+  if(state.progression.length===0){
+    progWrap.innerHTML='<div class="prog-item">No features unlocked yet.</div>';
+  } else {
+    state.progression.forEach((p,i)=>{
+      const div=document.createElement('div');
+      div.className='prog-item';
+      div.innerHTML=`
+        <span class="prog-lv">Lv ${p.level}</span>
+        <span class="prog-text" data-i="${i}" contenteditable="true">${escapeHtml(p.text)}</span>
+        <button class="prog-del" data-i="${i}">×</button>
+      `;
+      progWrap.appendChild(div);
+    });
+    progWrap.querySelectorAll('.prog-text').forEach(el=>{
+      el.addEventListener('input', ()=>{
+        state.progression[el.dataset.i].text = el.innerText;
+        scheduleSave();
+      });
+    });
+    progWrap.querySelectorAll('.prog-del').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        state.progression.splice(parseInt(btn.dataset.i),1);
+        renderClass(); scheduleSave();
+      });
+    });
+  }
+
+  const futureWrap=document.getElementById('future-progression-list');
+  const futureToggle=document.getElementById('future-toggle');
+  futureWrap.innerHTML='';
+  let hasFuture=false;
+  for(let lv=state.level+1; lv<=20; lv++){
+    (LEVEL_FEATURES[lv]||[]).forEach(text=>{
+      hasFuture=true;
+      const div=document.createElement('div');
+      div.className='prog-item-future';
+      div.innerHTML=`<span class="prog-lv">Lv ${lv}</span><span>${escapeHtml(text)}</span>`;
+      futureWrap.appendChild(div);
+    });
+  }
+  if(!hasFuture){
+    futureWrap.innerHTML='<div class="prog-item-future">Already at max level.</div>';
+  }
+  futureToggle.textContent = state.showFutureLevels ? '▼ Hide future levels' : '▶ Show future levels';
+  futureWrap.style.display = state.showFutureLevels ? 'block' : 'none';
+
+  document.getElementById('maneuvers-known').textContent = maneuversKnown(state.level) || '—';
+
+  const banner=document.getElementById('levelup-banner');
+  if(state.pendingLevelUp){
+    banner.style.display='block';
+    document.getElementById('lu-range').textContent = `Level ${state.pendingLevelUp.from} → ${state.pendingLevelUp.to}`;
+    const ul=document.getElementById('lu-features');
+    ul.innerHTML = state.pendingLevelUp.features.map(f=>`<li>${escapeHtml(f)}</li>`).join('') || '<li>No new class features at this level — Ability Score Improvement / feat, or just HP.</li>';
+    document.getElementById('lu-hp-amt').textContent = state.pendingLevelUp.hpSuggest;
+  } else {
+    banner.style.display='none';
+  }
+}
+
+function renderFeatureBlocks(){
+  const wrap=document.getElementById('feature-blocks');
+  wrap.innerHTML='';
+  state.featureBlocks.forEach((fb,i)=>{
+    const restType=fb.restType||'none';
+    const locked=fb.restLocked!==false; // default true — only explicit false shows the picker
+    const used=!!fb.used;
+    const div=document.createElement('div');
+    div.className='feature-card' + (used?' used':'');
+
+    let restRowHtml;
+    if(!locked){
+      restRowHtml = `
+      <div class="fc-rest-row">
+        <select class="fc-rest-select" data-i="${i}">
+          <option value="none">No rest tracking</option>
+          <option value="short">Recharges: Short Rest</option>
+          <option value="long">Recharges: Long Rest</option>
+          <option value="both">Recharges: Short or Long Rest</option>
+        </select>
+      </div>`;
+    } else if(restType==='none'){
+      restRowHtml = `<div class="fc-rest-row fc-rest-row-quiet"><span class="fc-rest-add-link" data-i="${i}">+ track rest use</span></div>`;
+    } else {
+      const label = restType==='short' ? '⟳ Short Rest' : restType==='long' ? '⟳ Long Rest' : '⟳ Short or Long Rest';
+      restRowHtml = `
+      <div class="fc-rest-row">
+        <span class="fc-rest-locked">${label} <span class="fc-rest-change" data-i="${i}">change</span></span>
+        <label class="fc-used-label"><input type="checkbox" class="fc-used-check" data-i="${i}" ${used?'checked':''}> Used</label>
+      </div>`;
+    }
+
+    div.innerHTML=`
+      <div class="fc-top">
+        <span class="fc-handle" title="Drag to reorder">⠿</span>
+        <input class="fc-name" data-i="${i}" data-f="name" value="${escapeHtml(fb.name)}" placeholder="Feature name">
+        <input class="fc-tag" data-i="${i}" data-f="tag" value="${escapeHtml(fb.tag||'')}" placeholder="Tag">
+        <button class="fc-del" data-i="${i}">×</button>
+      </div>
+      <div class="fc-detail" data-i="${i}" data-f="detail" contenteditable="true" data-placeholder="What it does...">${escapeHtml(fb.detail||'')}</div>
+      ${restRowHtml}
+    `;
+    wrap.appendChild(div);
+  });
+  wrap.querySelectorAll('.fc-name, .fc-tag').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      state.featureBlocks[inp.dataset.i][inp.dataset.f]=inp.value;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-detail').forEach(el=>{
+    el.addEventListener('input', ()=>{
+      state.featureBlocks[el.dataset.i][el.dataset.f]=el.innerText;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-rest-select').forEach(sel=>{
+    sel.addEventListener('change', ()=>{
+      const fb=state.featureBlocks[sel.dataset.i];
+      fb.restType = sel.value;
+      fb.restLocked = true; // choosing anything (including "none") locks it
+      if(sel.value==='none') fb.used=false;
+      renderFeatureBlocks(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-rest-add-link').forEach(link=>{
+    link.addEventListener('click', ()=>{
+      state.featureBlocks[link.dataset.i].restLocked=false;
+      renderFeatureBlocks();
+    });
+  });
+  wrap.querySelectorAll('.fc-rest-change').forEach(link=>{
+    link.addEventListener('click', ()=>{
+      state.featureBlocks[link.dataset.i].restLocked=false;
+      renderFeatureBlocks();
+    });
+  });
+  wrap.querySelectorAll('.fc-used-check').forEach(chk=>{
+    chk.addEventListener('change', ()=>{
+      state.featureBlocks[chk.dataset.i].used = chk.checked;
+      renderFeatureBlocks(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-del').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.featureBlocks.splice(parseInt(btn.dataset.i),1);
+      renderFeatureBlocks(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-handle').forEach(handle=>{
+    handle.addEventListener('pointerdown', onFeatureDragStart);
+  });
+}
+
+function onFeatureDragStart(e){
+  e.preventDefault();
+  const wrap=document.getElementById('feature-blocks');
+  const card=e.currentTarget.closest('.feature-card');
+  const cards=Array.from(wrap.children);
+  const startIndex=cards.indexOf(card);
+  const rect=card.getBoundingClientRect();
+  const grabOffsetY=e.clientY-rect.top;
+
+  const placeholder=document.createElement('div');
+  placeholder.className='fc-placeholder';
+  placeholder.style.height=rect.height+'px';
+  wrap.insertBefore(placeholder, card);
+
+  card.style.position='fixed';
+  card.style.top=rect.top+'px';
+  card.style.left=rect.left+'px';
+  card.style.width=rect.width+'px';
+  card.style.zIndex=1000;
+  card.classList.add('dragging');
+  document.body.style.userSelect='none';
+
+  function onMove(ev){
+    card.style.top=(ev.clientY-grabOffsetY)+'px';
+    const pointerY=ev.clientY;
+    const siblings=Array.from(wrap.children).filter(c=>c!==card && c!==placeholder);
+    let placed=false;
+    for(const sib of siblings){
+      const r=sib.getBoundingClientRect();
+      if(pointerY < r.top + r.height/2){
+        wrap.insertBefore(placeholder, sib);
+        placed=true;
+        break;
+      }
+    }
+    if(!placed) wrap.appendChild(placeholder);
+  }
+  function onUp(){
+    document.removeEventListener('pointermove', onMove);
+    document.removeEventListener('pointerup', onUp);
+    const finalSiblings=Array.from(wrap.children).filter(c=>c!==card);
+    const newIndex=finalSiblings.indexOf(placeholder);
+    placeholder.remove();
+    card.style.position=''; card.style.top=''; card.style.left=''; card.style.width=''; card.style.zIndex='';
+    card.classList.remove('dragging');
+    document.body.style.userSelect='';
+
+    const moved=state.featureBlocks.splice(startIndex,1)[0];
+    state.featureBlocks.splice(newIndex,0,moved);
+    renderFeatureBlocks();
+    scheduleSave();
+  }
+  document.addEventListener('pointermove', onMove);
+  document.addEventListener('pointerup', onUp, {once:true});
+}
+
+function renderNotes(){
+  document.getElementById('f-notes').value=state.notes||'';
+}
+
+function escapeHtml(s){
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderAll(){
+  renderCore(); renderAbilities(); renderSaves(); renderSkills(); renderClass(); renderFeatureBlocks(); renderAttacks(); renderItems(); renderNotes();
+}
+
+function checkLevelUp(newLevel){
+  const from=state.syncedLevel;
+  if(newLevel<=from){
+    // leveling down or unchanged — just resync silently, no banner
+    state.syncedLevel=newLevel;
+    state.progression = state.progression.filter(p=>p.level<=newLevel);
+    return;
+  }
+  const newFeatures=[];
+  for(let lv=from+1; lv<=newLevel; lv++){
+    (LEVEL_FEATURES[lv]||[]).forEach(t=>{
+      state.progression.push({level:lv, text:t});
+      newFeatures.push(`Lv${lv}: ${t}`);
+    });
+  }
+  const conMod=mod(state.abilities.CON);
+  const hpSuggest=(newLevel-from) * (6+conMod);
+  state.pendingLevelUp = { from, to:newLevel, features:newFeatures, hpSuggest };
+  state.syncedLevel=newLevel;
+}
+
+function wireCoreInputs(){
+  document.getElementById('f-name').addEventListener('input', e=>{ state.name=e.target.value; scheduleSave(); });
+  document.getElementById('f-race').addEventListener('input', e=>{ state.race=e.target.value; scheduleSave(); });
+  document.getElementById('f-class').addEventListener('input', e=>{ state.classLabel=e.target.value; scheduleSave(); });
+  document.getElementById('f-bg').addEventListener('input', e=>{ state.background=e.target.value; scheduleSave(); });
+  const levelInput = document.getElementById('f-level');
+  levelInput.addEventListener('change', e=>{
+    const newLevel=Math.max(1, Math.min(20, parseInt(e.target.value)||1));
+    state.level=newLevel;
+    checkLevelUp(newLevel);
+    renderCore(); renderSaves(); renderSkills(); renderClass(); scheduleSave();
+  });
+  document.getElementById('f-ac').addEventListener('input', e=>{ state.ac=parseInt(e.target.value)||0; scheduleSave(); });
+  document.getElementById('f-speed').addEventListener('input', e=>{ state.speed=parseInt(e.target.value)||0; scheduleSave(); });
+
+  document.getElementById('f-hpcur').addEventListener('input', e=>{
+    state.hp.cur=parseInt(e.target.value)||0; renderCore(); scheduleSave();
+  });
+  document.getElementById('f-hpmax').addEventListener('input', e=>{
+    state.hp.max=parseInt(e.target.value)||0; renderCore(); scheduleSave();
+  });
+  document.getElementById('f-hptmp').addEventListener('input', e=>{
+    state.hp.tmp=parseInt(e.target.value)||0; scheduleSave();
+  });
+
+  document.querySelectorAll('.hp-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const d=parseInt(btn.dataset.d);
+      if(d<0 && state.hp.tmp>0){
+        const absorb=Math.min(state.hp.tmp, -d);
+        state.hp.tmp-=absorb;
+        const remaining=d+absorb;
+        state.hp.cur=Math.max(0, state.hp.cur+remaining);
+      } else {
+        state.hp.cur=Math.max(0, Math.min(state.hp.max, state.hp.cur+d));
+      }
+      renderCore(); scheduleSave();
+    });
+  });
+
+  document.getElementById('insp-dot').addEventListener('click', ()=>{
+    state.inspiration=!state.inspiration; renderCore(); scheduleSave();
+  });
+
+  document.querySelectorAll('.ds-dot.success').forEach(dot=>{
+    dot.addEventListener('click', ()=>{
+      const i=parseInt(dot.dataset.i);
+      state.deathSaves.success = state.deathSaves.success===i+1 ? i : i+1;
+      renderCore(); scheduleSave();
+    });
+  });
+  document.querySelectorAll('.ds-dot.fail').forEach(dot=>{
+    dot.addEventListener('click', ()=>{
+      const i=parseInt(dot.dataset.i);
+      state.deathSaves.fail = state.deathSaves.fail===i+1 ? i : i+1;
+      renderCore(); scheduleSave();
+    });
+  });
+
+  document.getElementById('add-attack').addEventListener('click', ()=>{
+    state.attacks.push({name:'New Attack', bonus:'+0', dmg:''});
+    renderAttacks(); scheduleSave();
+  });
+  ['cp','sp','ep','gp','pp'].forEach(k=>{
+    document.getElementById('cur-'+k).addEventListener('input', e=>{
+      if(!state.currency) state.currency={cp:0,sp:0,ep:0,gp:0,pp:0};
+      state.currency[k]=parseInt(e.target.value)||0;
+      scheduleSave();
+    });
+  });
+  document.getElementById('add-item').addEventListener('click', ()=>{
+    state.inventory.push({name:'New Item', qty:1, notes:''});
+    renderItems(); scheduleSave();
+  });
+
+  document.getElementById('su-reset').addEventListener('click', ()=>{
+    state.superiority.used=0; renderClass(); scheduleSave();
+  });
+
+  function takeRest(kind){
+    state.featureBlocks.forEach(fb=>{
+      if(kind==='long' && (fb.restType==='short'||fb.restType==='long'||fb.restType==='both')) fb.used=false;
+      if(kind==='short' && (fb.restType==='short'||fb.restType==='both')) fb.used=false;
+    });
+    state.superiority.used=0;
+    renderFeatureBlocks(); renderClass(); scheduleSave();
+  }
+  document.getElementById('rest-short').addEventListener('click', ()=>takeRest('short'));
+  document.getElementById('rest-long').addEventListener('click', ()=>takeRest('long'));
+
+  document.getElementById('future-toggle').addEventListener('click', ()=>{
+    state.showFutureLevels = !state.showFutureLevels;
+    renderClass(); scheduleSave();
+  });
+
+  document.getElementById('lu-apply-hp').addEventListener('click', ()=>{
+    if(!state.pendingLevelUp) return;
+    state.hp.max += state.pendingLevelUp.hpSuggest;
+    state.hp.cur += state.pendingLevelUp.hpSuggest;
+    state.pendingLevelUp=null;
+    renderCore(); renderClass(); scheduleSave();
+  });
+  document.getElementById('lu-dismiss').addEventListener('click', ()=>{
+    state.pendingLevelUp=null;
+    renderClass(); scheduleSave();
+  });
+
+  document.getElementById('add-feature').addEventListener('click', ()=>{
+    state.featureBlocks.push({name:'New Feature', tag:'', detail:'', restType:'none', restLocked:false, used:false});
+    renderFeatureBlocks(); scheduleSave();
+  });
+
+  document.getElementById('f-notes').addEventListener('input', e=>{ state.notes=e.target.value; scheduleSave(); });
+
+  document.querySelectorAll('.tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  document.getElementById('export-btn').addEventListener('click', ()=>{
+    const blob = new Blob([JSON.stringify(state, null, 2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const safeName = (state.name||'character').replace(/[^a-z0-9]+/gi,'_').toLowerCase();
+    a.href = url;
+    a.download = `${safeName}_backup_${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('import-btn').addEventListener('click', ()=>{
+    document.getElementById('import-file').click();
+  });
+  document.getElementById('import-file').addEventListener('change', (e)=>{
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = async (ev)=>{
+      try{
+        const loaded = JSON.parse(ev.target.result);
+        if(!confirm(`Load "${loaded.name || 'this character'}" and replace everything currently on the sheet?`)) return;
+        state = loaded;
+        if(state.syncedLevel===undefined) state.syncedLevel = state.level;
+        if(!state.progression) state.progression = [];
+        if(!state.superiority) state.superiority = {used:0};
+        if(!state.currency) state.currency = {cp:0,sp:0,ep:0,gp:0,pp:0};
+        if(!state.featureBlocks) state.featureBlocks = [];
+        if(!state.skillExpertise) state.skillExpertise = [];
+        if(state.pendingLevelUp===undefined) state.pendingLevelUp = null;
+        renderAll();
+        attemptSave();
+      }catch(err){
+        alert('That file could not be read as a character backup.');
+      }
+    };
+    reader.readAsText(file);
+    e.target.value='';
+  });
+
+  document.getElementById('reset-link').addEventListener('click', async ()=>{
+    if(!confirm('Reset this sheet to a blank template? This clears the current character.')) return;
+    state = {
+      name:'New Character', race:'', classLabel:'', background:'', level:1,
+      ac:10, speed:30, inspiration:false,
+      abilities:{STR:10,DEX:10,CON:10,INT:10,WIS:10,CHA:10},
+      hp:{max:10,cur:10,tmp:0},
+      deathSaves:{success:0,fail:0},
+      saveProfs:[], skillProfs:[], skillExpertise:[],
+      attacks:[], inventory:[], features:'', notes:'',
+      currency:{cp:0,sp:0,ep:0,gp:0,pp:0}, featureBlocks:[],
+      syncedLevel:1, progression: (LEVEL_FEATURES[1]||[]).map(t=>({level:1,text:t})),
+      superiority:{used:0}, showFutureLevels:false, pendingLevelUp:null
+    };
+    renderAll();
+    attemptSave();
+  });
+}
+
+(async function init(){
+  await loadState();
+  renderAll();
+  wireCoreInputs();
+})();
+</script>
+</body>
+</html>
