@@ -22,6 +22,8 @@
     --red: #b8493b;
     --green: #6d9057;
     --amber: #c1954a;
+    --arcane: #9b7fc7;
+    --arcane-dim: #6f5c92;
     --radius: 3px;
   }
   *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
@@ -206,12 +208,43 @@
     font-family:'JetBrains Mono',monospace;font-size:11px;border-radius:2px;padding:5px 6px;flex:1;min-width:0;
   }
   .li-sub input.qty{flex:0 0 46px;text-align:center;}
+
+  .inv-cat-header{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-dim);margin:14px 2px 6px;
+  }
+  .inv-cat-header:first-child{margin-top:0;}
+  .inv-cat-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;padding-top:7px;border-top:1px dashed var(--line);flex-wrap:wrap;}
+  .inv-cat-select{
+    background:var(--card-2);border:1px solid var(--line);color:var(--ink-dim);
+    font-family:'JetBrains Mono',monospace;font-size:10px;border-radius:2px;padding:4px 6px;flex:1;min-width:0;
+  }
+  .inv-cat-locked{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);}
+  .inv-cat-change{color:var(--ink-dim);text-decoration:underline;cursor:pointer;margin-left:4px;}
+
+  .magic-card{border-color:var(--arcane-dim);border-left:3px solid var(--arcane);}
+  .magic-card .fc-name{color:var(--ink);}
+  .magic-card .fc-tag{color:var(--arcane);border-color:var(--arcane-dim);}
+  .magic-card .fc-rest-locked{color:var(--arcane-dim);}
+  .magic-qty-row{display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap;}
+  .magic-qty-row label{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;color:var(--ink-dim);text-transform:uppercase;
+  }
+  .magic-qty-row input[type=number]{
+    width:40px;background:var(--card-2);border:1px solid var(--line);color:var(--ink);text-align:center;
+    border-radius:2px;padding:3px;font-family:'JetBrains Mono',monospace;font-size:11px;
+  }
+  .magic-attuned-label{
+    display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);cursor:pointer;
+  }
+  .magic-attuned-label input{width:14px;height:14px;accent-color:var(--arcane);cursor:pointer;}
   .add-btn{
     width:100%;padding:9px;background:var(--card-2);border:1px dashed var(--brass-dim);
     color:var(--brass-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;
     text-transform:uppercase;border-radius:var(--radius);cursor:pointer;margin-top:2px;margin-bottom:16px;
   }
   .add-btn:active{background:var(--line);}
+  .add-btn-inline{width:auto;flex:1;margin:0;}
 
   textarea{
     width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);
@@ -507,7 +540,10 @@
     <button class="add-btn" id="add-attack">+ Add Attack</button>
     <div class="section-title">Inventory</div>
     <div id="item-list"></div>
-    <button class="add-btn" id="add-item">+ Add Item</button>
+    <div class="backup-row">
+      <button class="add-btn add-btn-inline" id="add-item">+ Add Item</button>
+      <button class="add-btn add-btn-inline" id="add-magic-item">✨ Add Magic Item</button>
+    </div>
   </div>
 
   <div class="panel" id="panel-notes">
@@ -616,22 +652,26 @@ const DEFAULT_STATE = {
     {name:'Hand Axe', bonus:'+5', dmg:'1d6+3 slash (20ft throw)'}
   ],
   inventory:[
-    {name:"Courier's Uniform", qty:1, notes:''},
-    {name:'Padlock', qty:1, notes:''},
-    {name:'Map', qty:1, notes:'Pocket map, Courier Brigade paths marked'},
-    {name:'Satchel of mail', qty:1, notes:'3 packages inside'},
-    {name:'Backpack', qty:1, notes:"Explorer's pack"},
-    {name:'Bedroll', qty:1, notes:''},
-    {name:'Mess kit', qty:1, notes:''},
-    {name:'Tinderbox', qty:1, notes:''},
-    {name:'Torch', qty:10, notes:''},
-    {name:'Rations (1 day)', qty:10, notes:''},
-    {name:'Waterskin', qty:1, notes:'Full'},
-    {name:'Hempen rope (50ft)', qty:1, notes:''},
-    {name:"Cobbler's tools", qty:1, notes:''},
-    {name:"Climber's kit", qty:1, notes:''},
-    {name:'Origami crane', qty:1, notes:'Personal keepsake'},
-    {name:"Chisuay's Heavenly Tea", qty:1, notes:''}
+    {name:"Courier's Uniform", qty:1, notes:'', category:'gear', categoryLocked:true},
+    {name:'Padlock', qty:1, notes:'', category:'gear', categoryLocked:true},
+    {name:'Map', qty:1, notes:'Pocket map, Courier Brigade paths marked', category:'gear', categoryLocked:true},
+    {name:'Satchel of mail', qty:1, notes:'3 packages inside', category:'gear', categoryLocked:true},
+    {name:'Backpack', qty:1, notes:"Explorer's pack", category:'gear', categoryLocked:true},
+    {name:'Bedroll', qty:1, notes:'', category:'gear', categoryLocked:true},
+    {name:'Mess kit', qty:1, notes:'', category:'gear', categoryLocked:true},
+    {name:'Tinderbox', qty:1, notes:'', category:'gear', categoryLocked:true},
+    {name:'Torch', qty:10, notes:'', category:'consumable', categoryLocked:true},
+    {name:'Rations (1 day)', qty:10, notes:'', category:'consumable', categoryLocked:true},
+    {name:'Waterskin', qty:1, notes:'Full', category:'gear', categoryLocked:true},
+    {name:'Hempen rope (50ft)', qty:1, notes:'', category:'gear', categoryLocked:true},
+    {name:"Cobbler's tools", qty:1, notes:'', category:'tool', categoryLocked:true},
+    {name:"Climber's kit", qty:1, notes:'', category:'tool', categoryLocked:true},
+    {name:'Origami crane', qty:1, notes:'Personal keepsake', category:'gear', categoryLocked:true},
+    {name:"Chisuay's Heavenly Tea", qty:1, notes:'', category:'consumable', categoryLocked:true},
+    {name:'Rope of Climbing', qty:1, category:'magic', categoryLocked:true,
+      tag:'Wondrous Item, Uncommon',
+      detail:"60ft silk rope, 3 lb, holds up to 3,000 lb. Has 20 HP — if it loses half that, it becomes an ordinary rope at half length.\nBonus action + command word: rope animates and obeys your directions, moving up to 10ft/round — can coil, knot, or arrange itself without using your action.\nSecond command word: goes rigid in a straight line. Anchor one end and send the other up to 60ft toward a point you choose, or loop it around something to secure a climb.",
+      attuned:false, restType:'none', restLocked:true, used:false}
   ],
   currency:{cp:0, sp:0, ep:0, gp:161, pp:0},
   featureBlocks:[
@@ -963,18 +1003,36 @@ function renderAttacks(){
   });
 }
 
-function renderItems(){
-  const c=state.currency||{cp:0,sp:0,ep:0,gp:0,pp:0};
-  ['cp','sp','ep','gp','pp'].forEach(k=>{
-    const el=document.getElementById('cur-'+k);
-    if(document.activeElement!==el) el.value=c[k]||0;
-  });
-  const wrap=document.getElementById('item-list');
-  wrap.innerHTML='';
-  state.inventory.forEach((it,i)=>{
-    const div=document.createElement('div');
-    div.className='list-item';
-    div.innerHTML=`
+const INV_CATEGORIES = [
+  {key:'magic', label:'✨ Magic Items'},
+  {key:'gear', label:'Gear'},
+  {key:'consumable', label:'Consumables'},
+  {key:'tool', label:'Tools & Kits'}
+];
+const INV_CAT_LABELS = {magic:'Magic Item', gear:'Gear', consumable:'Consumable', tool:'Tool / Kit'};
+
+function buildBasicItemHtml(it, i){
+  const cat = it.category || 'gear';
+  const catLocked = it.categoryLocked !== false;
+  let catRowHtml;
+  if(!catLocked){
+    catRowHtml = `
+      <div class="inv-cat-row">
+        <select class="inv-cat-select" data-i="${i}">
+          <option value="gear" ${cat==='gear'?'selected':''}>Gear</option>
+          <option value="consumable" ${cat==='consumable'?'selected':''}>Consumable</option>
+          <option value="tool" ${cat==='tool'?'selected':''}>Tool / Kit</option>
+          <option value="magic" ${cat==='magic'?'selected':''}>Magic Item</option>
+        </select>
+      </div>`;
+  } else {
+    catRowHtml = `
+      <div class="inv-cat-row">
+        <span class="inv-cat-locked">${INV_CAT_LABELS[cat]} <span class="inv-cat-change" data-i="${i}">change</span></span>
+      </div>`;
+  }
+  return `
+    <div class="list-item" data-cat-item="${i}">
       <div class="li-top">
         <input class="li-name" data-i="${i}" data-f="name" value="${escapeHtml(it.name)}" placeholder="Item name">
         <button class="li-del" data-i="${i}">×</button>
@@ -983,10 +1041,80 @@ function renderItems(){
         <input class="qty" data-i="${i}" data-f="qty" type="number" value="${it.qty}">
         <input data-i="${i}" data-f="notes" value="${escapeHtml(it.notes||'')}" placeholder="Notes">
       </div>
-    `;
-    wrap.appendChild(div);
+      ${catRowHtml}
+    </div>`;
+}
+
+function buildMagicItemHtml(it, i){
+  const restType = it.restType || 'none';
+  const restLocked = it.restLocked !== false;
+  const used = !!it.used;
+  const attuned = !!it.attuned;
+
+  let restRowHtml;
+  if(!restLocked){
+    restRowHtml = `
+      <div class="fc-rest-row">
+        <select class="fc-rest-select" data-i="${i}" data-kind="magic">
+          <option value="none">No charge tracking</option>
+          <option value="short">Recharges: Short Rest</option>
+          <option value="long">Recharges: Long Rest</option>
+          <option value="both">Recharges: Short or Long Rest</option>
+        </select>
+      </div>`;
+  } else if(restType==='none'){
+    restRowHtml = `<div class="fc-rest-row fc-rest-row-quiet"><span class="fc-rest-add-link" data-i="${i}" data-kind="magic">+ track charge use</span></div>`;
+  } else {
+    const label = restType==='short' ? '⟳ Short Rest' : restType==='long' ? '⟳ Long Rest' : '⟳ Short or Long Rest';
+    restRowHtml = `
+      <div class="fc-rest-row">
+        <span class="fc-rest-locked">${label} <span class="fc-rest-change" data-i="${i}" data-kind="magic">change</span></span>
+        <label class="fc-used-label"><input type="checkbox" class="fc-used-check" data-i="${i}" data-kind="magic" ${used?'checked':''}> Used</label>
+      </div>`;
+  }
+
+  return `
+    <div class="feature-card magic-card" data-cat-item="${i}">
+      <div class="fc-top">
+        <input class="fc-name" data-i="${i}" data-f="name" value="${escapeHtml(it.name)}" placeholder="Item name">
+        <input class="fc-tag" data-i="${i}" data-f="tag" value="${escapeHtml(it.tag||'')}" placeholder="Rarity / type">
+        <button class="fc-del" data-i="${i}" data-kind="magic-item">×</button>
+      </div>
+      <div class="fc-detail" data-i="${i}" data-f="detail" data-kind="magic" contenteditable="true" data-placeholder="What it does, conditions, limitations...">${escapeHtml(it.detail||'')}</div>
+      <div class="magic-qty-row">
+        <label>Qty <input type="number" class="magic-qty" data-i="${i}" value="${it.qty||1}"></label>
+        <label class="magic-attuned-label"><input type="checkbox" class="magic-attuned-check" data-i="${i}" ${attuned?'checked':''}> Requires attunement — attuned</label>
+      </div>
+      ${restRowHtml}
+      <div class="inv-cat-row">
+        <span class="inv-cat-locked">Magic Item <span class="inv-cat-change" data-i="${i}">change category</span></span>
+      </div>
+    </div>`;
+}
+
+function renderItems(){
+  const c=state.currency||{cp:0,sp:0,ep:0,gp:0,pp:0};
+  ['cp','sp','ep','gp','pp'].forEach(k=>{
+    const el=document.getElementById('cur-'+k);
+    if(document.activeElement!==el) el.value=c[k]||0;
   });
-  wrap.querySelectorAll('input').forEach(inp=>{
+
+  const wrap=document.getElementById('item-list');
+  let html='';
+  INV_CATEGORIES.forEach(catDef=>{
+    const idxs=[];
+    state.inventory.forEach((it,i)=>{ if((it.category||'gear')===catDef.key) idxs.push(i); });
+    if(idxs.length===0) return;
+    html += `<div class="inv-cat-header">${catDef.label}</div>`;
+    idxs.forEach(i=>{
+      const it=state.inventory[i];
+      html += catDef.key==='magic' ? buildMagicItemHtml(it,i) : buildBasicItemHtml(it,i);
+    });
+  });
+  wrap.innerHTML = html;
+
+  // basic item field edits
+  wrap.querySelectorAll('.list-item input[data-f]').forEach(inp=>{
     inp.addEventListener('input', ()=>{
       const field=inp.dataset.f;
       state.inventory[inp.dataset.i][field]= field==='qty' ? (parseInt(inp.value)||0) : inp.value;
@@ -996,6 +1124,73 @@ function renderItems(){
   wrap.querySelectorAll('.li-del').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       state.inventory.splice(parseInt(btn.dataset.i),1);
+      renderItems(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.inv-cat-select').forEach(sel=>{
+    sel.addEventListener('change', ()=>{
+      const it=state.inventory[sel.dataset.i];
+      it.category = sel.value;
+      it.categoryLocked = true;
+      renderItems(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.inv-cat-change').forEach(link=>{
+    link.addEventListener('click', ()=>{
+      state.inventory[link.dataset.i].categoryLocked=false;
+      renderItems();
+    });
+  });
+
+  // magic item fields
+  wrap.querySelectorAll('.fc-name[data-i], .fc-tag[data-i]').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      state.inventory[inp.dataset.i][inp.dataset.f]=inp.value;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-detail[data-kind="magic"]').forEach(el=>{
+    el.addEventListener('input', ()=>{
+      state.inventory[el.dataset.i].detail = el.innerText;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.magic-qty').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      state.inventory[inp.dataset.i].qty = parseInt(inp.value)||0;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.magic-attuned-check').forEach(chk=>{
+    chk.addEventListener('change', ()=>{
+      state.inventory[chk.dataset.i].attuned = chk.checked;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-del[data-kind="magic-item"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.inventory.splice(parseInt(btn.dataset.i),1);
+      renderItems(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-rest-select[data-kind="magic"]').forEach(sel=>{
+    sel.addEventListener('change', ()=>{
+      const it=state.inventory[sel.dataset.i];
+      it.restType = sel.value;
+      it.restLocked = true;
+      if(sel.value==='none') it.used=false;
+      renderItems(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-rest-add-link[data-kind="magic"], .fc-rest-change[data-kind="magic"]').forEach(link=>{
+    link.addEventListener('click', ()=>{
+      state.inventory[link.dataset.i].restLocked=false;
+      renderItems();
+    });
+  });
+  wrap.querySelectorAll('.fc-used-check[data-kind="magic"]').forEach(chk=>{
+    chk.addEventListener('change', ()=>{
+      state.inventory[chk.dataset.i].used = chk.checked;
       renderItems(); scheduleSave();
     });
   });
@@ -1334,7 +1529,14 @@ function wireCoreInputs(){
     });
   });
   document.getElementById('add-item').addEventListener('click', ()=>{
-    state.inventory.push({name:'New Item', qty:1, notes:''});
+    state.inventory.push({name:'New Item', qty:1, notes:'', category:'gear', categoryLocked:false});
+    renderItems(); scheduleSave();
+  });
+  document.getElementById('add-magic-item').addEventListener('click', ()=>{
+    state.inventory.push({
+      name:'New Magic Item', qty:1, category:'magic', categoryLocked:true,
+      tag:'', detail:'', attuned:false, restType:'none', restLocked:false, used:false
+    });
     renderItems(); scheduleSave();
   });
 
@@ -1347,8 +1549,12 @@ function wireCoreInputs(){
       if(kind==='long' && (fb.restType==='short'||fb.restType==='long'||fb.restType==='both')) fb.used=false;
       if(kind==='short' && (fb.restType==='short'||fb.restType==='both')) fb.used=false;
     });
+    state.inventory.forEach(it=>{
+      if(kind==='long' && (it.restType==='short'||it.restType==='long'||it.restType==='both')) it.used=false;
+      if(kind==='short' && (it.restType==='short'||it.restType==='both')) it.used=false;
+    });
     state.superiority.used=0;
-    renderFeatureBlocks(); renderClass(); scheduleSave();
+    renderFeatureBlocks(); renderClass(); renderItems(); scheduleSave();
   }
   document.getElementById('rest-short').addEventListener('click', ()=>takeRest('short'));
   document.getElementById('rest-long').addEventListener('click', ()=>takeRest('long'));
