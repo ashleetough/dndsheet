@@ -342,6 +342,23 @@
   .backup-row{display:flex;gap:8px;margin-bottom:8px;}
   .backup-note{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--ink-dim);line-height:1.5;margin-bottom:16px;}
 
+  .sync-status{
+    font-family:'JetBrains Mono',monospace;font-size:11px;padding:7px 10px;border-radius:var(--radius);
+    margin-bottom:10px;border:1px solid var(--line);background:var(--card);color:var(--ink-dim);
+  }
+  .sync-status.connected{color:var(--green);border-color:var(--green);}
+  .sync-status.disconnected{color:var(--amber);border-color:var(--amber);}
+  .sync-field{margin-bottom:8px;}
+  .sync-field label{
+    display:block;font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.08em;
+    color:var(--ink-dim);text-transform:uppercase;margin-bottom:3px;
+  }
+  .sync-field input{
+    width:100%;background:var(--card);border:1px solid var(--line);color:var(--ink);
+    font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:var(--radius);padding:8px;outline:none;
+  }
+  .sync-field input:focus{border-color:var(--brass-dim);}
+
   .save-flag.save-flag-error{
     color:var(--red);border-color:var(--red);background:var(--card-2);
     text-transform:none;letter-spacing:normal;font-size:11px;white-space:normal;
@@ -496,13 +513,34 @@
   <div class="panel" id="panel-notes">
     <div class="section-title">Notes</div>
     <textarea id="f-notes" placeholder="Personality, bonds, flaws, session notes..."></textarea>
-    <div class="section-title">Backup</div>
+
+    <div class="section-title">Live Sync (GitHub Gist)</div>
+    <div id="sync-status" class="sync-status"></div>
+    <div class="sync-field">
+      <label>GitHub Token</label>
+      <input type="password" id="sync-token" placeholder="ghp_xxxxxxxxxxxx">
+    </div>
+    <div class="sync-field">
+      <label>Gist ID</label>
+      <input type="text" id="sync-gistid" placeholder="leave blank to create new">
+    </div>
+    <div class="backup-row">
+      <button class="hp-btn" id="sync-save-creds">Save &amp; Connect</button>
+      <button class="hp-btn" id="sync-create-gist">Create New Gist</button>
+    </div>
+    <div class="backup-row">
+      <button class="hp-btn" id="sync-now-btn">Sync Now</button>
+      <button class="hp-btn" id="sync-copy-id">Copy Gist ID</button>
+    </div>
+    <div class="backup-note">On your <b>first device</b>: paste your GitHub token, leave Gist ID blank, tap "Save &amp; Connect", then "Create New Gist" — this saves the current sheet as your live copy and shows you the Gist ID. On <b>every other device</b>: paste the <i>same</i> token and that Gist ID, then "Save &amp; Connect". Both devices now read/write the same live data.</div>
+
+    <div class="section-title">Local Backup</div>
     <div class="backup-row">
       <button class="hp-btn" id="export-btn">Download Backup</button>
       <button class="hp-btn" id="import-btn">Load Backup</button>
     </div>
     <input type="file" id="import-file" accept="application/json" style="display:none;">
-    <div class="backup-note">Downloads a .json file of everything on this sheet. Keep a copy somewhere safe — it lets you restore or move your data if this link ever changes.</div>
+    <div class="backup-note">Downloads a .json file of everything on this sheet as an offline safety copy, independent of the live sync above.</div>
   </div>
 
   <div class="reset-link" id="reset-link">Reset to blank sheet</div>
@@ -620,27 +658,84 @@ const DEFAULT_STATE = {
 
 let state = null;
 const STORAGE_KEY = 'trent_yubin_character_sheet';
+const GIST_FILENAME = 'trent_yubin_sheet_data.json';
+const CRED_KEY = 'dnd_sheet_gist_credentials'; // localStorage — this file runs standalone, not in the Claude sandbox
 
 function mod(score){ return Math.floor((score-10)/2); }
 function fmt(n){ return (n>=0?'+':'') + n; }
 function profBonus(level){ return Math.floor((level-1)/4) + 2; }
 
+function getCreds(){
+  try{ return JSON.parse(localStorage.getItem(CRED_KEY)) || {token:'', gistId:''}; }
+  catch(e){ return {token:'', gistId:''}; }
+}
+function setCreds(creds){
+  localStorage.setItem(CRED_KEY, JSON.stringify(creds));
+}
+
+async function gistFetch(){
+  const {token, gistId} = getCreds();
+  if(!token || !gistId) return null;
+  const res = await fetch(`https://api.github.com/gists/${gistId}`, {
+    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
+  });
+  if(!res.ok) throw new Error(`Gist fetch failed: ${res.status}`);
+  const data = await res.json();
+  const file = data.files && data.files[GIST_FILENAME];
+  if(!file) return null;
+  return JSON.parse(file.content);
+}
+
+async function gistSave(){
+  const {token, gistId} = getCreds();
+  if(!token || !gistId) throw new Error('No GitHub token / Gist ID configured');
+  state.updatedAt = Date.now();
+  const res = await fetch(`https://api.github.com/gists/${gistId}`, {
+    method:'PATCH',
+    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' },
+    body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(state) } } })
+  });
+  if(!res.ok) throw new Error(`Gist save failed: ${res.status}`);
+  return true;
+}
+
+async function gistCreate(){
+  const {token} = getCreds();
+  if(!token) throw new Error('No GitHub token configured');
+  const res = await fetch('https://api.github.com/gists', {
+    method:'POST',
+    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' },
+    body: JSON.stringify({
+      description: "Trent Yubin D&D character sheet data — don't edit directly, use the sheet",
+      public: false,
+      files: { [GIST_FILENAME]: { content: JSON.stringify(state) } }
+    })
+  });
+  if(!res.ok) throw new Error(`Gist create failed: ${res.status}`);
+  const data = await res.json();
+  return data.id;
+}
+
+function applyDefaults(loaded){
+  state = loaded;
+  if(state.syncedLevel===undefined) state.syncedLevel = state.level;
+  if(!state.progression) state.progression = [];
+  if(!state.superiority) state.superiority = {used:0};
+  if(!state.currency) state.currency = {cp:0,sp:0,ep:0,gp:0,pp:0};
+  if(!state.featureBlocks) state.featureBlocks = [];
+  if(!state.skillExpertise) state.skillExpertise = [];
+  if(state.showFutureLevels===undefined) state.showFutureLevels = false;
+  if(state.pendingLevelUp===undefined) state.pendingLevelUp = null;
+}
+
 async function loadState(){
-  try{
-    const res = await window.storage.get(STORAGE_KEY, false);
-    if(res && res.value){
-      state = JSON.parse(res.value);
-      if(state.syncedLevel===undefined) state.syncedLevel = state.level;
-      if(!state.progression) state.progression = [];
-      if(!state.superiority) state.superiority = {used:0};
-      if(!state.currency) state.currency = {cp:0,sp:0,ep:0,gp:0,pp:0};
-      if(!state.featureBlocks) state.featureBlocks = [];
-      if(!state.skillExpertise) state.skillExpertise = [];
-      if(state.showFutureLevels===undefined) state.showFutureLevels = false;
-      if(state.pendingLevelUp===undefined) state.pendingLevelUp = null;
-      return;
-    }
-  }catch(e){ /* key not found or storage unavailable */ }
+  const {token, gistId} = getCreds();
+  if(token && gistId){
+    try{
+      const remote = await gistFetch();
+      if(remote){ applyDefaults(remote); return; }
+    }catch(e){ console.error('Initial Gist load failed', e); }
+  }
   state = JSON.parse(JSON.stringify(DEFAULT_STATE));
 }
 
@@ -650,40 +745,66 @@ let backgroundRetryTimer=null;
 function scheduleSave(){
   clearTimeout(saveTimer);
   clearTimeout(backgroundRetryTimer);
-  saveTimer=setTimeout(()=>attemptSave(), 400);
+  saveTimer=setTimeout(()=>attemptSave(), 600);
 }
 async function attemptSave(){
+  const {token, gistId} = getCreds();
+  if(!token || !gistId){
+    flashSaved(false, 'Not connected — set up sync in Settings');
+    return;
+  }
   try{
-    const result = await window.storage.set(STORAGE_KEY, JSON.stringify(state), false);
-    if(!result) throw new Error('Storage set returned no result');
+    await gistSave();
     saveRetries=0;
     flashSaved(true);
   }catch(e){
     console.error('Save failed', e);
     saveRetries++;
     if(saveRetries>=3){
-      flashSaved(false); // sticky error banner, keeps retrying quietly underneath
+      flashSaved(false, 'Save failed, retrying…');
     }
     const delay = Math.min(30000, 1000 * Math.pow(2, Math.min(saveRetries,5)));
     clearTimeout(backgroundRetryTimer);
     backgroundRetryTimer=setTimeout(()=>attemptSave(), delay);
   }
 }
-function flashSaved(success){
+function flashSaved(success, message){
   const el=document.getElementById('save-flag');
   if(success){
-    el.textContent='Saved';
+    el.textContent='Synced';
     el.classList.remove('save-flag-error');
     el.classList.add('show');
     clearTimeout(flashSaved._t);
     flashSaved._t=setTimeout(()=>el.classList.remove('show'), 900);
   } else {
-    el.innerHTML = 'Save failed, retrying… <span id="retry-now" style="text-decoration:underline;cursor:pointer;">Retry now</span> · use Backup below';
+    el.innerHTML = (message||'Sync failed') + ' <span id="retry-now" style="text-decoration:underline;cursor:pointer;">Retry now</span>';
     el.classList.add('save-flag-error', 'show');
-    clearTimeout(flashSaved._t); // sticky — stays until a save succeeds
+    clearTimeout(flashSaved._t);
     const retryBtn=document.getElementById('retry-now');
     if(retryBtn) retryBtn.addEventListener('click', ()=>{ clearTimeout(backgroundRetryTimer); attemptSave(); });
   }
+}
+
+// Pull in changes made on another device: poll periodically and on tab focus.
+let pollTimer=null;
+async function pullRemoteIfNewer(){
+  const {token, gistId} = getCreds();
+  if(!token || !gistId) return;
+  try{
+    const remote = await gistFetch();
+    if(remote && (remote.updatedAt||0) > (state.updatedAt||0)){
+      applyDefaults(remote);
+      renderAll();
+      flashSaved(true);
+    }
+  }catch(e){ console.error('Background pull failed', e); }
+}
+function startSyncPolling(){
+  clearInterval(pollTimer);
+  pollTimer=setInterval(pullRemoteIfNewer, 20000);
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.visibilityState==='visible') pullRemoteIfNewer();
+  });
 }
 
 function updateStamp(){
@@ -1324,12 +1445,81 @@ function wireCoreInputs(){
     renderAll();
     attemptSave();
   });
+
+  function renderSyncStatus(){
+    const {token, gistId} = getCreds();
+    const el=document.getElementById('sync-status');
+    document.getElementById('sync-token').value = token || '';
+    document.getElementById('sync-gistid').value = gistId || '';
+    if(token && gistId){
+      el.textContent = 'Connected — this device syncs live to Gist ' + gistId.slice(0,8) + '…';
+      el.className = 'sync-status connected';
+    } else {
+      el.textContent = 'Not connected — data is only stored on this device until you set up sync below.';
+      el.className = 'sync-status disconnected';
+    }
+  }
+  renderSyncStatus();
+
+  document.getElementById('sync-save-creds').addEventListener('click', async ()=>{
+    const token=document.getElementById('sync-token').value.trim();
+    const gistId=document.getElementById('sync-gistid').value.trim();
+    if(!token){ alert('Paste a GitHub personal access token first (needs "gist" scope).'); return; }
+    setCreds({token, gistId});
+    renderSyncStatus();
+    if(gistId){
+      try{
+        const remote = await gistFetch();
+        if(remote){
+          applyDefaults(remote);
+          renderAll();
+        }
+        flashSaved(true);
+        startSyncPolling();
+      }catch(e){
+        alert('Could not load that Gist — check the token and Gist ID are correct.');
+      }
+    }
+  });
+
+  document.getElementById('sync-create-gist').addEventListener('click', async ()=>{
+    const token=document.getElementById('sync-token').value.trim();
+    if(!token){ alert('Paste a GitHub personal access token first (needs "gist" scope).'); return; }
+    setCreds({token, gistId:''});
+    try{
+      const newId = await gistCreate();
+      setCreds({token, gistId:newId});
+      renderSyncStatus();
+      flashSaved(true);
+      startSyncPolling();
+      alert('Gist created! ID: ' + newId + '\n\nEnter this same token and Gist ID on your other devices to keep them in sync.');
+    }catch(e){
+      alert('Could not create a Gist — check that the token is valid and has "gist" scope.');
+    }
+  });
+
+  document.getElementById('sync-now-btn').addEventListener('click', ()=>{
+    pullRemoteIfNewer();
+    attemptSave();
+  });
+
+  document.getElementById('sync-copy-id').addEventListener('click', async ()=>{
+    const {gistId} = getCreds();
+    if(!gistId){ alert('No Gist ID set yet.'); return; }
+    try{
+      await navigator.clipboard.writeText(gistId);
+      alert('Gist ID copied to clipboard.');
+    }catch(e){
+      prompt('Copy this Gist ID:', gistId);
+    }
+  });
 }
 
 (async function init(){
   await loadState();
   renderAll();
   wireCoreInputs();
+  startSyncPolling();
 })();
 </script>
 </body>
