@@ -55,6 +55,59 @@
   }
   .name-input:focus{border-bottom:1px solid var(--brass);}
   .subline{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+  .mc-add-link{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-dim);text-decoration:underline;
+    cursor:pointer;margin-top:4px;display:inline-block;
+  }
+  .mc-remove-link{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-dim);text-decoration:underline;
+    cursor:pointer;align-self:center;
+  }
+  .total-level-note{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-dim);margin-top:3px;
+  }
+
+  .mode-toggle-row{margin-bottom:12px;}
+  .mode-toggle-btn{
+    width:100%;padding:10px 0;background:var(--card);border:1px solid var(--brass-dim);color:var(--brass);
+    font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    border-radius:var(--radius);cursor:pointer;
+  }
+  .mode-toggle-btn.active{background:var(--brass);color:var(--bg);border-color:var(--brass);}
+
+  body.combat-mode .tabs{display:none;}
+  body.combat-mode .panel{display:none;}
+  body.combat-mode #panel-combat{display:block;}
+
+  .combat-row{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:8px 10px;margin-bottom:7px;
+  }
+  .combat-row-top{display:flex;justify-content:space-between;align-items:center;gap:8px;}
+  .combat-row-name{font-family:'Archivo',sans-serif;font-weight:700;font-size:13.5px;color:var(--ink);}
+  .combat-row-sub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brass);white-space:nowrap;}
+  .atk-dmg-tag{
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.06em;color:var(--bg);
+    background:var(--brass);border-radius:8px;padding:1px 6px;margin-right:2px;
+  }
+  .roll-calc-row{display:flex;gap:10px;margin-top:8px;padding-top:7px;border-top:1px dashed var(--line);flex-wrap:wrap;}
+  .roll-calc-field{display:flex;align-items:center;gap:6px;}
+  .roll-calc-field label{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-dim);letter-spacing:.04em;}
+  .roll-calc-field input{
+    width:44px;background:var(--card-2);border:1px solid var(--brass-dim);color:var(--ink);text-align:center;
+    border-radius:2px;padding:4px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  }
+  .roll-total{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--green);font-weight:700;min-width:28px;}
+  .combat-row-detail{font-family:'Archivo',sans-serif;font-size:11.5px;color:var(--ink-dim);margin-top:4px;line-height:1.4;}
+  .combat-empty{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);padding:8px 4px;}
+
+  .theme-swatch-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .theme-swatch{
+    width:38px;height:38px;border-radius:50%;cursor:pointer;border:2px solid var(--line);
+    display:flex;align-items:center;justify-content:center;position:relative;
+  }
+  .theme-swatch.active{border-color:var(--ink);}
+  .theme-swatch.active::after{content:'✓';color:#fff;font-size:14px;text-shadow:0 0 3px rgba(0,0,0,.6);}
   .chip-input{
     font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);
     background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
@@ -188,6 +241,30 @@
   .cur-cell{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:6px 4px;text-align:center;}
   .cur-cell label{display:block;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--ink-dim);text-transform:uppercase;margin-bottom:3px;}
   .cur-cell input{width:100%;background:transparent;border:none;outline:none;color:var(--brass);font-family:'JetBrains Mono',monospace;font-size:14px;text-align:center;}
+  .cur-cell input.negative{color:var(--red);}
+
+  .purchase-form{display:flex;gap:6px;margin-bottom:8px;}
+  .purchase-form input, .purchase-form select{
+    background:var(--card);border:1px solid var(--line);color:var(--ink);
+    font-family:'JetBrains Mono',monospace;font-size:12px;border-radius:var(--radius);padding:8px;outline:none;
+  }
+  .purchase-form input#purchase-name{flex:1;min-width:0;}
+  .purchase-form input#purchase-amount{width:64px;flex-shrink:0;}
+  .purchase-form select{flex-shrink:0;}
+  .purchase-form input:focus, .purchase-form select:focus{border-color:var(--brass-dim);}
+  .purchase-addinv-label{
+    display:flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:11px;
+    color:var(--ink-dim);margin-bottom:10px;cursor:pointer;
+  }
+  .purchase-addinv-label input{width:14px;height:14px;accent-color:var(--brass);cursor:pointer;}
+  .purchase-item{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    padding:7px 4px;border-bottom:1px solid var(--line);font-size:12.5px;
+  }
+  .purchase-item:last-child{border-bottom:none;}
+  .purchase-item-name{color:var(--ink-dim);flex:1;}
+  .purchase-item-cost{font-family:'JetBrains Mono',monospace;color:var(--red);white-space:nowrap;}
+  .purchase-del{background:none;border:none;color:var(--red);font-size:15px;cursor:pointer;padding:0 4px;flex-shrink:0;}
 
   .list-item{
     background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
@@ -206,8 +283,22 @@
   .li-sub input{
     background:var(--card-2);border:1px solid var(--line);color:var(--ink-dim);
     font-family:'JetBrains Mono',monospace;font-size:11px;border-radius:2px;padding:5px 6px;flex:1;min-width:0;
+    width:100%;
   }
   .li-sub input.qty{flex:0 0 46px;text-align:center;}
+  .li-labeled{flex:1;min-width:0;}
+  .li-field-label{
+    display:block;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.08em;
+    color:var(--brass-dim);text-transform:uppercase;margin-bottom:2px;
+  }
+
+  .wp-chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:3px;}
+  .wp-chip{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:4px 9px;border-radius:12px;
+    border:1px solid var(--line);background:var(--card-2);color:var(--ink-dim);cursor:pointer;
+  }
+  .wp-chip.active{background:var(--brass);border-color:var(--brass);color:var(--bg);}
+  .wp-chip-mastery.active{background:var(--arcane);border-color:var(--arcane);color:var(--bg);}
 
   .inv-cat-header{
     font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
@@ -238,6 +329,14 @@
     display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink-dim);cursor:pointer;
   }
   .magic-attuned-label input{width:14px;height:14px;accent-color:var(--arcane);cursor:pointer;}
+
+  .item-hp-row{margin-top:8px;padding-top:7px;border-top:1px dashed var(--line);}
+  .item-hp-inputs{display:flex;align-items:center;gap:6px;margin-top:6px;}
+  .item-hp-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;color:var(--ink-dim);text-transform:uppercase;margin-right:2px;}
+  .item-hp-inputs input{
+    width:44px;background:var(--card-2);border:1px solid var(--line);color:var(--ink);text-align:center;
+    border-radius:2px;padding:4px;font-family:'JetBrains Mono',monospace;font-size:12px;
+  }
   .add-btn{
     width:100%;padding:9px;background:var(--card-2);border:1px dashed var(--brass-dim);
     color:var(--brass-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;
@@ -281,6 +380,18 @@
   .su-dot{width:17px;height:17px;border-radius:3px;border:1.5px solid var(--brass-dim);cursor:pointer;transform:rotate(45deg);}
   .su-dot.filled{background:var(--brass);border-color:var(--brass);}
 
+  .cr-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+  .cr-dots{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+  .cr-dot{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--brass-dim);cursor:pointer;}
+  .cr-dot.filled{background:var(--brass);border-color:var(--brass);}
+
+  .slot-level-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+  .slot-level-cell{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:7px;text-align:center;}
+  .slot-level-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;}
+  .slot-dot-row{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;}
+  .slot-dot{width:11px;height:11px;border-radius:50%;border:1.5px solid var(--arcane-dim);cursor:pointer;}
+  .slot-dot.filled{background:var(--arcane);border-color:var(--arcane);}
+
   .feature-card{
     background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
     padding:9px 10px;margin-bottom:8px;
@@ -316,6 +427,13 @@
   .fc-rest-add-link{
     font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);opacity:.55;
     text-decoration:underline;cursor:pointer;
+  }
+  .fc-category-row{
+    display:flex;align-items:center;gap:8px;margin-top:6px;
+  }
+  .fc-category-select{
+    background:var(--card-2);border:1px solid var(--line);color:var(--ink-dim);
+    font-family:'JetBrains Mono',monospace;font-size:10px;border-radius:2px;padding:4px 6px;flex:1;min-width:0;
   }
   .fc-used-label{
     display:flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:11px;
@@ -402,6 +520,12 @@
     text-align:center;margin:6px 0 30px;font-family:'JetBrains Mono',monospace;font-size:10px;
     color:var(--ink-dim);text-decoration:underline;cursor:pointer;letter-spacing:.05em;
   }
+
+  .feat-picker-preview{
+    background:var(--card-2);border:1px solid var(--line);border-radius:var(--radius);
+    padding:9px 11px;margin-bottom:12px;font-family:'Archivo',sans-serif;font-size:12px;
+    color:var(--ink-dim);line-height:1.5;
+  }
 </style>
 </head>
 <body>
@@ -417,11 +541,46 @@
         <input id="f-bg" class="chip-input" value="Courier Brigade">
         <span class="chip-input" style="display:flex;align-items:center;gap:4px;">LV <input id="f-level" class="chip-input small" style="border:none;background:transparent;padding:0;" type="number" value="3" min="1" max="20"></span>
       </div>
+      <div class="subline" id="multiclass-row" style="display:none;">
+        <input id="f-class2" class="chip-input" placeholder="2nd class (e.g. Rogue)">
+        <span class="chip-input" style="display:flex;align-items:center;gap:4px;">LV <input id="f-level2" class="chip-input small" style="border:none;background:transparent;padding:0;" type="number" value="0" min="0" max="19"></span>
+        <span class="mc-remove-link" id="mc-remove">remove</span>
+      </div>
+      <div class="mc-add-link" id="mc-add-link">+ multiclass</div>
+      <div class="total-level-note" id="total-level-note" style="display:none;"></div>
+      <div class="mc-add-link" id="race-picker-link">apply race template</div>
+      <div class="subline" id="race-picker-row" style="display:none;">
+        <select class="chip-input" id="race-picker-select">
+          <option value="">Choose a race…</option>
+        </select>
+        <span class="mc-remove-link" id="race-picker-apply">apply</span>
+        <span class="mc-remove-link" id="race-picker-cancel">cancel</span>
+      </div>
+      <div class="mc-add-link" id="class-picker-link">apply class template</div>
+      <div class="subline" id="class-picker-row" style="display:none;">
+        <select class="chip-input" id="class-picker-select">
+          <option value="">Choose a class…</option>
+        </select>
+        <span class="mc-remove-link" id="class-picker-apply">apply</span>
+        <span class="mc-remove-link" id="class-picker-cancel">cancel</span>
+      </div>
+      <div class="mc-add-link" id="subclass-picker-link" style="display:none;">apply subclass template</div>
+      <div class="subline" id="subclass-picker-row" style="display:none;">
+        <select class="chip-input" id="subclass-picker-select">
+          <option value="">Choose a subclass…</option>
+        </select>
+        <span class="mc-remove-link" id="subclass-picker-apply">apply</span>
+        <span class="mc-remove-link" id="subclass-picker-cancel">cancel</span>
+      </div>
     </div>
     <div id="stamp" class="stamp">ACTIVE<br>DUTY</div>
   </div>
 
-  <div class="core-row">
+  <div class="mode-toggle-row">
+    <button class="mode-toggle-btn" id="combat-toggle">⚔ Combat Mode</button>
+  </div>
+
+  <div class="core-row" style="grid-template-columns:repeat(5,1fr);">
     <div class="core-card">
       <div class="core-label">AC</div>
       <input id="f-ac" class="core-value" type="number" value="15">
@@ -429,6 +588,10 @@
     <div class="core-card">
       <div class="core-label">Speed</div>
       <input id="f-speed" class="core-value" type="number" value="30">
+    </div>
+    <div class="core-card">
+      <div class="core-label">Dark<br>vision</div>
+      <input id="f-darkvision" class="core-value" type="number" value="0">
     </div>
     <div class="core-card">
       <div class="core-label">Init</div>
@@ -510,6 +673,12 @@
       </div>
     </div>
 
+    <div class="section-title" id="class-resource-title" style="display:none;"></div>
+    <div id="class-resource-block" style="display:none;"></div>
+
+    <div class="section-title" id="spell-slots-title" style="display:none;">Spell Slots</div>
+    <div id="spell-slots-block" style="display:none;"></div>
+
     <div class="section-title">Features &amp; Feats</div>
     <div class="rest-btn-row">
       <button class="rest-btn" id="rest-short">↺ Short Rest</button>
@@ -517,6 +686,13 @@
     </div>
     <div id="feature-blocks"></div>
     <button class="add-btn" id="add-feature">+ Add Feature / Feat</button>
+    <div class="mc-add-link" id="feat-picker-link">pick from feat list</div>
+    <div class="subline" id="feat-picker-row" style="display:none;margin-bottom:12px;">
+      <select class="chip-input" id="feat-picker-select" style="flex:1;min-width:0;"></select>
+      <span class="mc-remove-link" id="feat-picker-apply">apply</span>
+      <span class="mc-remove-link" id="feat-picker-cancel">cancel</span>
+    </div>
+    <div id="feat-picker-preview" class="feat-picker-preview" style="display:none;"></div>
 
     <div class="passive-box" style="margin-bottom:16px;">Maneuvers Known <b id="maneuvers-known">3</b></div>
 
@@ -535,6 +711,23 @@
       <div class="cur-cell"><label>GP</label><input id="cur-gp" type="number"></div>
       <div class="cur-cell"><label>PP</label><input id="cur-pp" type="number"></div>
     </div>
+
+    <div class="section-title">Log a Purchase</div>
+    <div class="purchase-form">
+      <input id="purchase-name" placeholder="What did you buy?">
+      <input id="purchase-amount" type="number" placeholder="Cost" min="0" step="any">
+      <select id="purchase-currency">
+        <option value="cp">cp</option>
+        <option value="sp">sp</option>
+        <option value="ep">ep</option>
+        <option value="gp" selected>gp</option>
+        <option value="pp">pp</option>
+      </select>
+    </div>
+    <label class="purchase-addinv-label"><input type="checkbox" id="purchase-addinv"> Also add to Inventory</label>
+    <button class="add-btn" id="purchase-buy-btn">Buy — deduct from Currency</button>
+    <div id="purchase-list"></div>
+
     <div class="section-title">Attacks</div>
     <div id="attack-list"></div>
     <button class="add-btn" id="add-attack">+ Add Attack</button>
@@ -577,6 +770,22 @@
     </div>
     <input type="file" id="import-file" accept="application/json" style="display:none;">
     <div class="backup-note">Downloads a .json file of everything on this sheet as an offline safety copy, independent of the live sync above.</div>
+
+    <div class="section-title">Theme</div>
+    <div class="theme-swatch-row" id="theme-swatches"></div>
+  </div>
+
+  <div class="panel" id="panel-combat">
+    <div class="section-title">Attacks</div>
+    <div id="combat-attacks"></div>
+    <div class="section-title">Magic Items</div>
+    <div id="combat-magic-items"></div>
+    <div class="section-title">Maneuvers / Special Moves</div>
+    <div id="combat-maneuvers"></div>
+    <div class="section-title">Spells</div>
+    <div id="combat-spells"></div>
+    <div class="section-title">Trackable Features</div>
+    <div id="combat-trackables"></div>
   </div>
 
   <div class="reset-link" id="reset-link">Reset to blank sheet</div>
@@ -637,19 +846,749 @@ function maneuversKnown(level){
 }
 function superiorityCount(level){ if(level<3) return 0; if(level<7) return 4; if(level<15) return 5; return 6; }
 function superiorityDie(level){ if(level<10) return 'd8'; if(level<18) return 'd10'; return 'd12'; }
+function totalLevel(){ return (state.level||0) + (state.class2Level||0); }
+
+const WEAPON_PROPS = [
+  {key:'Ammunition', def:'Requires ammunition (arrows, bolts, etc.) to attack at range; you need a free hand to load it.'},
+  {key:'Finesse', def:'Use STR or DEX, whichever is higher, for both the attack and damage roll.'},
+  {key:'Heavy', def:'Small creatures have disadvantage attacking with it.'},
+  {key:'Light', def:'Light enough to use in two-weapon fighting.'},
+  {key:'Loading', def:'Reload time limits you to one shot per action/bonus action/reaction, regardless of extra attacks.'},
+  {key:'Reach', def:'Adds 5ft to your reach when attacking with it.'},
+  {key:'Special', def:'Has its own unique rule beyond the standard properties.'},
+  {key:'Thrown', def:'Can be thrown to make a ranged attack.'},
+  {key:'Two-Handed', def:'Requires two hands to use.'},
+  {key:'Versatile', def:'Can be used one- or two-handed; two-handed use gets a bigger damage die.'}
+];
+const MASTERY_PROPS = [
+  {key:'Cleave', def:'If you hit, you can make an extra attack against a second creature within 5ft of the first, using the same modifier (no damage on a miss).'},
+  {key:'Graze', def:"If your attack misses, you still deal damage equal to the weapon's ability modifier."},
+  {key:'Nick', def:"Making the extra attack from a Light weapon doesn't cost a bonus action (usable once per turn)."},
+  {key:'Push', def:'If you hit, you can push the target up to 10ft away.'},
+  {key:'Sap', def:'If you hit, the target has disadvantage on its next attack roll before your next turn.'},
+  {key:'Slow', def:"If you hit, you can reduce the target's speed by 10ft until the start of your next turn."},
+  {key:'Topple', def:'If you hit, you can force a STR saving throw or knock the target prone.'},
+  {key:'Vex', def:'If you hit, you gain advantage on your next attack against that same target before your next turn.'}
+];
+
+const FEATS_DATA = {
+  'Alert': 'You gain a +5 bonus to initiative, can\'t be surprised while conscious, and other creatures don\'t gain advantage on attacks against you from being unseen.',
+  'Athlete': '+1 STR or DEX. Climbing no longer costs extra movement. Standing up from prone uses only 5ft of movement. A running long or high jump only needs 5ft of a running start.',
+  'Actor': '+1 CHA. Advantage on Deception and Performance checks when trying to pass yourself off as someone else. You can mimic another person\'s speech or a creature\'s sounds you\'ve heard.',
+  'Charger': 'When you take the Dash action and then make a melee attack as part of the same turn, that attack deals an extra 5 damage or lets you push the target 10ft, if it hits.',
+  'Crossbow Expert': 'Ignore the loading property of crossbows. No disadvantage on ranged attacks while a hostile creature is within 5ft of you. When you attack with a one-handed weapon, you can make a bonus action attack with a hand crossbow.',
+  'Defensive Duelist': 'When wielding a finesse weapon and another creature hits you with a melee attack, you can use your reaction to add your proficiency bonus to your AC for that attack, potentially causing it to miss.',
+  'Dual Wielder': '+1 AC while wielding two melee weapons. You can two-weapon fight even with weapons that aren\'t Light, and you can draw or stow two one-handed weapons at once.',
+  'Dungeon Delver': 'Advantage on checks to detect secret doors or traps. Advantage on saves to avoid or resist traps, and resistance to trap damage. You can search for traps while traveling at a normal pace instead of a slow one.',
+  'Durable': '+1 CON. When you roll a Hit Die to regain HP, the minimum you regain equals twice your CON modifier.',
+  'Elemental Adept': 'Choose a damage type (acid, cold, fire, lightning, or thunder). Spells you cast that deal that type ignore resistance to it, and any 1 rolled on its damage dice counts as a 2.',
+  'Grappler': 'Advantage on attack rolls against a creature you are grappling. You can use an action to try to pin a creature you\'re grappling.',
+  'Great Weapon Master': 'On a critical hit or a kill with a melee weapon, you can make one bonus-action melee attack. On your turn, before attacking with a heavy weapon, you can take -5 to the attack roll for +10 damage if it hits.',
+  'Healer': 'Using a healer\'s kit to stabilize a dying creature also restores 1 HP. As an action, spend one use of a healer\'s kit to let a creature spend a Hit Die and regain HP equal to the roll + your character level.',
+  'Heavy Armor Master': '+1 STR. While wearing heavy armor, reduce non-magical bludgeoning, piercing, and slashing damage you take by 3.',
+  'Inspiring Leader': 'Spend 10 minutes inspiring up to 6 companions within earshot; each gains temporary HP equal to your level + your CHA modifier.',
+  'Keen Mind': '+1 INT. You always know which way is north, the number of hours until sunrise/sunset, and can accurately recall anything you\'ve seen or heard within the past month.',
+  'Lucky': 'You have 3 luck points that refresh on a long rest. Spend one to add an extra d20 roll to an attack roll, ability check, or save you or a creature attacking you just made, choosing which roll to use after seeing both.',
+  'Mage Slayer': 'When a creature within 5ft casts a spell, you can use your reaction to make a melee attack against it. Advantage on saves against spells cast by creatures within 5ft of you, and damaging a concentrating caster imposes disadvantage on their concentration save.',
+  'Magic Initiate': 'Learn one cantrip and one 1st-level spell from a class\'s spell list of your choice; you can cast the 1st-level spell once without a slot, regaining the ability on a long rest.',
+  'Martial Adept': 'Learn two maneuvers from the Battle Master archetype and gain one superiority die (d6) to fuel them, regained on a short or long rest.',
+  'Medium Armor Master': 'No disadvantage on Stealth checks while wearing medium armor, and your AC while wearing it can benefit from a +3 DEX bonus instead of the usual +2 cap.',
+  'Mobile': '+10ft speed. Difficult terrain doesn\'t cost extra movement when you Dash. When you make a melee attack against a creature, you don\'t provoke opportunity attacks from it for the rest of the turn, hit or miss.',
+  'Mounted Combatant': 'Advantage on melee attacks against unmounted creatures smaller than your mount. You can redirect an attack targeting your mount to yourself instead. Your mount automatically succeeds any DEX save you succeed on that would otherwise force it to take half damage.',
+  'Observant': '+1 INT or WIS. You can read lips if you can see a creature\'s mouth and understand its language. +5 bonus to passive Perception and passive Investigation.',
+  'Polearm Master': 'When you attack with a glaive, halberd, quarterstaff, or spear, you can use a bonus action to make a melee attack with the other end (1d4 bludgeoning). You can make an opportunity attack against a creature that enters your reach.',
+  'Resilient': 'Choose one ability score, increase it by 1, and gain proficiency in saving throws using it.',
+  'Ritual Caster': 'Choose a class; learn two 1st-level spells with the ritual tag from that class\'s list, which you can cast as rituals.',
+  'Savage Attacker': 'Once per turn when you roll damage for a melee weapon attack, you can reroll the weapon\'s damage dice and use either total.',
+  'Sentinel': 'Creatures provoke opportunity attacks from you even if they Disengage, and hitting with an opportunity attack reduces the target\'s speed to 0 for the rest of the turn. When a creature within 5ft of you attacks someone other than you, you can use your reaction to attack it.',
+  'Sharpshooter': 'No disadvantage on ranged attacks at long range, and ranged attacks ignore half and three-quarters cover. Before making a ranged weapon attack, you can take -5 to the attack roll for +10 damage if it hits.',
+  'Shield Master': 'If you take the Attack action, you can use a bonus action to shove a creature with your shield. You can add your shield\'s AC bonus to DEX saves against effects that target only you, and on a successful DEX save against an effect that would normally deal half damage, you take none.',
+  'Skilled': 'Gain proficiency in any combination of three skills or tools of your choice.',
+  'Skulker': 'You can hide when only lightly obscured. No disadvantage on Perception checks from dim light. Missing with a ranged attack doesn\'t reveal your position.',
+  'Spell Sniper': 'The range of your spell attacks doubles, and they ignore half and three-quarters cover. You also learn one attack cantrip from a class\'s spell list of your choice.',
+  'Tavern Brawler': '+1 STR or CON. Proficiency with improvised weapons, your unarmed strike uses a d4 for damage, and hitting with an unarmed strike or improvised weapon lets you attempt to grapple as a bonus action.',
+  'Tough': 'Your maximum HP increases by 2 per character level, and again every time you gain a level thereafter.',
+  'War Caster': 'Advantage on concentration saves. You can perform spells\' somatic components even with weapons or a shield in your hands, and you can cast a spell instead of making an opportunity attack when a hostile creature provokes one.',
+  'Weapon Master': '+1 STR or DEX. Gain proficiency with four weapons of your choice.'
+};
+
+// Base-class reference data (2014 PHB rules). Subclass content isn't included yet —
+// that's a separate, later phase. Levels shown are the base class only.
+const CLASS_DATA = {
+  'Barbarian': {
+    hitDie: 'd12',
+    saves: ['STR','CON'],
+    skillChoice: {count:2, options:['Animal Handling','Athletics','Intimidation','Nature','Perception','Survival']},
+    armor: 'Light and medium armor, shields',
+    weapons: 'Simple and martial weapons',
+    subclassLevel: 3,
+    subclassLabel: 'Primal Path',
+    resource: {
+      name:'Rage', restType:'long',
+      usesByLevel:{1:2, 3:3, 6:4, 12:5, 17:6, 20:99},
+      note:'damage bonus on STR melee attacks: +2 (lv1-8), +3 (lv9-15), +4 (lv16-20)'
+    },
+    levelFeatures: {
+      1: [
+        {name:'Rage', category:'feature', tag:'Bonus action · long rest', detail:'While raging: advantage on STR checks/saves, bonus melee damage with STR weapons, resistance to bludgeoning/piercing/slashing damage. Lasts 1 minute; ends early if you go a turn without attacking or taking damage, or if you don a heavy armor / fall unconscious.', restType:'long'},
+        {name:'Unarmored Defense', category:'feature', tag:'Class Feature', detail:'While not wearing armor, AC = 10 + DEX mod + CON mod (a shield can still be used).'}
+      ],
+      2: [
+        {name:'Reckless Attack', category:'feature', tag:'Class Feature', detail:'On your first attack of your turn, you can choose to attack recklessly — advantage on STR melee attacks this turn, but attacks against you have advantage until your next turn.'},
+        {name:'Danger Sense', category:'feature', tag:'Class Feature', detail:"Advantage on DEX saves against effects you can see (traps, spells), as long as you aren't blinded, deafened, or incapacitated."}
+      ],
+      3: [{name:'Primal Path', category:'feature', tag:'Subclass', detail:'Choose your Primal Path (subclass) — not yet built into this sheet, add its features as your own cards for now.'}],
+      4: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      5: [
+        {name:'Extra Attack', category:'feature', tag:'Class Feature', detail:'Attack twice, instead of once, whenever you take the Attack action.'},
+        {name:'Fast Movement', category:'feature', tag:'Class Feature', detail:'+10ft speed while not wearing heavy armor.'}
+      ],
+      6: [],
+      7: [{name:'Feral Instinct', category:'feature', tag:'Class Feature', detail:'Advantage on initiative rolls. If surprised but able to act, you can act normally on your first turn as long as you enter your rage first.'}],
+      8: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      9: [{name:'Brutal Critical', category:'feature', tag:'Class Feature', detail:'Roll one extra weapon damage die when you score a critical hit with a melee attack.'}],
+      10: [],
+      11: [{name:'Relentless Rage', category:'feature', tag:'Class Feature', detail:"If you drop to 0 HP while raging and aren't killed outright, you can make a DC 10 CON save to drop to 1 HP instead. DC increases by 5 each time you use this until you finish a short or long rest."}],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      13: [{name:'Brutal Critical', category:'feature', tag:'Class Feature', detail:'Now roll two extra weapon damage dice on a melee critical hit.'}],
+      14: [],
+      15: [{name:'Persistent Rage', category:'feature', tag:'Class Feature', detail:"Your rage only ends early if you fall unconscious or choose to end it yourself."}],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      17: [{name:'Brutal Critical', category:'feature', tag:'Class Feature', detail:'Now roll three extra weapon damage dice on a melee critical hit.'}],
+      18: [{name:'Indomitable Might', category:'feature', tag:'Class Feature', detail:'If your total for a STR check is less than your STR score, use your STR score instead.'}],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: [{name:'Primal Champion', category:'feature', tag:'Class Feature', detail:'Your STR and CON each increase by 4, to a maximum of 24.'}]
+    }
+  },
+
+  'Wizard': {
+    hitDie: 'd6',
+    saves: ['INT','WIS'],
+    skillChoice: {count:2, options:['Arcana','History','Insight','Investigation','Medicine','Religion']},
+    armor: 'None',
+    weapons: 'Daggers, darts, slings, quarterstaffs, light crossbows',
+    subclassLevel: 2,
+    subclassLabel: 'Arcane Tradition',
+    spellcaster: {ability:'INT', cantripsByLevel:{1:3, 4:4, 10:5}},
+    levelFeatures: {
+      1: [
+        {name:'Spellcasting', category:'feature', tag:'Class Feature', detail:'INT is your spellcasting ability. You prepare spells from your spellbook, and can cast ritual spells straight from it without preparing them.'},
+        {name:'Arcane Recovery', category:'feature', tag:'1/day · short rest', detail:"Once per day, during a short rest, recover spell slots with a combined level up to half your wizard level (rounded up); none of the recovered slots can be 6th level or higher.", restType:'short'}
+      ],
+      2: [{name:'Arcane Tradition', category:'feature', tag:'Subclass', detail:'Choose your Arcane Tradition (subclass) — not yet built into this sheet, add its features as your own cards for now.'}],
+      3: [], 5: [], 7: [], 9: [], 11: [], 13: [], 15: [], 17: [],
+      4: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      6: [],
+      8: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      10: [],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      14: [],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      18: [{name:'Spell Mastery', category:'feature', tag:'Class Feature', detail:'Choose a 1st and a 2nd level spell from your spellbook; you can cast them at their lowest level without a slot whenever you want.'}],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: [{name:'Signature Spells', category:'feature', tag:'Class Feature', detail:'Choose two 3rd level spells as your signature spells — always prepared, and you can cast each once at 3rd level without a slot, regaining that ability on a short or long rest.'}]
+    },
+    spellSlotsByLevel: {
+      1:[2], 2:[3], 3:[4,2], 4:[4,3], 5:[4,3,2], 6:[4,3,3], 7:[4,3,3,1], 8:[4,3,3,2],
+      9:[4,3,3,3,1], 10:[4,3,3,3,2], 11:[4,3,3,3,2,1], 12:[4,3,3,3,2,1], 13:[4,3,3,3,2,1,1],
+      14:[4,3,3,3,2,1,1], 15:[4,3,3,3,2,1,1,1], 16:[4,3,3,3,2,1,1,1], 17:[4,3,3,3,2,1,1,1,1],
+      18:[4,3,3,3,3,1,1,1,1], 19:[4,3,3,3,3,2,1,1,1], 20:[4,3,3,3,3,2,2,1,1]
+    }
+  },
+
+  'Rogue': {
+    hitDie: 'd8',
+    saves: ['DEX','INT'],
+    skillChoice: {count:4, options:['Acrobatics','Athletics','Deception','Insight','Intimidation','Investigation','Perception','Performance','Persuasion','Sleight of Hand','Stealth']},
+    armor: 'Light armor',
+    weapons: "Simple weapons, hand crossbows, longswords, rapiers, shortswords",
+    subclassLevel: 3,
+    subclassLabel: 'Roguish Archetype',
+    sneakAttackByLevel: {1:'1d6', 3:'2d6', 5:'3d6', 7:'4d6', 9:'5d6', 11:'6d6', 13:'7d6', 15:'8d6', 17:'9d6', 19:'10d6'},
+    levelFeatures: {
+      1: [
+        {name:'Expertise', category:'feature', tag:'Class Feature', detail:'Double your proficiency bonus for two skill (or one skill + thieves\' tools) proficiencies of your choice.'},
+        {name:'Sneak Attack', category:'feature', tag:'1/turn', detail:"Once per turn, deal extra damage (1d6 at level 1, scaling with level) on a hit with a finesse or ranged weapon, if you have advantage or an ally is within 5ft of the target."},
+        {name:"Thieves' Cant", category:'feature', tag:'Class Feature', detail:'You know a secret mix of dialect, jargon, and code that lets you hide messages in seemingly-normal conversation.'}
+      ],
+      2: [{name:'Cunning Action', category:'feature', tag:'Bonus action', detail:'Use a bonus action each turn to Dash, Disengage, or Hide.'}],
+      3: [{name:'Roguish Archetype', category:'feature', tag:'Subclass', detail:'Choose your Roguish Archetype (subclass) — not yet built into this sheet, add its features as your own cards for now.'}],
+      4: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      5: [{name:'Uncanny Dodge', category:'feature', tag:'Reaction', detail:'When an attacker you can see hits you, use your reaction to halve the attack\'s damage against you.'}],
+      6: [{name:'Expertise', category:'feature', tag:'Class Feature', detail:'Choose two more proficiencies to gain Expertise (double proficiency bonus) with.'}],
+      7: [{name:'Evasion', category:'feature', tag:'Class Feature', detail:'On a DEX save that would normally deal half damage on a success, you take none on a success and only half on a failure.'}],
+      8: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      9: [],
+      10: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      11: [{name:'Reliable Talent', category:'feature', tag:'Class Feature', detail:'Whenever you make an ability check with a skill or tool you\'re proficient in, treat any d20 roll of 9 or lower as a 10.'}],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      13: [],
+      14: [{name:'Blindsense', category:'feature', tag:'Class Feature', detail:'If you can hear, you\'re aware of the location of any hidden or invisible creature within 10ft of you.'}],
+      15: [{name:'Slippery Mind', category:'feature', tag:'Class Feature', detail:'Gain proficiency in Wisdom saving throws.'}],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      17: [],
+      18: [{name:'Elusive', category:'feature', tag:'Class Feature', detail:"No attack roll has advantage against you while you aren't incapacitated."}],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: [{name:'Stroke of Luck', category:'feature', tag:'1/short-long rest', detail:'Turn a failed attack roll or ability check into a success, or turn a hit against you into a miss.', restType:'both'}]
+    }
+  },
+
+  'Cleric': {
+    hitDie: 'd8', saves: ['WIS','CHA'],
+    skillChoice: {count:2, options:['History','Insight','Medicine','Persuasion','Religion']},
+    armor: 'Light and medium armor, shields', weapons: 'Simple weapons',
+    subclassLevel: 1, subclassLabel: 'Divine Domain',
+    spellcaster: {ability:'WIS', cantripsByLevel:{1:3, 4:4, 10:5}},
+    resource: {name:'Channel Divinity', restType:'both', usesByLevel:{2:1, 6:2}},
+    levelFeatures: {
+      1: [
+        {name:'Spellcasting', category:'feature', tag:'Class Feature', detail:'WIS is your spellcasting ability. You prepare spells daily from the full cleric spell list.'},
+        {name:'Divine Domain', category:'feature', tag:'Subclass', detail:'Choose your Divine Domain (subclass) — not yet built into this sheet, add its features as your own cards for now.'}
+      ],
+      2: [{name:'Channel Divinity', category:'feature', tag:'1/rest', detail:'Channel divine energy for one of your available Channel Divinity effects (base class grants Turn Undead — presented creatures within 30ft must WIS save or be turned for 1 minute or until they take damage).', restType:'both'}],
+      3: [], 5: [{name:'Destroy Undead', category:'feature', tag:'Class Feature', detail:'When you Turn Undead, any undead of CR 1/2 or lower are destroyed instead of just turned. The CR threshold rises with level (1 at 8th, 2 at 11th, 3 at 14th, 4 at 17th).'}],
+      4: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      6: [], 7: [],
+      8: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      9: [],
+      10: [{name:'Divine Intervention', category:'feature', tag:'1/week', detail:'Action to pray for aid; roll percentile dice — if the result is equal to or less than your cleric level, your deity intervenes (DM adjudicates the effect). On success, you can\'t use this again for 7 days.'}],
+      11: [],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      13: [], 14: [], 15: [],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      17: [],
+      18: [],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: [{name:'Divine Intervention Improvement', category:'feature', tag:'Class Feature', detail:'Your Divine Intervention now succeeds automatically, no roll needed.'}]
+    },
+    spellSlotsByLevel: {
+      1:[2], 2:[3], 3:[4,2], 4:[4,3], 5:[4,3,2], 6:[4,3,3], 7:[4,3,3,1], 8:[4,3,3,2],
+      9:[4,3,3,3,1], 10:[4,3,3,3,2], 11:[4,3,3,3,2,1], 12:[4,3,3,3,2,1], 13:[4,3,3,3,2,1,1],
+      14:[4,3,3,3,2,1,1], 15:[4,3,3,3,2,1,1,1], 16:[4,3,3,3,2,1,1,1], 17:[4,3,3,3,2,1,1,1,1],
+      18:[4,3,3,3,3,1,1,1,1], 19:[4,3,3,3,3,2,1,1,1], 20:[4,3,3,3,3,2,2,1,1]
+    }
+  },
+
+  'Paladin': {
+    hitDie: 'd10', saves: ['WIS','CHA'],
+    skillChoice: {count:2, options:['Athletics','Insight','Intimidation','Medicine','Persuasion','Religion']},
+    armor: 'All armor, shields', weapons: 'Simple and martial weapons',
+    subclassLevel: 3, subclassLabel: 'Sacred Oath',
+    spellcaster: {ability:'CHA', halfCaster:true},
+    resource: {name:'Channel Divinity', restType:'both', usesByLevel:{3:1}},
+    levelFeatures: {
+      1: [
+        {name:'Divine Sense', category:'feature', tag:'1/long rest uses = 1+CHA mod', detail:'Action to detect celestials, fiends, and undead within 60ft (not behind total cover) until the end of your next turn.', restType:'long'},
+        {name:'Lay on Hands', category:'feature', tag:'Pool = 5 × level', detail:'A pool of healing power equal to 5 × your paladin level, refills on a long rest. Touch a creature to restore HP from the pool, or spend 5 points to cure one disease or neutralize one poison.', restType:'long'}
+      ],
+      2: [
+        {name:'Fighting Style', category:'feature', tag:'Class Feature', detail:'Choose a fighting style feat-like option (Defense, Dueling, Great Weapon Fighting, Protection, etc.).'},
+        {name:'Spellcasting', category:'feature', tag:'Class Feature', detail:'CHA is your spellcasting ability; you prepare paladin spells daily, starting at 2nd level (half-caster progression).'},
+        {name:'Divine Smite', category:'feature', tag:'On melee hit', detail:'Expend a spell slot on a melee hit to deal extra radiant damage: 2d8 for a 1st level slot, +1d8 per slot level above 1st (max 5d8), +1d8 more against undead or fiends.'}
+      ],
+      3: [
+        {name:'Divine Health', category:'feature', tag:'Class Feature', detail:'You are immune to disease.'},
+        {name:'Sacred Oath', category:'feature', tag:'Subclass', detail:'Choose your Sacred Oath (subclass) — not yet built into this sheet, add its features as your own cards for now.'}
+      ],
+      4: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      5: [{name:'Extra Attack', category:'feature', tag:'Class Feature', detail:'Attack twice, instead of once, whenever you take the Attack action.'}],
+      6: [{name:'Aura of Protection', category:'feature', tag:'Class Feature', detail:'Add your CHA modifier (minimum +1) to every saving throw you and allies within 10ft make (30ft at level 18).'}],
+      7: [], 9: [],
+      8: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      10: [{name:'Aura of Courage', category:'feature', tag:'Class Feature', detail:"You and allies within 10ft (30ft at 18th) can't be frightened while you're conscious."}],
+      11: [{name:'Improved Divine Smite', category:'feature', tag:'Class Feature', detail:'All your melee weapon hits deal an extra 1d8 radiant damage, in addition to any Divine Smite you choose to use.'}],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      13: [],
+      14: [{name:'Cleansing Touch', category:'feature', tag:'uses = CHA mod / long rest', detail:'Action to end one spell affecting you or a willing creature you touch.', restType:'long'}],
+      15: [], 17: [],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      18: [],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: []
+    },
+    spellSlotsByLevel: {
+      2:[2],3:[3],4:[3],5:[4,2],6:[4,2],7:[4,3],8:[4,3],9:[4,3,2],10:[4,3,2],
+      11:[4,3,3],12:[4,3,3],13:[4,3,3,1],14:[4,3,3,1],15:[4,3,3,2],16:[4,3,3,2],
+      17:[4,3,3,3,1],18:[4,3,3,3,1],19:[4,3,3,3,2],20:[4,3,3,3,2]
+    }
+  },
+
+  'Ranger': {
+    hitDie: 'd10', saves: ['STR','DEX'],
+    skillChoice: {count:3, options:['Animal Handling','Athletics','Insight','Investigation','Nature','Perception','Stealth','Survival']},
+    armor: 'Light and medium armor, shields', weapons: 'Simple and martial weapons',
+    subclassLevel: 3, subclassLabel: 'Ranger Archetype',
+    spellcaster: {ability:'WIS', halfCaster:true},
+    levelFeatures: {
+      1: [
+        {name:'Favored Enemy', category:'feature', tag:'Class Feature', detail:'Choose a type of enemy; advantage on Survival checks to track them and Intelligence checks to recall information about them. You also learn a language they typically speak.'},
+        {name:'Natural Explorer', category:'feature', tag:'Class Feature', detail:'Choose a favored terrain type; gain travel benefits there (double proficiency on certain checks, no problems from non-magical difficult terrain while traveling, stay alert while tracking/foraging/navigating, etc.).'}
+      ],
+      2: [
+        {name:'Fighting Style', category:'feature', tag:'Class Feature', detail:'Choose a fighting style feat-like option (Archery, Defense, Dueling, Two-Weapon Fighting, etc.).'},
+        {name:'Spellcasting', category:'feature', tag:'Class Feature', detail:'WIS is your spellcasting ability; you know a limited number of ranger spells (half-caster progression, starting at 2nd level).'}
+      ],
+      3: [
+        {name:'Ranger Archetype', category:'feature', tag:'Subclass', detail:'Choose your Ranger Archetype (subclass) — not yet built into this sheet, add its features as your own cards for now.'},
+        {name:'Primeval Awareness', category:'feature', tag:'Class Feature', detail:'Expend a spell slot to sense whether certain types of creatures are present within 1 mile (6 miles in favored terrain).'}
+      ],
+      4: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      5: [{name:'Extra Attack', category:'feature', tag:'Class Feature', detail:'Attack twice, instead of once, whenever you take the Attack action.'}],
+      6: [{name:'Favored Enemy & Natural Explorer Improvement', category:'feature', tag:'Class Feature', detail:'Choose an additional favored enemy and an additional favored terrain.'}],
+      7: [],
+      8: [
+        {name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'},
+        {name:"Land's Stride", category:'feature', tag:'Class Feature', detail:"Moving through nonmagical difficult terrain costs no extra movement, and you can move through nonmagical plants without being slowed by them and without taking damage from them if they have thorns/spines. You also have advantage on saves against magically created/manipulated plants."}
+      ],
+      9: [],
+      10: [{name:'Hide in Plain Sight', category:'feature', tag:'Class Feature', detail:'Spend 1 minute camouflaging yourself; while you remain motionless and don\'t attack/cast, gain a +10 bonus to Stealth checks.'}],
+      11: [],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      13: [],
+      14: [{name:'Vanish', category:'feature', tag:'Class Feature', detail:"Use the Hide action as a bonus action, and you can't be tracked by nonmagical means unless you choose to leave a trail."}],
+      15: [],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      17: [],
+      18: [{name:'Feral Senses', category:'feature', tag:'Class Feature', detail:"You're aware of the location of invisible creatures within 30ft, as long as they aren't hidden from you and you aren't blinded or deafened."}],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: [{name:'Foe Slayer', category:'feature', tag:'1/turn', detail:'Once per turn, add your WIS modifier to an attack roll or damage roll you make against a favored enemy.'}]
+    },
+    spellSlotsByLevel: {
+      2:[2],3:[3],4:[3],5:[4,2],6:[4,2],7:[4,3],8:[4,3],9:[4,3,2],10:[4,3,2],
+      11:[4,3,3],12:[4,3,3],13:[4,3,3,1],14:[4,3,3,1],15:[4,3,3,2],16:[4,3,3,2],
+      17:[4,3,3,3,1],18:[4,3,3,3,1],19:[4,3,3,3,2],20:[4,3,3,3,2]
+    }
+  },
+
+  'Sorcerer': {
+    hitDie: 'd6', saves: ['CON','CHA'],
+    skillChoice: {count:2, options:['Arcana','Deception','Insight','Intimidation','Persuasion','Religion']},
+    armor: 'None', weapons: 'Daggers, darts, slings, quarterstaffs, light crossbows',
+    subclassLevel: 1, subclassLabel: 'Sorcerous Origin',
+    spellcaster: {ability:'CHA', cantripsByLevel:{1:4, 4:5, 10:6}},
+    resource: {name:'Sorcery Points', restType:'long', usesByLevel:{2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20}},
+    levelFeatures: {
+      1: [
+        {name:'Spellcasting', category:'feature', tag:'Class Feature', detail:'CHA is your spellcasting ability. You know a limited number of spells (not prepared), chosen from the sorcerer list.'},
+        {name:'Sorcerous Origin', category:'feature', tag:'Subclass', detail:'Choose your Sorcerous Origin (subclass) — not yet built into this sheet, add its features as your own cards for now.'}
+      ],
+      2: [{name:'Font of Magic', category:'feature', tag:'Class Feature', detail:'Gain sorcery points (equal to your sorcerer level). You can convert unused spell slots into sorcery points, or spend points to create spell slots, as a bonus action.'}],
+      3: [{name:'Metamagic', category:'feature', tag:'Class Feature', detail:'Choose 2 Metamagic options (e.g. Quickened Spell, Twinned Spell, Careful Spell) that let you spend sorcery points to alter your spells.'}],
+      4: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      5: [], 6: [], 7: [], 9: [], 11: [], 13: [], 14: [], 15: [], 17: [], 18: [], 19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      8: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      10: [{name:'Metamagic (3rd option)', category:'feature', tag:'Class Feature', detail:'Choose one more Metamagic option.'}],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: [{name:'Sorcerous Restoration', category:'feature', tag:'1/short rest', detail:'Regain 4 expended sorcery points when you finish a short rest.', restType:'short'}]
+    },
+    spellSlotsByLevel: {
+      1:[2], 2:[3], 3:[4,2], 4:[4,3], 5:[4,3,2], 6:[4,3,3], 7:[4,3,3,1], 8:[4,3,3,2],
+      9:[4,3,3,3,1], 10:[4,3,3,3,2], 11:[4,3,3,3,2,1], 12:[4,3,3,3,2,1], 13:[4,3,3,3,2,1,1],
+      14:[4,3,3,3,2,1,1], 15:[4,3,3,3,2,1,1,1], 16:[4,3,3,3,2,1,1,1], 17:[4,3,3,3,2,1,1,1,1],
+      18:[4,3,3,3,3,1,1,1,1], 19:[4,3,3,3,3,2,1,1,1], 20:[4,3,3,3,3,2,2,1,1]
+    }
+  },
+
+  'Warlock': {
+    hitDie: 'd8', saves: ['WIS','CHA'],
+    skillChoice: {count:2, options:['Arcana','Deception','History','Intimidation','Investigation','Nature','Religion']},
+    armor: 'Light armor', weapons: 'Simple weapons',
+    subclassLevel: 1, subclassLabel: 'Otherworldly Patron',
+    spellcaster: {ability:'CHA', pactMagic:true},
+    levelFeatures: {
+      1: [
+        {name:'Otherworldly Patron', category:'feature', tag:'Subclass', detail:'Choose your Otherworldly Patron (subclass) — not yet built into this sheet, add its features as your own cards for now.'},
+        {name:'Pact Magic', category:'feature', tag:'Class Feature · short rest', detail:'CHA is your spellcasting ability. Unlike other casters, your few spell slots are always your highest available level, and they all recharge on a SHORT rest, not a long rest.', restType:'short'}
+      ],
+      2: [{name:'Eldritch Invocations', category:'feature', tag:'Class Feature', detail:'Learn magical bonuses/tricks called Eldritch Invocations, gaining more as you level.'}],
+      3: [{name:'Pact Boon', category:'feature', tag:'Class Feature', detail:'Choose a Pact Boon: Pact of the Chain (special familiar), Pact of the Blade (summon a magic weapon), or Pact of the Tome (a Book of Shadows granting extra cantrips).'}],
+      4: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      5: [], 6: [], 7: [], 9: [], 10: [], 12: [], 14: [], 16: [], 18: [], 19: [], 20: [{name:'Eldritch Master', category:'feature', tag:'1/long rest', detail:'Spend 1 minute to regain all your expended Pact Magic spell slots before finishing a long rest.', restType:'long'}],
+      8: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      11: [{name:'Mystic Arcanum (6th level)', category:'feature', tag:'1/long rest', detail:'Choose one 6th level spell as an Arcanum — cast it once without a slot, regaining the ability on a long rest.', restType:'long'}],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      13: [{name:'Mystic Arcanum (7th level)', category:'feature', tag:'1/long rest', detail:'Choose one 7th level spell as an Arcanum — cast it once without a slot, regaining the ability on a long rest.', restType:'long'}],
+      15: [{name:'Mystic Arcanum (8th level)', category:'feature', tag:'1/long rest', detail:'Choose one 8th level spell as an Arcanum — cast it once without a slot, regaining the ability on a long rest.', restType:'long'}],
+      17: [{name:'Mystic Arcanum (9th level)', category:'feature', tag:'1/long rest', detail:'Choose one 9th level spell as an Arcanum — cast it once without a slot, regaining the ability on a long rest.', restType:'long'}],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}]
+    },
+    spellSlotsByLevel: {
+      1:[1], 2:[2], 3:[0,2], 4:[0,2], 5:[0,0,2], 6:[0,0,2], 7:[0,0,0,2], 8:[0,0,0,2],
+      9:[0,0,0,0,2], 10:[0,0,0,0,2], 11:[0,0,0,0,3], 12:[0,0,0,0,3], 13:[0,0,0,0,3],
+      14:[0,0,0,0,3], 15:[0,0,0,0,3], 16:[0,0,0,0,3], 17:[0,0,0,0,4], 18:[0,0,0,0,4],
+      19:[0,0,0,0,4], 20:[0,0,0,0,4]
+    },
+    spellSlotsRestType: 'short'
+  },
+
+  'Druid': {
+    hitDie: 'd8', saves: ['INT','WIS'],
+    skillChoice: {count:2, options:['Arcana','Animal Handling','Insight','Medicine','Nature','Perception','Religion','Survival']},
+    armor: 'Light and medium armor, shields (nonmetal only)', weapons: 'Clubs, daggers, darts, javelins, maces, quarterstaffs, scimitars, sickles, slings, spears',
+    subclassLevel: 2, subclassLabel: 'Druid Circle',
+    spellcaster: {ability:'WIS', cantripsByLevel:{1:2, 4:3, 10:4}},
+    resource: {name:'Wild Shape', restType:'both', usesByLevel:{2:2, 20:99}},
+    levelFeatures: {
+      1: [
+        {name:'Druidic', category:'feature', tag:'Class Feature', detail:'You know Druidic, a secret language, and can hide messages in normal speech that only fellow druids recognize.'},
+        {name:'Spellcasting', category:'feature', tag:'Class Feature', detail:'WIS is your spellcasting ability; you prepare spells daily from the full druid list.'}
+      ],
+      2: [
+        {name:'Wild Shape', category:'feature', tag:'2/rest', detail:'Use a bonus action to transform into a beast you\'ve seen before, with restrictions on CR and abilities (swim/fly) that loosen as you level. You can stay transformed for hours equal to half your druid level.', restType:'both'},
+        {name:'Druid Circle', category:'feature', tag:'Subclass', detail:'Choose your Druid Circle (subclass) — not yet built into this sheet, add its features as your own cards for now.'}
+      ],
+      3: [], 5: [], 6: [], 7: [], 9: [], 11: [], 13: [], 15: [], 17: [],
+      4: [
+        {name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'},
+        {name:'Wild Shape Improvement', category:'feature', tag:'Class Feature', detail:'You can now Wild Shape into a beast with a swimming speed.'}
+      ],
+      8: [
+        {name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'},
+        {name:'Wild Shape Improvement', category:'feature', tag:'Class Feature', detail:'You can now Wild Shape into a beast with a flying speed.'}
+      ],
+      10: [],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      14: [],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      18: [
+        {name:'Timeless Body', category:'feature', tag:'Class Feature', detail:'You age much more slowly — 1 year for every 10 that pass.'},
+        {name:'Beast Spells', category:'feature', tag:'Class Feature', detail:'You can cast most druid spells in Wild Shape form (verbal and somatic components only).'}
+      ],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: [{name:'Archdruid', category:'feature', tag:'Class Feature', detail:'Unlimited Wild Shape uses.'}]
+    },
+    spellSlotsByLevel: {
+      1:[2], 2:[3], 3:[4,2], 4:[4,3], 5:[4,3,2], 6:[4,3,3], 7:[4,3,3,1], 8:[4,3,3,2],
+      9:[4,3,3,3,1], 10:[4,3,3,3,2], 11:[4,3,3,3,2,1], 12:[4,3,3,3,2,1], 13:[4,3,3,3,2,1,1],
+      14:[4,3,3,3,2,1,1], 15:[4,3,3,3,2,1,1,1], 16:[4,3,3,3,2,1,1,1], 17:[4,3,3,3,2,1,1,1,1],
+      18:[4,3,3,3,3,1,1,1,1], 19:[4,3,3,3,3,2,1,1,1], 20:[4,3,3,3,3,2,2,1,1]
+    }
+  },
+
+  'Monk': {
+    hitDie: 'd8', saves: ['STR','DEX'],
+    skillChoice: {count:2, options:['Acrobatics','Athletics','History','Insight','Religion','Stealth']},
+    armor: 'None', weapons: 'Simple weapons, shortswords',
+    subclassLevel: 3, subclassLabel: 'Monastic Tradition',
+    resource: {name:'Ki', restType:'both', usesByLevel:{2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,10:10,11:11,12:12,13:13,14:14,15:15,16:16,17:17,18:18,19:19,20:20}},
+    levelFeatures: {
+      1: [
+        {name:'Unarmored Defense', category:'feature', tag:'Class Feature', detail:'While not wearing armor or a shield, AC = 10 + DEX mod + WIS mod.'},
+        {name:'Martial Arts', category:'feature', tag:'Class Feature', detail:'Use DEX instead of STR for unarmed strikes/monk weapons if better. Unarmed strike damage die scales with level (1d4 → 1d10). You can make an unarmed strike as a bonus action after taking the Attack action.'}
+      ],
+      2: [
+        {name:'Ki', category:'feature', tag:'Class Feature', detail:'Spend ki points to fuel Flurry of Blows (bonus action, 2 unarmed strikes), Patient Defense (bonus action Dodge), or Step of the Wind (bonus action Disengage/Dash, jump distance doubled).', restType:'both'},
+        {name:'Unarmored Movement', category:'feature', tag:'Class Feature', detail:'+10ft speed while not wearing armor or a shield; the bonus increases at higher levels.'}
+      ],
+      3: [
+        {name:'Monastic Tradition', category:'feature', tag:'Subclass', detail:'Choose your Monastic Tradition (subclass) — not yet built into this sheet, add its features as your own cards for now.'},
+        {name:'Deflect Missiles', category:'feature', tag:'Reaction', detail:'Reduce ranged weapon attack damage against you by 1d10 + DEX mod + monk level; if reduced to 0, you can catch the missile and throw it back as an attack.'}
+      ],
+      4: [
+        {name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'},
+        {name:'Slow Fall', category:'feature', tag:'Reaction', detail:'Reduce falling damage you take by an amount equal to 5 × monk level.'}
+      ],
+      5: [
+        {name:'Extra Attack', category:'feature', tag:'Class Feature', detail:'Attack twice, instead of once, whenever you take the Attack action.'},
+        {name:'Stunning Strike', category:'feature', tag:'1 ki/hit', detail:'When you hit with a melee weapon attack, spend 1 ki point to force a CON save; on a failure, the target is stunned until the end of your next turn.'}
+      ],
+      6: [{name:'Ki-Empowered Strikes', category:'feature', tag:'Class Feature', detail:'Your unarmed strikes count as magical for the purpose of overcoming resistance and immunity to nonmagical attacks.'}],
+      7: [
+        {name:'Evasion', category:'feature', tag:'Class Feature', detail:'On a DEX save that would normally deal half damage on a success, you take none on a success and only half on a failure.'},
+        {name:'Stillness of Mind', category:'feature', tag:'Action', detail:'Use your action to end one effect on yourself causing you to be charmed or frightened.'}
+      ],
+      8: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      9: [], 11: [], 16: [], 17: [], 19: [],
+      10: [{name:'Purity of Body', category:'feature', tag:'Class Feature', detail:'You are immune to disease and poison.'}],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      13: [{name:'Tongue of the Sun and Moon', category:'feature', tag:'Class Feature', detail:'You understand all spoken languages, and any creature that can understand a language understands what you say.'}],
+      14: [{name:'Diamond Soul', category:'feature', tag:'Class Feature', detail:'Proficiency in all saving throws. When you fail a save, you can spend 1 ki point to reroll it.'}],
+      15: [{name:'Timeless Body', category:'feature', tag:'Class Feature', detail:"You no longer age and don't need food or water (though you can still choose to consume them)."}],
+      18: [{name:'Empty Body', category:'feature', tag:'4 or 8 ki', detail:'Spend 4 ki to become invisible for 1 minute and gain resistance to all damage but force; spend 8 ki to cast astral projection without material components.'}],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: [{name:'Perfect Self', category:'feature', tag:'Class Feature', detail:"If you roll initiative and have no ki points left, you regain 4 ki points."}]
+    }
+  },
+
+  'Bard': {
+    hitDie: 'd8', saves: ['DEX','CHA'],
+    skillChoice: {count:3, options:['Any three skills of your choice']},
+    armor: 'Light armor', weapons: "Simple weapons, hand crossbows, longswords, rapiers, shortswords",
+    subclassLevel: 3, subclassLabel: 'Bard College',
+    spellcaster: {ability:'CHA', cantripsByLevel:{1:2, 4:3, 10:4}},
+    resource: {name:'Bardic Inspiration', restType:'long', usesByLevel:{1:0}, usesFormula:'CHA_MOD_MIN1'},
+    levelFeatures: {
+      1: [
+        {name:'Bardic Inspiration', category:'feature', tag:'Bonus action', detail:'Bonus action to give one creature within 60ft a Bardic Inspiration die (d6, scaling up with level) they can add to one ability check, attack roll, or saving throw within the next 10 minutes.', restType:'long'},
+        {name:'Spellcasting', category:'feature', tag:'Class Feature', detail:'CHA is your spellcasting ability. You know a limited number of spells (not prepared), and can also cast rituals.'}
+      ],
+      2: [
+        {name:'Jack of All Trades', category:'feature', tag:'Class Feature', detail:'Add half your proficiency bonus (rounded down) to any ability check that doesn\'t already include your proficiency bonus.'},
+        {name:'Song of Rest', category:'feature', tag:'Class Feature', detail:'Allies who can hear you and rest with you during a short rest regain extra HP (a d6, scaling up with level) if they spend a Hit Die.'}
+      ],
+      3: [
+        {name:'Bard College', category:'feature', tag:'Subclass', detail:'Choose your Bard College (subclass) — not yet built into this sheet, add its features as your own cards for now.'},
+        {name:'Expertise', category:'feature', tag:'Class Feature', detail:'Choose two of your skill proficiencies; your proficiency bonus is doubled for checks using them.'}
+      ],
+      4: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      5: [{name:'Font of Inspiration', category:'feature', tag:'Class Feature', detail:'You regain all expended uses of Bardic Inspiration on a short or long rest, instead of only a long rest.'}],
+      6: [{name:'Countercharm', category:'feature', tag:'Action', detail:'Use your action; you and allies within 30ft who can hear you have advantage on saves against being frightened or charmed until the start of your next turn.'}],
+      7: [], 9: [], 11: [], 12: [], 13: [], 15: [], 16: [], 17: [], 19: [],
+      8: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      10: [
+        {name:'Bardic Inspiration Die Improves', category:'feature', tag:'Class Feature', detail:'Your Bardic Inspiration die becomes a d10.'},
+        {name:'Expertise', category:'feature', tag:'Class Feature', detail:'Choose two more skill proficiencies to gain Expertise with.'},
+        {name:'Magical Secrets', category:'feature', tag:'Class Feature', detail:'Learn two spells from any class\'s spell list; they count as bard spells for you.'}
+      ],
+      14: [{name:'Magical Secrets', category:'feature', tag:'Class Feature', detail:'Learn two more spells from any class\'s spell list.'}],
+      18: [{name:'Magical Secrets', category:'feature', tag:'Class Feature', detail:'Learn two more spells from any class\'s spell list.'}],
+      12: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      16: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      19: [{name:'Ability Score Improvement', category:'feat', tag:'ASI / Feat', detail:'+2 to one score (or +1/+1 to two), max 20, or take a feat instead.'}],
+      20: [{name:'Superior Inspiration', category:'feature', tag:'Class Feature', detail:'When you roll initiative and have no Bardic Inspiration uses left, you regain one use.'}]
+    },
+    spellSlotsByLevel: {
+      1:[2], 2:[3], 3:[4,2], 4:[4,3], 5:[4,3,2], 6:[4,3,3], 7:[4,3,3,1], 8:[4,3,3,2],
+      9:[4,3,3,3,1], 10:[4,3,3,3,2], 11:[4,3,3,3,2,1], 12:[4,3,3,3,2,1], 13:[4,3,3,3,2,1,1],
+      14:[4,3,3,3,2,1,1], 15:[4,3,3,3,2,1,1,1], 16:[4,3,3,3,2,1,1,1], 17:[4,3,3,3,2,1,1,1,1],
+      18:[4,3,3,3,3,1,1,1,1], 19:[4,3,3,3,3,2,1,1,1], 20:[4,3,3,3,3,2,2,1,1]
+    }
+  }
+};
+
+// One subclass per class for now (matches Fighter only having Battle Master so far).
+// Level numbers are keyed to when that feature unlocks for THIS subclass specifically.
+const SUBCLASS_DATA = {
+  'Barbarian': {
+    'Path of the Berserker': {
+      levelFeatures: {
+        3: [{name:'Frenzy', category:'feature', tag:'While raging', detail:'While raging, you can make one melee weapon attack as a bonus action on each of your turns after this one. When your rage ends, you suffer one level of exhaustion.'}],
+        6: [{name:'Mindless Rage', category:'feature', tag:'Subclass Feature', detail:"You can't be charmed or frightened while raging. If you're already charmed or frightened when you start raging, the effect is suspended for the duration."}],
+        10: [{name:'Intimidating Presence', category:'feature', tag:'Action', detail:'Use your action to frighten someone within 30ft who can see/hear you (WIS save vs 8 + prof + CHA mod). A frightened target can repeat the save at the end of each of its turns, ending the effect on a success; a creature that succeeds is immune to this for 24 hours.'}],
+        14: [{name:'Retaliation', category:'feature', tag:'Reaction', detail:'When you take damage from a creature within 5ft of you, you can use your reaction to make a melee weapon attack against that creature.'}]
+      }
+    }
+  },
+  'Wizard': {
+    'School of Evocation': {
+      levelFeatures: {
+        2: [
+          {name:'Evocation Savant', category:'feature', tag:'Subclass Feature', detail:'The gold and time cost to copy an evocation spell into your spellbook is halved.'},
+          {name:'Sculpt Spells', category:'feature', tag:'Subclass Feature', detail:"When you cast an evocation spell that affects other creatures you can see, you can protect a number of them (up to 1 + the spell's level) — they automatically succeed on their save and take no damage if the spell would normally allow half damage on a success."}
+        ],
+        6: [{name:'Potent Cantrip', category:'feature', tag:'Subclass Feature', detail:"When a creature succeeds on a save against your cantrip, it still takes half the cantrip's damage (if any), instead of none."}],
+        10: [{name:'Empowered Evocation', category:'feature', tag:'Subclass Feature', detail:'Add your INT modifier to the damage of one evocation spell you cast.'}],
+        14: [{name:'Overchannel', category:'feature', tag:'1/day-ish', detail:"When you cast a wizard spell of 1st-5th level that deals damage, you can deal maximum damage instead. Doing this with a 3rd level or higher spell more than once before a long rest causes you to take increasing necrotic damage each repeat use — check your source material for the exact scaling."}]
+      }
+    }
+  },
+  'Rogue': {
+    'Thief': {
+      levelFeatures: {
+        3: [
+          {name:'Fast Hands', category:'feature', tag:'Subclass Feature', detail:'Use your Cunning Action bonus action to make a Sleight of Hand check, use thieves\' tools to disarm a trap or open a lock, or take the Use an Object action.'},
+          {name:'Second-Story Work', category:'feature', tag:'Subclass Feature', detail:"Climbing no longer costs extra movement. When you make a running jump, the distance you cover increases by your DEX modifier, in feet."}
+        ],
+        9: [{name:'Supreme Sneak', category:'feature', tag:'Subclass Feature', detail:'Advantage on Stealth checks if you move no more than half your speed on the same turn.'}],
+        13: [{name:'Use Magic Device', category:'feature', tag:'Subclass Feature', detail:'Ignore all class, race, and level requirements on the use of magic items.'}],
+        17: [{name:"Thief's Reflexes", category:'feature', tag:'Subclass Feature', detail:'You can take two turns during the first round of combat — one at your normal initiative, and a second at your initiative minus 10. You can\'t use this if you\'re surprised.'}]
+      }
+    }
+  },
+
+  'Cleric': {
+    'Life Domain': {
+      levelFeatures: {
+        1: [
+          {name:'Bonus Proficiency (Heavy Armor)', category:'feature', tag:'Subclass Feature', detail:'You gain proficiency with heavy armor.'},
+          {name:'Disciple of Life', category:'feature', tag:'Subclass Feature', detail:'Whenever you use a spell of 1st level or higher to restore HP, the creature also regains extra HP equal to 2 + the spell\'s level.'}
+        ],
+        2: [{name:'Channel Divinity: Preserve Life', category:'feature', tag:'Channel Divinity use', detail:'Action to restore HP totaling 5 × your cleric level, split among any creatures within 30ft; a creature can\'t be brought above half its max HP this way.'}],
+        6: [{name:'Blessed Healer', category:'feature', tag:'Subclass Feature', detail:'When you cast a spell that restores HP to someone else, you also regain HP equal to 2 + the spell\'s level.'}],
+        8: [{name:'Divine Strike', category:'feature', tag:'1/turn', detail:'Once per turn on a weapon hit, deal an extra 1d8 radiant damage (2d8 at level 14).'}],
+        17: [{name:'Supreme Healing', category:'feature', tag:'Subclass Feature', detail:"Whenever you'd normally roll dice to restore HP with a spell, use the highest possible result for each die instead."}]
+      }
+    }
+  },
+
+  'Paladin': {
+    'Oath of Devotion': {
+      levelFeatures: {
+        3: [
+          {name:'Channel Divinity: Sacred Weapon', category:'feature', tag:'Channel Divinity use', detail:'Action to imbue one weapon you\'re holding with positive energy for 1 minute — add your CHA modifier to attack rolls with it (minimum +1), and it emits bright light in a 20ft radius.'},
+          {name:'Channel Divinity: Turn the Unholy', category:'feature', tag:'Channel Divinity use', detail:'Action to present your holy symbol; each fiend or undead within 30ft that can see/hear you must WIS save or be turned for 1 minute or until it takes damage.'}
+        ],
+        7: [{name:'Aura of Devotion', category:'feature', tag:'Subclass Feature', detail:"You and allies within 10ft (30ft at 18th) can't be charmed while you're conscious."}],
+        15: [{name:'Purity of Spirit', category:'feature', tag:'Subclass Feature', detail:'You are constantly under the effect of a protection from evil and good spell.'}],
+        20: [{name:'Holy Nimbus', category:'feature', tag:'1/long rest', detail:'Action to emanate an aura of sunlight (30ft, bright light) for 1 minute; hostile creatures that start their turn in it take radiant damage equal to your CHA modifier (minimum 1), and you have advantage on saves against spells cast by fiends or undead.', restType:'long'}]
+      }
+    }
+  },
+
+  'Ranger': {
+    'Hunter': {
+      levelFeatures: {
+        3: [{name:"Hunter's Prey", category:'feature', tag:'Subclass Feature', detail:'Choose one combat option: Colossus Slayer (once per turn, deal an extra 1d8 damage to a creature already below its max HP), Giant Killer, or Horde Breaker.'}],
+        7: [{name:'Defensive Tactics', category:'feature', tag:'Subclass Feature', detail:'Choose one defensive option: Escape the Horde, Multiattack Defense, or Steel Will.'}],
+        11: [{name:'Multiattack', category:'feature', tag:'Subclass Feature', detail:'Choose one option: Volley (attack every creature within 10ft of a point you can see, within weapon range) or Whirlwind Attack (attack every creature within 5ft of you).'}],
+        15: [{name:"Superior Hunter's Defense", category:'feature', tag:'Subclass Feature', detail:'Choose one option: Evasion, Stand Against the Tide, or Uncanny Dodge.'}]
+      }
+    }
+  },
+
+  'Sorcerer': {
+    'Draconic Bloodline': {
+      levelFeatures: {
+        1: [
+          {name:'Dragon Ancestor', category:'feature', tag:'Subclass Feature', detail:'Choose a dragon type (sets an associated damage type). You can speak, read, and write Draconic, and double your proficiency bonus on CHA checks when interacting with dragons.'},
+          {name:'Draconic Resilience', category:'feature', tag:'Subclass Feature', detail:'Your HP max increases by 1 per sorcerer level. While not wearing armor, your AC = 13 + DEX modifier.'}
+        ],
+        6: [{name:'Elemental Affinity', category:'feature', tag:'Subclass Feature', detail:'Add your CHA modifier to one damage roll of a spell that deals damage of your draconic type. You can also spend 1 sorcery point for resistance to that damage type for 1 hour.'}],
+        14: [{name:'Dragon Wings', category:'feature', tag:'Subclass Feature', detail:'As a bonus action, sprout dragon wings and gain a flying speed equal to your current speed (not usable in heavy armor).'}],
+        18: [{name:'Draconic Presence', category:'feature', tag:'Subclass Feature', detail:'Action, spend sorcery points to emanate an aura of awe or fear (60ft); creatures must CHA save or be charmed (awe) or frightened (fear) while you concentrate, up to 1 minute.'}]
+      }
+    }
+  },
+
+  'Warlock': {
+    'The Fiend': {
+      levelFeatures: {
+        1: [{name:"Dark One's Blessing", category:'feature', tag:'Subclass Feature', detail:'When you reduce a hostile creature to 0 HP, you gain temporary HP equal to your CHA modifier + your warlock level (minimum 1).'}],
+        6: [{name:"Dark One's Own Luck", category:'feature', tag:'1/short-long rest', detail:'Add a d10 to one ability check or saving throw you make.', restType:'both'}],
+        10: [{name:'Fiendish Resilience', category:'feature', tag:'Subclass Feature', detail:'Choose a damage type; you have resistance to it. You can change the choice after a rest.'}],
+        14: [{name:'Hurl Through Hell', category:'feature', tag:'1/long rest', detail:'On a hit, banish the target to a lower plane momentarily; it takes 2d10 psychic damage on its return, unless it\'s immune.', restType:'long'}]
+      }
+    }
+  },
+
+  'Druid': {
+    'Circle of the Land': {
+      levelFeatures: {
+        2: [
+          {name:'Bonus Cantrip', category:'feature', tag:'Subclass Feature', detail:'Learn one additional druid cantrip.'},
+          {name:'Natural Recovery', category:'feature', tag:'1/day · short rest', detail:'Once per day during a short rest, recover spell slots with a combined level up to half your druid level (rounded up); none of the recovered slots can be 6th level or higher.', restType:'short'}
+        ],
+        3: [{name:'Circle Spells', category:'feature', tag:'Subclass Feature', detail:'Gain bonus spells always prepared, tied to the type of land you chose (arctic, coast, desert, forest, etc.).'}],
+        6: [{name:"Land's Stride", category:'feature', tag:'Subclass Feature', detail:"Moving through nonmagical difficult terrain costs no extra movement, and you have advantage on saves against magically created or manipulated plants that would impede your movement."}],
+        10: [{name:"Nature's Ward", category:'feature', tag:'Subclass Feature', detail:"You can't be charmed or frightened by elementals or fey, and you're immune to poison and disease."}],
+        14: [{name:"Nature's Sanctuary", category:'feature', tag:'Subclass Feature', detail:"Beasts and plant creatures must succeed a WIS save to attack you, unless forced to or you've damaged them this turn."}]
+      }
+    }
+  },
+
+  'Monk': {
+    'Way of the Open Hand': {
+      levelFeatures: {
+        3: [{name:'Open Hand Technique', category:'feature', tag:'Subclass Feature', detail:'When you hit with a Flurry of Blows attack, choose one: the target must succeed a DEX save or be knocked prone; a STR save or be pushed 15ft; or it can\'t take reactions until the end of your next turn.'}],
+        6: [{name:'Wholeness of Body', category:'feature', tag:'1/long rest', detail:'Action to regain HP equal to 3 × your monk level.', restType:'long'}],
+        11: [{name:'Tranquility', category:'feature', tag:'Subclass Feature', detail:'At the end of a long rest, gain the effect of a sanctuary spell (lasts until your next long rest or until you attack/cast a spell).'}],
+        17: [{name:'Quivering Palm', category:'feature', tag:'3 ki/hit', detail:'When you hit with an unarmed strike, spend 3 ki to set lethal vibrations; later, use an action to force a CON save — on a failure the target drops to 0 HP, on a success it takes 10d10 necrotic damage. You choose when to trigger this within a number of days equal to your monk level.'}]
+      }
+    }
+  },
+
+  'Bard': {
+    'College of Lore': {
+      levelFeatures: {
+        3: [
+          {name:'Bonus Proficiencies', category:'feature', tag:'Subclass Feature', detail:'Gain proficiency with three skills of your choice.'},
+          {name:'Cutting Words', category:'feature', tag:'Reaction', detail:'When a creature within 60ft makes an attack roll, ability check, or damage roll, use your reaction and expend a Bardic Inspiration die to subtract the roll from their total.'}
+        ],
+        6: [{name:'Additional Magical Secrets', category:'feature', tag:'Subclass Feature', detail:"Learn two spells from any class's spell list; they count as bard spells for you but don't count against your number of spells known."}],
+        14: [{name:'Peerless Skill', category:'feature', tag:'Subclass Feature', detail:'When you make an ability check, you can expend a Bardic Inspiration die and add it to your own roll.'}]
+      }
+    }
+  }
+};
+
+const RACE_DATA = {
+  'Human': { speed:30, darkvision:0, traits:[
+    {name:'Extra Language', tag:'Racial Trait', detail:'You can speak, read, and write one extra language of your choice.'}
+  ]},
+  'Elf': { speed:30, darkvision:60, traits:[
+    {name:'Fey Ancestry', tag:'Racial Trait', detail:"Advantage on saves against being charmed, and magic can't put you to sleep."},
+    {name:'Trance', tag:'Racial Trait', detail:'You meditate deeply for 4 hours instead of sleeping, gaining the same benefit as 8 hours of sleep.'},
+    {name:'Keen Senses', tag:'Racial Trait', detail:'You have proficiency in the Perception skill.'}
+  ]},
+  'Dwarf': { speed:25, darkvision:60, traits:[
+    {name:'Dwarven Resilience', tag:'Racial Trait', detail:'Advantage on saves against poison, and resistance to poison damage.'},
+    {name:'Dwarven Combat Training', tag:'Racial Trait', detail:'Proficiency with battleaxe, handaxe, light hammer, and warhammer.'},
+    {name:'Stonecunning', tag:'Racial Trait', detail:'Double proficiency bonus on History checks about the origin of stonework.'}
+  ]},
+  'Halfling': { speed:25, darkvision:0, traits:[
+    {name:'Lucky', tag:'Racial Trait', detail:'When you roll a 1 on an attack roll, ability check, or save, you can reroll it and must use the new result.'},
+    {name:'Brave', tag:'Racial Trait', detail:'Advantage on saves against being frightened.'},
+    {name:'Halfling Nimbleness', tag:'Racial Trait', detail:"You can move through the space of any creature that's a size larger than you."}
+  ]},
+  'Dragonborn': { speed:30, darkvision:0, traits:[
+    {name:'Draconic Ancestry', tag:'Racial Trait', detail:'Pick a dragon type — it sets your breath weapon shape/damage and your resistance.'},
+    {name:'Breath Weapon', tag:'Racial Trait · 1/short-long rest', detail:'Exhale destructive energy in a shape/damage type based on your ancestry. Save DC = 8 + CON mod + proficiency bonus.', restType:'both'},
+    {name:'Damage Resistance', tag:'Racial Trait', detail:'Resistance to the damage type tied to your draconic ancestry.'}
+  ]},
+  'Gnome': { speed:25, darkvision:60, traits:[
+    {name:'Gnome Cunning', tag:'Racial Trait', detail:'Advantage on INT, WIS, and CHA saving throws against magic.'}
+  ]},
+  'Half-Elf': { speed:30, darkvision:60, traits:[
+    {name:'Fey Ancestry', tag:'Racial Trait', detail:"Advantage on saves against being charmed, and magic can't put you to sleep."},
+    {name:'Skill Versatility', tag:'Racial Trait', detail:'Proficiency in two skills of your choice.'}
+  ]},
+  'Half-Orc': { speed:30, darkvision:60, traits:[
+    {name:'Relentless Endurance', tag:'Racial Trait · 1/long rest', detail:'When reduced to 0 HP but not killed outright, you can drop to 1 HP instead.', restType:'long'},
+    {name:'Savage Attacks', tag:'Racial Trait', detail:'On a critical hit with a melee weapon, roll one extra damage die.'}
+  ]},
+  'Tiefling': { speed:30, darkvision:60, traits:[
+    {name:'Hellish Resistance', tag:'Racial Trait', detail:'Resistance to fire damage.'},
+    {name:'Infernal Legacy', tag:'Racial Trait', detail:'You know a minor illusion cantrip innately; higher levels add more innate spells, usable once per day.'}
+  ]}
+};
+
+const THEMES = {
+  brass:   {name:'Courier Brass',  brass:'#c19a56', brassDim:'#8a713f'},
+  crimson: {name:'Crimson Ledger', brass:'#c1594a', brassDim:'#8a4436'},
+  crt:     {name:'CRT Green',      brass:'#6fbf73', brassDim:'#4d8a52'},
+  cobalt:  {name:'Cobalt',         brass:'#5a8fc1', brassDim:'#3f6690'},
+  violet:  {name:'Violet Arcane',  brass:'#9b7fc7', brassDim:'#6f5c92'}
+};
+function applyTheme(key){
+  const t = THEMES[key] || THEMES.brass;
+  document.documentElement.style.setProperty('--brass', t.brass);
+  document.documentElement.style.setProperty('--brass-dim', t.brassDim);
+}
+function renderThemeSwatches(){
+  const wrap=document.getElementById('theme-swatches');
+  wrap.innerHTML='';
+  Object.keys(THEMES).forEach(key=>{
+    const t=THEMES[key];
+    const sw=document.createElement('div');
+    sw.className='theme-swatch' + (state.theme===key ? ' active' : '');
+    sw.style.background=t.brass;
+    sw.title=t.name;
+    sw.addEventListener('click', ()=>{
+      state.theme=key;
+      applyTheme(key);
+      renderThemeSwatches();
+      scheduleSave();
+    });
+    wrap.appendChild(sw);
+  });
+}
 
 const DEFAULT_STATE = {
-  name:'Trent Yubin', race:'Human', classLabel:'Fighter (Battle Master)', background:'Courier Brigade', level:3,
-  ac:15, speed:30, inspiration:false,
+  name:'Trent Yubin', race:'Human', classLabel:'Fighter (Battle Master)', background:'Former Courier Brigade', level:4,
+  class2Name:'', class2Level:0,
+  ac:15, speed:30, darkvision:0, inspiration:false, combatMode:false, theme:'brass', purchases:[], raceTemplateApplied:true, classTemplateApplied:true, classResource:null, spellSlots:null, baseClassKey:'Fighter', subclassName:'Battle Master', subclassTemplateApplied:true,
   abilities:{STR:16,DEX:15,CON:9,INT:9,WIS:12,CHA:11},
-  hp:{max:22,cur:22,tmp:0},
+  hp:{max:28,cur:28,tmp:0},
   deathSaves:{success:0,fail:0},
   saveProfs:['STR','CON'],
   skillProfs:['Acrobatics','Athletics','Perception','Sleight of Hand','Stealth','Survival'],
   skillExpertise:['Athletics'],
   attacks:[
-    {name:'Rapier', bonus:'+5', dmg:'1d8+3 pierce'},
-    {name:'Hand Axe', bonus:'+5', dmg:'1d6+3 slash (20ft throw)'}
+    {name:'Scimitar', bonus:'+5', dmg:'1d6+3 slash', props:['Finesse','Light'], mastery:'Nick', notes:'Martial melee, 3 lb. STR (+3) and DEX (+2) are both fine; STR is higher so it is used.'},
+    {name:'Hand Axe', bonus:'+5', dmg:'1d6+3 slash', props:['Light','Thrown'], mastery:'Vex', notes:'20/60 ft range'}
   ],
   inventory:[
     {name:"Courier's Uniform", qty:1, notes:'', category:'gear', categoryLocked:true},
@@ -663,6 +1602,7 @@ const DEFAULT_STATE = {
     {name:'Torch', qty:10, notes:'', category:'consumable', categoryLocked:true},
     {name:'Rations (1 day)', qty:10, notes:'', category:'consumable', categoryLocked:true},
     {name:'Waterskin', qty:1, notes:'Full', category:'gear', categoryLocked:true},
+    {name:'Scimitar', qty:1, notes:'1d6 slashing · Finesse, Light · Mastery: Nick · 3 lb', category:'gear', categoryLocked:true},
     {name:'Hempen rope (50ft)', qty:1, notes:'', category:'gear', categoryLocked:true},
     {name:"Cobbler's tools", qty:1, notes:'', category:'tool', categoryLocked:true},
     {name:"Climber's kit", qty:1, notes:'', category:'tool', categoryLocked:true},
@@ -670,27 +1610,28 @@ const DEFAULT_STATE = {
     {name:"Chisuay's Heavenly Tea", qty:1, notes:'', category:'consumable', categoryLocked:true},
     {name:'Rope of Climbing', qty:1, category:'magic', categoryLocked:true,
       tag:'Wondrous Item, Uncommon',
-      detail:"60ft silk rope, 3 lb, holds up to 3,000 lb. Has 20 HP — if it loses half that, it becomes an ordinary rope at half length.\nBonus action + command word: rope animates and obeys your directions, moving up to 10ft/round — can coil, knot, or arrange itself without using your action.\nSecond command word: goes rigid in a straight line. Anchor one end and send the other up to 60ft toward a point you choose, or loop it around something to secure a climb.",
-      attuned:false, restType:'none', restLocked:true, used:false}
+      detail:"60ft silk rope, 3 lb, holds up to 3,000 lb. If it loses half its HP, it becomes an ordinary rope at half length.\nBonus action + command word: rope animates and obeys your directions, moving up to 10ft/round — can coil, knot, or arrange itself without using your action.\nSecond command word: goes rigid in a straight line. Anchor one end and send the other up to 60ft toward a point you choose, or loop it around something to secure a climb.",
+      attuned:false, restType:'none', restLocked:true, used:false,
+      hasHp:true, hpMax:20, hpCur:20, ac:20}
   ],
-  currency:{cp:0, sp:0, ep:0, gp:161, pp:0},
+  currency:{cp:0, sp:99, ep:0, gp:9, pp:0},
   featureBlocks:[
-    {name:'Fighting Style: Defense', tag:'Class Feature', detail:'+1 AC while wearing armour (already included in AC 15)'},
-    {name:'Second Wind', tag:'1 / short rest', detail:'Bonus action — regain 1d10 + Fighter level HP', restType:'short', restLocked:true, used:false},
-    {name:'Action Surge', tag:'1 / short-long rest', detail:'Take one additional action on your turn', restType:'both', restLocked:true, used:false},
-    {name:'Combat Superiority', tag:'Battle Master', detail:"You have 4 superiority dice (d8s). Spend them to fuel the maneuvers below — they refill completely after a short or long rest. Maneuver save DC = 8 + prof 2 + STR mod 3 = 13."},
-    {name:'Ability Score Improvement', tag:'Feat / ASI choice', detail:'Chose +1 STR (now 16, +3 mod) along with proficiency and expertise in Athletics (double proficiency bonus on Athletics checks).'},
-    {name:'Evasive Footwork', tag:'Maneuver · on your move', detail:"When: as part of your movement (e.g. repositioning or retreating after attacking).\nDo: spend 1 superiority die, roll it, add the result to your AC until you stop moving.\nWhy: makes you harder to hit while you're on the move, e.g. running past or away from an enemy."},
-    {name:'Goading Attack', tag:'Maneuver · on a hit', detail:"When: right after you hit with a weapon attack.\nDo: spend 1 superiority die, roll it, add it to the damage you just dealt. The target then makes a WIS save (DC 13).\nWhy: if they fail the save, they have disadvantage attacking anyone except you until your next turn — use it to pull an enemy off a squishier ally."},
-    {name:'Rally', tag:'Maneuver · bonus action', detail:"When: on your turn, as a bonus action (doesn't cost your main action or attack).\nDo: spend 1 superiority die, roll it, add your CHA modifier. Pick one ally within 60ft — they gain that many temporary HP.\nWhy: good before a fight kicks off, or to patch up an ally who's run low, without spending your whole turn."},
-    {name:'Student of War', tag:'Class Feature', detail:"Proficiency with Cobbler's tools"},
-    {name:'Savage Attacker', tag:'Feat · 1/turn', detail:'When you roll damage for a melee weapon attack, reroll the damage dice and use either total'},
-    {name:'Languages & Tools', tag:'Proficiency', detail:"Common, Naku Naku · Cobbler's tools, Climber's kit"}
+    {name:'Fighting Style: Defense', tag:'Class Feature', category:'feature', detail:'+1 AC while wearing armour (already included in AC 15)'},
+    {name:'Second Wind', tag:'1 / short rest', category:'feature', detail:'Bonus action — regain 1d10 + Fighter level HP', restType:'short', restLocked:true, used:false},
+    {name:'Action Surge', tag:'1 / short-long rest', category:'feature', detail:'Take one additional action on your turn', restType:'both', restLocked:true, used:false},
+    {name:'Combat Superiority', tag:'Battle Master', category:'feature', detail:"You have 4 superiority dice (d8s). Spend them to fuel the maneuvers below — they refill completely after a short or long rest. Maneuver save DC = 8 + prof 2 + STR mod 3 = 13."},
+    {name:'Skill Expert (Level 4 feat, in place of ASI)', tag:'Feat · taken at level 4', category:'feat', detail:'+1 Strength (now 16, +3 mod). Proficiency and expertise in Athletics — your proficiency bonus is doubled on Athletics checks (+2 x 2 + 3 = +7).'},
+    {name:'Evasive Footwork', tag:'Maneuver · on your move', category:'maneuver', detail:"When: as part of your movement (e.g. repositioning or retreating after attacking).\nDo: spend 1 superiority die, roll it, add the result to your AC until you stop moving.\nWhy: makes you harder to hit while you're on the move, e.g. running past or away from an enemy."},
+    {name:'Goading Attack', tag:'Maneuver · on a hit', category:'maneuver', detail:"When: right after you hit with a weapon attack.\nDo: spend 1 superiority die, roll it, add it to the damage you just dealt. The target then makes a WIS save (DC 13).\nWhy: if they fail the save, they have disadvantage attacking anyone except you until your next turn — use it to pull an enemy off a squishier ally."},
+    {name:'Rally', tag:'Maneuver · bonus action', category:'maneuver', detail:"When: on your turn, as a bonus action (doesn't cost your main action or attack).\nDo: spend 1 superiority die, roll it, add your CHA modifier. Pick one ally within 60ft — they gain that many temporary HP.\nWhy: good before a fight kicks off, or to patch up an ally who's run low, without spending your whole turn."},
+    {name:'Student of War', tag:'Class Feature', category:'feature', detail:"Proficiency with Cobbler's tools"},
+    {name:'Savage Attacker', tag:'Feat · 1/turn', category:'feat', detail:'When you roll damage for a melee weapon attack, reroll the damage dice and use either total'},
+    {name:'Languages & Tools', tag:'Proficiency', category:'feature', detail:"Common, Naku Naku · Cobbler's tools, Climber's kit"}
   ],
   features:'',
-  notes:"ALLIES & ORGANIZATIONS: Knights of the Postal Service — Courier Brigade\nCode: \"Deliverance through delivery\"\nPostmaster General Escalante leads elite couriers from Fort Harglo, Gale Fields\n\nBACKSTORY: Farm boy from Okiri Village. Eldest son meant to inherit the family Sheep Dragon farm. Enlisted in the Courier Brigade instead of taking over. Brother Ken Yubin took over the farm.\nFather: Yubin | Mother: Hana Yubin | Brother: Ken Yubin\n\nAPPEARANCE: Age 19, 170cm, 80kg, blue eyes, tan skin, blonde hair\n\nPERSONALITY: Young, naive, values travel and leisure, klepto\nIDEALS: Path of least resistance\nBONDS: Wanting to see everything the island has to offer\nFLAWS: Self motivated",
-  syncedLevel:3,
-  progression:[1,2,3].flatMap(lv=>LEVEL_FEATURES[lv].map(t=>({level:lv,text:t}))),
+  notes:"STATUS: Dismissed (fired) from the Courier Brigade.\n\nALLIES & ORGANIZATIONS (former): Knights of the Postal Service — Courier Brigade\nCode: \"Deliverance through delivery\"\nPostmaster General Escalante leads elite couriers from Fort Harglo, Gale Fields\n\nBACKSTORY: Farm boy from Okiri Village. Eldest son meant to inherit the family Sheep Dragon farm. Enlisted in the Courier Brigade instead of taking over. Brother Ken Yubin took over the farm.\nFather: Yubin | Mother: Hana Yubin | Brother: Ken Yubin\n\nAPPEARANCE: Age 19, 170cm, 80kg, blue eyes, tan skin, blonde hair\n\nPERSONALITY: Young, naive, values travel and leisure, klepto\nIDEALS: Path of least resistance\nBONDS: Wanting to see everything the island has to offer\nFLAWS: Self motivated",
+  syncedLevel:4,
+  progression:[1,2,3,4].flatMap(lv=>LEVEL_FEATURES[lv].map(t=>({level:lv,text:t}))),
   superiority:{used:0},
   showFutureLevels:false,
   pendingLevelUp:null
@@ -765,43 +1706,113 @@ function applyDefaults(loaded){
   if(!state.featureBlocks) state.featureBlocks = [];
   if(!state.skillExpertise) state.skillExpertise = [];
   if(state.showFutureLevels===undefined) state.showFutureLevels = false;
+  if(state.class2Name===undefined) state.class2Name = '';
+  if(state.class2Level===undefined) state.class2Level = 0;
+  if(state.combatMode===undefined) state.combatMode = false;
+  if(state.theme===undefined) state.theme = 'brass';
+  if(!state.purchases) state.purchases = [];
+  if(state.attacks){
+    state.attacks.forEach(atk=>{
+      if(!Array.isArray(atk.props)) atk.props = [];
+      if(atk.mastery===undefined) atk.mastery = '';
+      if(atk.notes===undefined) atk.notes = atk.properties || '';
+    });
+  }
+  if(state.darkvision===undefined) state.darkvision = 0;
+  if(state.raceTemplateApplied===undefined) state.raceTemplateApplied = !!(state.race && state.race.trim());
+  if(state.classTemplateApplied===undefined) state.classTemplateApplied = !!(state.classLabel && state.classLabel.trim());
+  if(!state.classResource) state.classResource = null;
+  if(!state.spellSlots) state.spellSlots = null;
+  if(state.spellSlotsRestType===undefined) state.spellSlotsRestType = 'long';
+  if(state.hitDie===undefined) state.hitDie = 'd10';
+  if(state.baseClassKey===undefined) state.baseClassKey = '';
+  if(state.subclassName===undefined) state.subclassName = '';
+  if(state.subclassTemplateApplied===undefined) state.subclassTemplateApplied = !!state.subclassName;
+  if(state.featureBlocks){
+    state.featureBlocks.forEach(fb=>{
+      if(fb.category===undefined){
+        const t=(fb.tag||'').toLowerCase();
+        if(t.includes('maneuver')) fb.category='maneuver';
+        else if(t.includes('racial')) fb.category='racial';
+        else if(t.includes('feat')) fb.category='feat';
+        else if(t.includes('spell') || t.includes('cantrip')) fb.category='spell';
+        else fb.category='feature';
+      }
+    });
+  }
   if(state.pendingLevelUp===undefined) state.pendingLevelUp = null;
 }
 
+// ---- Local autosave cache: every change is written to this device first, so a refresh can never lose data ----
+const LOCAL_KEY = 'trent_sheet_local_cache';
+function readLocal(){
+  try{ return JSON.parse(localStorage.getItem(LOCAL_KEY)); }catch(e){ return null; }
+}
+function writeLocal(dirty){
+  if(!state) return;
+  try{
+    const prev = readLocal();
+    const isDirty = (dirty===undefined) ? !!(prev && prev.dirty) : dirty;
+    if(dirty===true) state.updatedAt = Date.now();
+    localStorage.setItem(LOCAL_KEY, JSON.stringify({state:state, savedAt:Date.now(), dirty:isDirty}));
+  }catch(e){ console.error('Local cache write failed', e); }
+}
+function markLocalClean(){
+  try{
+    const prev = readLocal();
+    if(prev){ prev.dirty=false; localStorage.setItem(LOCAL_KEY, JSON.stringify(prev)); }
+  }catch(e){}
+}
+
+let lastLoadSource = 'default';
 async function loadState(){
   const {token, gistId} = getCreds();
+  const local = readLocal();
+  let remote = null, remoteError = null;
   if(token && gistId){
-    try{
-      const remote = await gistFetch();
-      if(remote){ applyDefaults(remote); return; }
-    }catch(e){ console.error('Initial Gist load failed', e); }
+    try{ remote = await gistFetch(); }
+    catch(e){ remoteError = e; console.error('Initial Gist load failed', e); }
   }
+  const localState = local && local.state ? local.state : null;
+  const localTime = localState ? (localState.updatedAt||local.savedAt||0) : 0;
+  const remoteTime = remote ? (remote.updatedAt||0) : 0;
+  if(localState && (!remote || (local.dirty && localTime>=remoteTime) || localTime>remoteTime)){
+    applyDefaults(localState);
+    lastLoadSource = 'local';
+    return;
+  }
+  if(remote){ applyDefaults(remote); lastLoadSource='gist'; writeLocal(false); return; }
+  if(localState){ applyDefaults(localState); lastLoadSource='local'; return; }
   state = JSON.parse(JSON.stringify(DEFAULT_STATE));
+  lastLoadSource = 'default';
 }
 
 let saveTimer=null;
 let saveRetries=0;
 let backgroundRetryTimer=null;
 function scheduleSave(){
+  writeLocal(true);
   clearTimeout(saveTimer);
   clearTimeout(backgroundRetryTimer);
   saveTimer=setTimeout(()=>attemptSave(), 600);
 }
 async function attemptSave(){
   const {token, gistId} = getCreds();
+  writeLocal();
   if(!token || !gistId){
-    flashSaved(false, 'Not connected — set up sync in Settings');
+    flashSaved(false, 'Saved on this device only — set up sync in Settings');
     return;
   }
   try{
     await gistSave();
+    markLocalClean();
     saveRetries=0;
     flashSaved(true);
   }catch(e){
     console.error('Save failed', e);
     saveRetries++;
     if(saveRetries>=3){
-      flashSaved(false, 'Save failed, retrying…');
+      flashSaved(false, 'Saved on this device, cloud sync failing — retrying…');
     }
     const delay = Math.min(30000, 1000 * Math.pow(2, Math.min(saveRetries,5)));
     clearTimeout(backgroundRetryTimer);
@@ -834,7 +1845,11 @@ async function pullRemoteIfNewer(){
     const remote = await gistFetch();
     if(remote && (remote.updatedAt||0) > (state.updatedAt||0)){
       applyDefaults(remote);
+      writeLocal(false);
+      applyTheme(state.theme);
       renderAll();
+      renderThemeSwatches();
+      setCombatModeView(!!state.combatMode);
       flashSaved(true);
     }
   }catch(e){ console.error('Background pull failed', e); }
@@ -846,6 +1861,10 @@ function startSyncPolling(){
     if(document.visibilityState==='visible') pullRemoteIfNewer();
   });
 }
+
+window.addEventListener('pagehide', ()=>{ writeLocal(); });
+window.addEventListener('beforeunload', ()=>{ writeLocal(); });
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') writeLocal(); });
 
 function updateStamp(){
   const pct = state.hp.max>0 ? state.hp.cur/state.hp.max : 0;
@@ -868,8 +1887,9 @@ function renderCore(){
   if(document.activeElement!==lvlEl) lvlEl.value=state.level;
   document.getElementById('f-ac').value=state.ac;
   document.getElementById('f-speed').value=state.speed;
+  document.getElementById('f-darkvision').value=state.darkvision||0;
   document.getElementById('f-init').textContent=fmt(mod(state.abilities.DEX));
-  document.getElementById('f-prof').textContent=fmt(profBonus(state.level));
+  document.getElementById('f-prof').textContent=fmt(profBonus(totalLevel()));
   document.getElementById('f-hpcur').value=state.hp.cur;
   document.getElementById('f-hpmax').value=state.hp.max;
   document.getElementById('f-hptmp').value=state.hp.tmp;
@@ -881,6 +1901,57 @@ function renderCore(){
   document.querySelectorAll('.ds-dot.success').forEach((d,i)=>d.classList.toggle('filled', i<state.deathSaves.success));
   document.querySelectorAll('.ds-dot.fail').forEach((d,i)=>d.classList.toggle('filled', i<state.deathSaves.fail));
   updateStamp();
+
+  // Multiclass
+  const mcRow=document.getElementById('multiclass-row');
+  const mcAddLink=document.getElementById('mc-add-link');
+  const hasClass2 = !!(state.class2Name || state.class2Level>0);
+  mcRow.style.display = hasClass2 ? 'flex' : 'none';
+  mcAddLink.style.display = hasClass2 ? 'none' : 'inline-block';
+  const c2NameEl=document.getElementById('f-class2');
+  const c2LevelEl=document.getElementById('f-level2');
+  if(document.activeElement!==c2NameEl) c2NameEl.value = state.class2Name||'';
+  if(document.activeElement!==c2LevelEl) c2LevelEl.value = state.class2Level||0;
+  const tlNote=document.getElementById('total-level-note');
+  if(hasClass2){
+    tlNote.style.display='block';
+    tlNote.textContent = `Total character level: ${totalLevel()} (drives proficiency bonus)`;
+  } else {
+    tlNote.style.display='none';
+  }
+
+  // Race picker only shows during initial character setup, never once a race is locked in
+  const raceLink=document.getElementById('race-picker-link');
+  const raceRow=document.getElementById('race-picker-row');
+  if(state.raceTemplateApplied){
+    raceLink.style.display='none';
+    raceRow.style.display='none';
+  } else if(raceRow.style.display!=='flex'){
+    raceLink.style.display='inline-block';
+  }
+
+  // Class picker — same one-time-only pattern as Race
+  const classLink=document.getElementById('class-picker-link');
+  const classRow=document.getElementById('class-picker-row');
+  if(state.classTemplateApplied){
+    classLink.style.display='none';
+    classRow.style.display='none';
+  } else if(classRow.style.display!=='flex'){
+    classLink.style.display='inline-block';
+  }
+
+  // Subclass picker — only relevant once a base class is set, a matching subclass table
+  // exists, the character has reached that class's subclass level, and none is applied yet
+  const subclassLink=document.getElementById('subclass-picker-link');
+  const subclassRow=document.getElementById('subclass-picker-row');
+  const cd = CLASS_DATA[state.baseClassKey];
+  const hasSubclassOptions = cd && SUBCLASS_DATA[state.baseClassKey] && state.level >= cd.subclassLevel;
+  if(state.subclassTemplateApplied || !hasSubclassOptions){
+    subclassLink.style.display='none';
+    subclassRow.style.display='none';
+  } else if(subclassRow.style.display!=='flex'){
+    subclassLink.style.display='inline-block';
+  }
 }
 
 function renderAbilities(){
@@ -910,7 +1981,7 @@ function renderAbilities(){
 function renderSaves(){
   const wrap=document.getElementById('save-list');
   wrap.innerHTML='';
-  const pb=profBonus(state.level);
+  const pb=profBonus(totalLevel());
   ABILS.forEach(a=>{
     const isProf=state.saveProfs.includes(a);
     const bonus=mod(state.abilities[a]) + (isProf?pb:0);
@@ -933,7 +2004,7 @@ function renderSaves(){
 function renderSkills(){
   const wrap=document.getElementById('skill-list');
   wrap.innerHTML='';
-  const pb=profBonus(state.level);
+  const pb=profBonus(totalLevel());
   SKILLS.forEach(([name, abil])=>{
     const isProf=state.skillProfs.includes(name);
     const isExpert=state.skillExpertise.includes(name);
@@ -975,6 +2046,8 @@ function renderAttacks(){
   const wrap=document.getElementById('attack-list');
   wrap.innerHTML='';
   state.attacks.forEach((atk,i)=>{
+    const props = atk.props || [];
+    const mastery = atk.mastery || '';
     const div=document.createElement('div');
     div.className='list-item';
     div.innerHTML=`
@@ -983,13 +2056,33 @@ function renderAttacks(){
         <button class="li-del" data-i="${i}">×</button>
       </div>
       <div class="li-sub">
-        <input data-i="${i}" data-f="bonus" value="${escapeHtml(atk.bonus)}" placeholder="Atk bonus">
-        <input data-i="${i}" data-f="dmg" value="${escapeHtml(atk.dmg)}" placeholder="Damage / notes">
+        <div class="li-labeled">
+          <label class="li-field-label">Attack</label>
+          <input data-i="${i}" data-f="bonus" value="${escapeHtml(atk.bonus)}" placeholder="e.g. +5">
+        </div>
+        <div class="li-labeled" style="flex:2;">
+          <label class="li-field-label">Damage</label>
+          <input data-i="${i}" data-f="dmg" value="${escapeHtml(atk.dmg)}" placeholder="e.g. 1d6+3 slashing">
+        </div>
+      </div>
+      <div class="li-field-label" style="margin-top:8px;">Weapon Properties</div>
+      <div class="wp-chip-row" data-i="${i}" data-kind="props">
+        ${WEAPON_PROPS.map(p=>`<span class="wp-chip${props.includes(p.key)?' active':''}" data-key="${p.key}" title="${escapeHtml(p.def)}">${p.key}</span>`).join('')}
+      </div>
+      <div class="li-field-label" style="margin-top:8px;">Mastery Property <span style="opacity:.6;">(2024 rules)</span></div>
+      <div class="wp-chip-row wp-chip-row-mastery" data-i="${i}" data-kind="mastery">
+        ${MASTERY_PROPS.map(p=>`<span class="wp-chip wp-chip-mastery${mastery===p.key?' active':''}" data-key="${p.key}" title="${escapeHtml(p.def)}">${p.key}</span>`).join('')}
+      </div>
+      <div class="li-sub" style="margin-top:8px;">
+        <div class="li-labeled" style="flex:1;">
+          <label class="li-field-label">Notes (range, versatile die, etc.)</label>
+          <input data-i="${i}" data-f="notes" value="${escapeHtml(atk.notes||'')}" placeholder="e.g. 20/60 range">
+        </div>
       </div>
     `;
     wrap.appendChild(div);
   });
-  wrap.querySelectorAll('input').forEach(inp=>{
+  wrap.querySelectorAll('.li-name, .li-sub input').forEach(inp=>{
     inp.addEventListener('input', ()=>{
       state.attacks[inp.dataset.i][inp.dataset.f]=inp.value;
       scheduleSave();
@@ -999,6 +2092,23 @@ function renderAttacks(){
     btn.addEventListener('click', ()=>{
       state.attacks.splice(parseInt(btn.dataset.i),1);
       renderAttacks(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.wp-chip-row[data-kind="props"] .wp-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const atk=state.attacks[chip.parentElement.dataset.i];
+      const key=chip.dataset.key;
+      const idx=atk.props.indexOf(key);
+      if(idx>=0) atk.props.splice(idx,1); else atk.props.push(key);
+      renderAttacks(); renderCombatMode(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.wp-chip-row[data-kind="mastery"] .wp-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const atk=state.attacks[chip.parentElement.dataset.i];
+      const key=chip.dataset.key;
+      atk.mastery = (atk.mastery===key) ? '' : key;
+      renderAttacks(); renderCombatMode(); scheduleSave();
     });
   });
 }
@@ -1050,6 +2160,7 @@ function buildMagicItemHtml(it, i){
   const restLocked = it.restLocked !== false;
   const used = !!it.used;
   const attuned = !!it.attuned;
+  const hasHp = !!it.hasHp;
 
   let restRowHtml;
   if(!restLocked){
@@ -1073,6 +2184,19 @@ function buildMagicItemHtml(it, i){
       </div>`;
   }
 
+  const itemHpRowHtml = `
+    <div class="item-hp-row">
+      <label class="magic-attuned-label"><input type="checkbox" class="item-hp-toggle" data-i="${i}" ${hasHp?'checked':''}> This item has its own HP / AC (rope, shield, object)</label>
+      ${hasHp ? `
+        <div class="item-hp-inputs">
+          <span class="item-hp-label">HP</span>
+          <input type="number" class="item-hp-cur" data-i="${i}" value="${it.hpCur!=null?it.hpCur:(it.hpMax||0)}"> /
+          <input type="number" class="item-hp-max" data-i="${i}" value="${it.hpMax||0}">
+          <span class="item-hp-label" style="margin-left:8px;">AC</span>
+          <input type="number" class="item-ac" data-i="${i}" value="${it.ac||0}">
+        </div>` : ``}
+    </div>`;
+
   return `
     <div class="feature-card magic-card" data-cat-item="${i}">
       <div class="fc-top">
@@ -1085,6 +2209,7 @@ function buildMagicItemHtml(it, i){
         <label>Qty <input type="number" class="magic-qty" data-i="${i}" value="${it.qty||1}"></label>
         <label class="magic-attuned-label"><input type="checkbox" class="magic-attuned-check" data-i="${i}" ${attuned?'checked':''}> Requires attunement — attuned</label>
       </div>
+      ${itemHpRowHtml}
       ${restRowHtml}
       <div class="inv-cat-row">
         <span class="inv-cat-locked">Magic Item <span class="inv-cat-change" data-i="${i}">change category</span></span>
@@ -1092,12 +2217,36 @@ function buildMagicItemHtml(it, i){
     </div>`;
 }
 
+function renderPurchaseLog(){
+  const wrap=document.getElementById('purchase-list');
+  const purchases = state.purchases || [];
+  if(purchases.length===0){
+    wrap.innerHTML = '<div class="combat-empty">No purchases logged yet.</div>';
+    return;
+  }
+  wrap.innerHTML = purchases.map((p,i)=>`
+    <div class="purchase-item">
+      <span class="purchase-item-name">${escapeHtml(p.name)}</span>
+      <span class="purchase-item-cost">−${p.amount} ${p.currency}</span>
+      <button class="purchase-del" data-i="${i}">×</button>
+    </div>
+  `).join('');
+  wrap.querySelectorAll('.purchase-del').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      state.purchases.splice(parseInt(btn.dataset.i),1);
+      renderPurchaseLog(); scheduleSave();
+    });
+  });
+}
+
 function renderItems(){
   const c=state.currency||{cp:0,sp:0,ep:0,gp:0,pp:0};
   ['cp','sp','ep','gp','pp'].forEach(k=>{
     const el=document.getElementById('cur-'+k);
     if(document.activeElement!==el) el.value=c[k]||0;
+    el.classList.toggle('negative', (c[k]||0) < 0);
   });
+  renderPurchaseLog();
 
   const wrap=document.getElementById('item-list');
   let html='';
@@ -1164,6 +2313,32 @@ function renderItems(){
   wrap.querySelectorAll('.magic-attuned-check').forEach(chk=>{
     chk.addEventListener('change', ()=>{
       state.inventory[chk.dataset.i].attuned = chk.checked;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.item-hp-toggle').forEach(chk=>{
+    chk.addEventListener('change', ()=>{
+      const it=state.inventory[chk.dataset.i];
+      it.hasHp = chk.checked;
+      if(chk.checked && !it.hpMax){ it.hpMax=1; it.hpCur=1; }
+      renderItems(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.item-hp-cur').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      state.inventory[inp.dataset.i].hpCur = parseInt(inp.value)||0;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.item-hp-max').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      state.inventory[inp.dataset.i].hpMax = parseInt(inp.value)||0;
+      scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.item-ac').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      state.inventory[inp.dataset.i].ac = parseInt(inp.value)||0;
       scheduleSave();
     });
   });
@@ -1314,10 +2489,34 @@ function renderFeatureBlocks(){
         <input class="fc-tag" data-i="${i}" data-f="tag" value="${escapeHtml(fb.tag||'')}" placeholder="Tag">
         <button class="fc-del" data-i="${i}">×</button>
       </div>
+      <div class="fc-category-row">
+        <label class="li-field-label" style="margin:0;">Category</label>
+        <select class="fc-category-select" data-i="${i}">
+          <option value="feature" ${fb.category==='feature'?'selected':''}>Class Feature</option>
+          <option value="maneuver" ${fb.category==='maneuver'?'selected':''}>Maneuver / Special Move</option>
+          <option value="spell" ${fb.category==='spell'?'selected':''}>Spell</option>
+          <option value="racial" ${fb.category==='racial'?'selected':''}>Racial Trait</option>
+          <option value="feat" ${fb.category==='feat'?'selected':''}>Feat</option>
+          <option value="other" ${fb.category==='other'?'selected':''}>Other</option>
+        </select>
+      </div>
       <div class="fc-detail" data-i="${i}" data-f="detail" contenteditable="true" data-placeholder="What it does...">${escapeHtml(fb.detail||'')}</div>
       ${restRowHtml}
+      <label class="fc-combat-vis-label"><input type="checkbox" class="fc-combat-vis-check" data-i="${i}" ${fb.combatVisible!==false?'checked':''}> Show in Combat Mode</label>
     `;
     wrap.appendChild(div);
+  });
+  wrap.querySelectorAll('.fc-category-select').forEach(sel=>{
+    sel.addEventListener('change', ()=>{
+      state.featureBlocks[sel.dataset.i].category = sel.value;
+      renderCombatMode(); scheduleSave();
+    });
+  });
+  wrap.querySelectorAll('.fc-combat-vis-check').forEach(chk=>{
+    chk.addEventListener('change', ()=>{
+      state.featureBlocks[chk.dataset.i].combatVisible = chk.checked;
+      renderCombatMode(); scheduleSave();
+    });
   });
   wrap.querySelectorAll('.fc-name, .fc-tag').forEach(inp=>{
     inp.addEventListener('input', ()=>{
@@ -1433,8 +2632,285 @@ function escapeHtml(s){
   return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+function parseAttackBonus(str){
+  const m = (str||'').match(/([+-]?\d+)/);
+  return m ? parseInt(m[1]) : 0;
+}
+function parseDamageMod(str){
+  const m = (str||'').match(/\d+d\d+\s*([+-]\s*\d+)?/i);
+  if(m && m[1]) return parseInt(m[1].replace(/\s+/g,''));
+  return 0;
+}
+
+function renderCombatMode(){
+  const atkWrap=document.getElementById('combat-attacks');
+  atkWrap.innerHTML='';
+  if(state.attacks.length===0){
+    atkWrap.innerHTML='<div class="combat-empty">No attacks added yet — add some on the Gear tab.</div>';
+  } else {
+    state.attacks.forEach((atk,i)=>{
+      const props = atk.props || [];
+      const mastery = atk.mastery || '';
+      const propBadges = props.map(p=>`<span class="wp-chip" style="cursor:default;">${escapeHtml(p)}</span>`).join('');
+      const masteryBadge = mastery ? `<span class="wp-chip wp-chip-mastery active" style="cursor:default;">${escapeHtml(mastery)}</span>` : '';
+      const div=document.createElement('div');
+      div.className='combat-row';
+      div.innerHTML=`
+        <div class="combat-row-top">
+          <span class="combat-row-name">${escapeHtml(atk.name||'Attack')}</span>
+        </div>
+        <div class="combat-row-detail">
+          <span class="atk-dmg-tag">ATK</span> ${escapeHtml(atk.bonus||'—')}
+          &nbsp;&nbsp;
+          <span class="atk-dmg-tag">DMG</span> ${escapeHtml(atk.dmg||'—')}
+          ${atk.notes ? `<br><span style="color:var(--ink-dim);">${escapeHtml(atk.notes)}</span>` : ''}
+        </div>
+        ${(propBadges || masteryBadge) ? `<div class="wp-chip-row">${propBadges}${masteryBadge}</div>` : ''}
+        <div class="roll-calc-row">
+          <div class="roll-calc-field">
+            <label>d20 rolled</label>
+            <input type="number" class="roll-atk-input" data-i="${i}">
+            <span class="roll-total" id="roll-atk-total-${i}"></span>
+          </div>
+          <div class="roll-calc-field">
+            <label>Dmg die rolled</label>
+            <input type="number" class="roll-dmg-input" data-i="${i}">
+            <span class="roll-total" id="roll-dmg-total-${i}"></span>
+          </div>
+        </div>
+      `;
+      atkWrap.appendChild(div);
+    });
+    atkWrap.querySelectorAll('.roll-atk-input').forEach(inp=>{
+      inp.addEventListener('input', ()=>{
+        const atk=state.attacks[inp.dataset.i];
+        const rolled=parseInt(inp.value);
+        const totalEl=document.getElementById('roll-atk-total-'+inp.dataset.i);
+        totalEl.textContent = isNaN(rolled) ? '' : `= ${rolled + parseAttackBonus(atk.bonus)}`;
+      });
+    });
+    atkWrap.querySelectorAll('.roll-dmg-input').forEach(inp=>{
+      inp.addEventListener('input', ()=>{
+        const atk=state.attacks[inp.dataset.i];
+        const rolled=parseInt(inp.value);
+        const totalEl=document.getElementById('roll-dmg-total-'+inp.dataset.i);
+        totalEl.textContent = isNaN(rolled) ? '' : `= ${rolled + parseDamageMod(atk.dmg)}`;
+      });
+    });
+  }
+
+  // Magic items — always shown here regardless of whether they track charges or item HP
+  const magicWrap=document.getElementById('combat-magic-items');
+  magicWrap.innerHTML='';
+  const magicItems = state.inventory
+    .map((it,i)=>({...it, _idx:i}))
+    .filter(it=>(it.category||'gear')==='magic');
+  if(magicItems.length===0){
+    magicWrap.innerHTML='<div class="combat-empty">No magic items yet — add some on the Gear tab.</div>';
+  } else {
+    magicItems.forEach(it=>{
+      const div=document.createElement('div');
+      div.className='combat-row' + (it.used?' used':'');
+      let extras = '';
+      if(it.hasHp){
+        extras += `
+          <div class="item-hp-inputs" style="margin-top:6px;">
+            <span class="item-hp-label">HP</span>
+            <input type="number" class="combat-item-hp-cur" data-i="${it._idx}" value="${it.hpCur!=null?it.hpCur:it.hpMax}"> / <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink-dim);">${it.hpMax||0}</span>
+            <span class="item-hp-label" style="margin-left:8px;">AC</span>
+            <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--brass);">${it.ac||'—'}</span>
+          </div>`;
+      }
+      if((it.restType||'none')!=='none'){
+        extras += `
+          <label class="fc-used-label" style="margin-top:6px;display:flex;">
+            <input type="checkbox" class="combat-magic-used-check" data-i="${it._idx}" ${it.used?'checked':''}> Used (⟳ ${it.restType==='short'?'Short Rest':it.restType==='long'?'Long Rest':'Short or Long Rest'})
+          </label>`;
+      }
+      div.innerHTML=`
+        <div class="combat-row-top">
+          <span class="combat-row-name">${escapeHtml(it.name)}</span>
+          <span class="combat-row-sub">${escapeHtml(it.tag||'')}</span>
+        </div>
+        <div class="combat-row-detail">${escapeHtml(it.detail||'')}</div>
+        ${extras}
+      `;
+      magicWrap.appendChild(div);
+    });
+  }
+  magicWrap.querySelectorAll('.combat-item-hp-cur').forEach(inp=>{
+    inp.addEventListener('input', ()=>{
+      state.inventory[inp.dataset.i].hpCur = parseInt(inp.value)||0;
+      scheduleSave();
+    });
+  });
+  magicWrap.querySelectorAll('.combat-magic-used-check').forEach(chk=>{
+    chk.addEventListener('change', ()=>{
+      state.inventory[chk.dataset.i].used = chk.checked;
+      renderItems(); renderCombatMode(); scheduleSave();
+    });
+  });
+
+  // Maneuvers / Special Moves — shown regardless of individual rest tracking, since they
+  // usually draw from a shared pool (Superiority Dice, Ki, etc.) tracked separately above.
+  const maneuverWrap=document.getElementById('combat-maneuvers');
+  maneuverWrap.innerHTML='';
+  const maneuvers = state.featureBlocks
+    .map((fb,i)=>({...fb, _idx:i}))
+    .filter(fb=>fb.category==='maneuver' && fb.combatVisible!==false);
+  if(maneuvers.length===0){
+    maneuverWrap.innerHTML='<div class="combat-empty">None yet — tag a feature as "Maneuver / Special Move" on the Features tab to see it here.</div>';
+  } else {
+    maneuvers.forEach(entry=>{
+      const div=document.createElement('div');
+      div.className='combat-row';
+      div.innerHTML=`
+        <div class="combat-row-top"><span class="combat-row-name">${escapeHtml(entry.name)}</span></div>
+        <div class="combat-row-detail">${escapeHtml(entry.detail||'')}</div>
+      `;
+      maneuverWrap.appendChild(div);
+    });
+  }
+
+  // Spells — same idea, reference-only here; per-spell prep/slot tracking can come later.
+  const spellWrap=document.getElementById('combat-spells');
+  spellWrap.innerHTML='';
+  const spells = state.featureBlocks
+    .map((fb,i)=>({...fb, _idx:i}))
+    .filter(fb=>fb.category==='spell' && fb.combatVisible!==false);
+  if(spells.length===0){
+    spellWrap.innerHTML='<div class="combat-empty">None yet — tag a feature as "Spell" on the Features tab to see it here.</div>';
+  } else {
+    spells.forEach(entry=>{
+      const div=document.createElement('div');
+      div.className='combat-row' + (entry.used?' used':'');
+      const rt=entry.restType||'none';
+      const restLabel = rt==='none' ? '' : `<br>⟳ ${rt==='short'?'Short Rest':rt==='long'?'Long Rest':'Short or Long Rest'}`;
+      const usedCheck = rt!=='none' ? `<label class="fc-used-label"><input type="checkbox" class="combat-used-check" data-i="${entry._idx}" ${entry.used?'checked':''}> Used</label>` : '';
+      div.innerHTML=`
+        <div class="combat-row-top">
+          <span class="combat-row-name" style="${entry.used?'text-decoration:line-through;opacity:.6;':''}">${escapeHtml(entry.name)}</span>
+          ${usedCheck}
+        </div>
+        <div class="combat-row-detail">${escapeHtml(entry.detail||'')}${restLabel}</div>
+      `;
+      spellWrap.appendChild(div);
+    });
+  }
+
+  // Everything else with individual rest-tracking on (Second Wind, feats, racial traits, etc.)
+  const trackWrap=document.getElementById('combat-trackables');
+  trackWrap.innerHTML='';
+  const featTrackables = state.featureBlocks
+    .map((fb,i)=>({...fb, _idx:i}))
+    .filter(fb=>(fb.restType||'none')!=='none' && fb.category!=='maneuver' && fb.category!=='spell' && fb.combatVisible!==false);
+
+  if(featTrackables.length===0){
+    trackWrap.innerHTML='<div class="combat-empty">No rest-tracked features yet.</div>';
+  } else {
+    featTrackables.forEach(entry=>{
+      const restLabel = entry.restType==='short'?'Short Rest':entry.restType==='long'?'Long Rest':'Short or Long Rest';
+      const div=document.createElement('div');
+      div.className='combat-row' + (entry.used?' used':'');
+      div.innerHTML=`
+        <div class="combat-row-top">
+          <span class="combat-row-name" style="${entry.used?'text-decoration:line-through;opacity:.6;':''}">${escapeHtml(entry.name)}</span>
+          <label class="fc-used-label"><input type="checkbox" class="combat-used-check" data-i="${entry._idx}" ${entry.used?'checked':''}> Used</label>
+        </div>
+        <div class="combat-row-detail">⟳ ${restLabel}</div>
+      `;
+      trackWrap.appendChild(div);
+    });
+  }
+  document.querySelectorAll('#combat-spells .combat-used-check, #combat-trackables .combat-used-check').forEach(chk=>{
+    chk.addEventListener('change', ()=>{
+      state.featureBlocks[chk.dataset.i].used = chk.checked;
+      renderFeatureBlocks(); renderCombatMode(); scheduleSave();
+    });
+  });
+}
+
+function setCombatModeView(active){
+  document.body.classList.toggle('combat-mode', active);
+  const btn=document.getElementById('combat-toggle');
+  btn.textContent = active ? '✕ Exit Combat Mode' : '⚔ Combat Mode';
+  btn.classList.toggle('active', active);
+}
+
+function renderClassResource(){
+  const titleEl=document.getElementById('class-resource-title');
+  const blockEl=document.getElementById('class-resource-block');
+  if(!state.classResource){
+    titleEl.style.display='none';
+    blockEl.style.display='none';
+    return;
+  }
+  const cr=state.classResource;
+  titleEl.style.display='block';
+  titleEl.textContent = cr.name;
+  blockEl.style.display='block';
+  blockEl.innerHTML = `
+    <div class="cr-row">
+      <div class="cr-dots" id="cr-dots"></div>
+      <button class="hp-btn" id="cr-reset" style="flex:0 0 60px;">Reset</button>
+    </div>
+  `;
+  const dotsWrap=document.getElementById('cr-dots');
+  for(let i=0;i<cr.usesMax;i++){
+    const d=document.createElement('div');
+    d.className='cr-dot' + (i<cr.used?' filled':'');
+    d.addEventListener('click', ()=>{
+      state.classResource.used = state.classResource.used===i+1 ? i : i+1;
+      renderClassResource(); scheduleSave();
+    });
+    dotsWrap.appendChild(d);
+  }
+  document.getElementById('cr-reset').addEventListener('click', ()=>{
+    state.classResource.used=0; renderClassResource(); scheduleSave();
+  });
+}
+
+function renderSpellSlots(){
+  const titleEl=document.getElementById('spell-slots-title');
+  const blockEl=document.getElementById('spell-slots-block');
+  if(!state.spellSlots){
+    titleEl.style.display='none';
+    blockEl.style.display='none';
+    return;
+  }
+  titleEl.style.display='block';
+  blockEl.style.display='block';
+  blockEl.innerHTML='';
+  const grid=document.createElement('div');
+  grid.className='slot-level-grid';
+  Object.keys(state.spellSlots).forEach(lvl=>{
+    const slot=state.spellSlots[lvl];
+    if(!slot.max) return;
+    const cell=document.createElement('div');
+    cell.className='slot-level-cell';
+    cell.innerHTML = `<div class="slot-level-label">Level ${lvl}</div><div class="slot-dot-row" id="slot-row-${lvl}"></div>`;
+    grid.appendChild(cell);
+  });
+  blockEl.appendChild(grid);
+  Object.keys(state.spellSlots).forEach(lvl=>{
+    const slot=state.spellSlots[lvl];
+    if(!slot.max) return;
+    const row=document.getElementById('slot-row-'+lvl);
+    for(let i=0;i<slot.max;i++){
+      const d=document.createElement('div');
+      d.className='slot-dot' + (i<slot.used?' filled':'');
+      d.addEventListener('click', ()=>{
+        state.spellSlots[lvl].used = state.spellSlots[lvl].used===i+1 ? i : i+1;
+        renderSpellSlots(); scheduleSave();
+      });
+      row.appendChild(d);
+    }
+  });
+}
+
 function renderAll(){
-  renderCore(); renderAbilities(); renderSaves(); renderSkills(); renderClass(); renderFeatureBlocks(); renderAttacks(); renderItems(); renderNotes();
+  renderCore(); renderAbilities(); renderSaves(); renderSkills(); renderClass(); renderFeatureBlocks(); renderAttacks(); renderItems(); renderNotes(); renderCombatMode();
+  renderClassResource(); renderSpellSlots();
 }
 
 function checkLevelUp(newLevel){
@@ -1463,6 +2939,221 @@ function wireCoreInputs(){
   document.getElementById('f-race').addEventListener('input', e=>{ state.race=e.target.value; scheduleSave(); });
   document.getElementById('f-class').addEventListener('input', e=>{ state.classLabel=e.target.value; scheduleSave(); });
   document.getElementById('f-bg').addEventListener('input', e=>{ state.background=e.target.value; scheduleSave(); });
+
+  document.getElementById('mc-add-link').addEventListener('click', ()=>{
+    state.class2Level = state.class2Level || 1;
+    renderCore(); scheduleSave();
+  });
+  document.getElementById('mc-remove').addEventListener('click', ()=>{
+    if(!confirm('Remove the second class?')) return;
+    state.class2Name=''; state.class2Level=0;
+    renderCore(); scheduleSave();
+  });
+  document.getElementById('f-class2').addEventListener('input', e=>{
+    state.class2Name=e.target.value; scheduleSave();
+  });
+  document.getElementById('f-level2').addEventListener('change', e=>{
+    state.class2Level = Math.max(0, Math.min(19, parseInt(e.target.value)||0));
+    renderCore(); renderSaves(); renderSkills(); scheduleSave();
+  });
+
+  const raceSelect = document.getElementById('race-picker-select');
+  Object.keys(RACE_DATA).forEach(raceName=>{
+    const opt=document.createElement('option');
+    opt.value=raceName; opt.textContent=raceName;
+    raceSelect.appendChild(opt);
+  });
+  document.getElementById('race-picker-link').addEventListener('click', ()=>{
+    document.getElementById('race-picker-row').style.display='flex';
+    document.getElementById('race-picker-link').style.display='none';
+  });
+  document.getElementById('race-picker-cancel').addEventListener('click', ()=>{
+    document.getElementById('race-picker-row').style.display='none';
+    document.getElementById('race-picker-link').style.display='inline-block';
+  });
+  document.getElementById('race-picker-apply').addEventListener('click', ()=>{
+    const raceName = raceSelect.value;
+    if(!raceName) return;
+    const data = RACE_DATA[raceName];
+    if(!confirm(`Apply ${raceName} defaults? This sets Speed and Darkvision, and adds any racial trait cards you don't already have (existing cards with the same name are left alone). You can edit or remove anything after.`)) return;
+    state.race = raceName;
+    state.speed = data.speed;
+    state.darkvision = data.darkvision;
+    state.raceTemplateApplied = true;
+    const existingNames = new Set(state.featureBlocks.map(fb=>fb.name));
+    data.traits.forEach(t=>{
+      if(!existingNames.has(t.name)){
+        state.featureBlocks.push({
+          name:t.name, tag:t.tag, category:'racial', detail:t.detail,
+          restType: t.restType || 'none', restLocked:true, used:false
+        });
+      }
+    });
+    document.getElementById('race-picker-row').style.display='none';
+    renderCore(); renderFeatureBlocks(); scheduleSave();
+  });
+
+  const classSelect = document.getElementById('class-picker-select');
+  Object.keys(CLASS_DATA).forEach(className=>{
+    const opt=document.createElement('option');
+    opt.value=className; opt.textContent=className;
+    classSelect.appendChild(opt);
+  });
+  document.getElementById('class-picker-link').addEventListener('click', ()=>{
+    document.getElementById('class-picker-row').style.display='flex';
+    document.getElementById('class-picker-link').style.display='none';
+  });
+  document.getElementById('class-picker-cancel').addEventListener('click', ()=>{
+    document.getElementById('class-picker-row').style.display='none';
+    document.getElementById('class-picker-link').style.display='inline-block';
+  });
+  document.getElementById('class-picker-apply').addEventListener('click', ()=>{
+    const className = classSelect.value;
+    if(!className) return;
+    const cd = CLASS_DATA[className];
+    if(!confirm(`Apply ${className} defaults? This sets Hit Die, saving throw proficiencies, and adds features up to your current level (${state.level}) as cards. Skill choices, armor, and weapon proficiencies are listed after — you'll pick/toggle those yourself. You can edit or remove anything after.`)) return;
+
+    state.classLabel = className;
+    state.hitDie = cd.hitDie;
+    state.saveProfs = cd.saves.slice();
+    state.classTemplateApplied = true;
+    state.baseClassKey = className;
+
+    const existingNames = new Set(state.featureBlocks.map(fb=>fb.name));
+    for(let lv=1; lv<=state.level; lv++){
+      (cd.levelFeatures[lv]||[]).forEach(f=>{
+        if(!existingNames.has(f.name)){
+          state.featureBlocks.push({
+            name:f.name, tag:f.tag, category:f.category, detail:f.detail,
+            restType: f.restType || 'none', restLocked:true, used:false
+          });
+          existingNames.add(f.name);
+        }
+      });
+    }
+
+    if(cd.resource){
+      let usesMax=0;
+      if(cd.resource.usesFormula==='CHA_MOD_MIN1'){
+        usesMax = Math.max(1, mod(state.abilities.CHA));
+      } else {
+        Object.keys(cd.resource.usesByLevel).map(Number).sort((a,b)=>a-b).forEach(lv=>{
+          if(state.level>=lv) usesMax=cd.resource.usesByLevel[lv];
+        });
+      }
+      // Bard's Bardic Inspiration recharges on short rest too from level 5 (Font of Inspiration)
+      let restType = cd.resource.restType;
+      if(className==='Bard' && state.level>=5) restType='both';
+      state.classResource = { name:cd.resource.name, usesMax, used:0, restType };
+    }
+    if(cd.spellSlotsByLevel){
+      const slotsArr = cd.spellSlotsByLevel[state.level] || [];
+      const slots = {};
+      slotsArr.forEach((max,idx)=>{ slots[idx+1] = {max, used:0}; });
+      state.spellSlots = slots;
+      state.spellSlotsRestType = cd.spellSlotsRestType || 'long';
+    }
+
+    document.getElementById('class-picker-row').style.display='none';
+    renderAll();
+    scheduleSave();
+
+    const skillMsg = `Skill proficiencies: choose ${cd.skillChoice.count} from ${cd.skillChoice.options.join(', ')} — toggle these yourself on the Skills tab.\n\nArmor: ${cd.armor}\nWeapons: ${cd.weapons}\n${cd.subclassLevel ? `\n${cd.subclassLabel} unlocks at level ${cd.subclassLevel} — once you're there, an "apply subclass template" link will appear here if one is available for this class.` : ''}`;
+    alert(skillMsg);
+  });
+
+  const subclassSelect = document.getElementById('subclass-picker-select');
+  document.getElementById('subclass-picker-link').addEventListener('click', ()=>{
+    subclassSelect.innerHTML = '<option value="">Choose a subclass…</option>';
+    const options = SUBCLASS_DATA[state.baseClassKey] || {};
+    Object.keys(options).forEach(name=>{
+      const opt=document.createElement('option');
+      opt.value=name; opt.textContent=name;
+      subclassSelect.appendChild(opt);
+    });
+    document.getElementById('subclass-picker-row').style.display='flex';
+    document.getElementById('subclass-picker-link').style.display='none';
+  });
+  document.getElementById('subclass-picker-cancel').addEventListener('click', ()=>{
+    document.getElementById('subclass-picker-row').style.display='none';
+    document.getElementById('subclass-picker-link').style.display='inline-block';
+  });
+  document.getElementById('subclass-picker-apply').addEventListener('click', ()=>{
+    const subclassName = subclassSelect.value;
+    if(!subclassName) return;
+    const sub = SUBCLASS_DATA[state.baseClassKey][subclassName];
+    if(!confirm(`Apply ${subclassName} defaults? This adds its features up to your current level (${state.level}) as cards. You can edit or remove anything after.`)) return;
+
+    state.subclassName = subclassName;
+    state.subclassTemplateApplied = true;
+    state.classLabel = `${state.baseClassKey} (${subclassName})`;
+
+    // Remove the generic "Choose your X" placeholder now that a real subclass is applied
+    const baseCd = CLASS_DATA[state.baseClassKey];
+    if(baseCd && baseCd.subclassLabel){
+      state.featureBlocks = state.featureBlocks.filter(fb => fb.name !== baseCd.subclassLabel);
+    }
+
+    const existingNames = new Set(state.featureBlocks.map(fb=>fb.name));
+    for(let lv=1; lv<=state.level; lv++){
+      (sub.levelFeatures[lv]||[]).forEach(f=>{
+        if(!existingNames.has(f.name)){
+          state.featureBlocks.push({
+            name:f.name, tag:f.tag, category:f.category, detail:f.detail,
+            restType: f.restType || 'none', restLocked:true, used:false
+          });
+          existingNames.add(f.name);
+        }
+      });
+    }
+    document.getElementById('subclass-picker-row').style.display='none';
+    renderCore(); renderFeatureBlocks(); scheduleSave();
+  });
+
+  const featSelect = document.getElementById('feat-picker-select');
+  Object.keys(FEATS_DATA).forEach(featName=>{
+    const opt=document.createElement('option');
+    opt.value=featName; opt.textContent=featName;
+    featSelect.appendChild(opt);
+  });
+  function updateFeatPreview(){
+    const preview=document.getElementById('feat-picker-preview');
+    if(featSelect.value){
+      preview.style.display='block';
+      preview.textContent = FEATS_DATA[featSelect.value];
+    } else {
+      preview.style.display='none';
+    }
+  }
+  featSelect.addEventListener('change', updateFeatPreview);
+  document.getElementById('feat-picker-link').addEventListener('click', ()=>{
+    document.getElementById('feat-picker-row').style.display='flex';
+    document.getElementById('feat-picker-link').style.display='none';
+    updateFeatPreview();
+  });
+  document.getElementById('feat-picker-cancel').addEventListener('click', ()=>{
+    document.getElementById('feat-picker-row').style.display='none';
+    document.getElementById('feat-picker-preview').style.display='none';
+    document.getElementById('feat-picker-link').style.display='inline-block';
+  });
+  document.getElementById('feat-picker-apply').addEventListener('click', ()=>{
+    const featName = featSelect.value;
+    if(!featName) return;
+    const already = state.featureBlocks.some(fb=>fb.name===featName);
+    if(already){
+      alert(`${featName} is already on your Features & Feats list.`);
+      return;
+    }
+    state.featureBlocks.push({
+      name:featName, tag:'Feat', category:'feat', detail:FEATS_DATA[featName],
+      restType:'none', restLocked:true, used:false
+    });
+    document.getElementById('feat-picker-row').style.display='none';
+    document.getElementById('feat-picker-preview').style.display='none';
+    document.getElementById('feat-picker-link').style.display='inline-block';
+    renderFeatureBlocks(); scheduleSave();
+  });
+
   const levelInput = document.getElementById('f-level');
   levelInput.addEventListener('change', e=>{
     const newLevel=Math.max(1, Math.min(20, parseInt(e.target.value)||1));
@@ -1472,6 +3163,7 @@ function wireCoreInputs(){
   });
   document.getElementById('f-ac').addEventListener('input', e=>{ state.ac=parseInt(e.target.value)||0; scheduleSave(); });
   document.getElementById('f-speed').addEventListener('input', e=>{ state.speed=parseInt(e.target.value)||0; scheduleSave(); });
+  document.getElementById('f-darkvision').addEventListener('input', e=>{ state.darkvision=parseInt(e.target.value)||0; scheduleSave(); });
 
   document.getElementById('f-hpcur').addEventListener('input', e=>{
     state.hp.cur=parseInt(e.target.value)||0; renderCore(); scheduleSave();
@@ -1518,7 +3210,7 @@ function wireCoreInputs(){
   });
 
   document.getElementById('add-attack').addEventListener('click', ()=>{
-    state.attacks.push({name:'New Attack', bonus:'+0', dmg:''});
+    state.attacks.push({name:'New Attack', bonus:'+0', dmg:'', properties:''});
     renderAttacks(); scheduleSave();
   });
   ['cp','sp','ep','gp','pp'].forEach(k=>{
@@ -1540,6 +3232,29 @@ function wireCoreInputs(){
     renderItems(); scheduleSave();
   });
 
+  document.getElementById('purchase-buy-btn').addEventListener('click', ()=>{
+    const nameEl=document.getElementById('purchase-name');
+    const amountEl=document.getElementById('purchase-amount');
+    const currencyEl=document.getElementById('purchase-currency');
+    const addInvEl=document.getElementById('purchase-addinv');
+    const name=nameEl.value.trim();
+    const amount=parseFloat(amountEl.value);
+    const currency=currencyEl.value;
+    if(!name || !amount || amount<=0){
+      alert('Enter both an item name and a cost greater than 0.');
+      return;
+    }
+    if(!state.currency) state.currency={cp:0,sp:0,ep:0,gp:0,pp:0};
+    state.currency[currency] = (state.currency[currency]||0) - amount;
+    if(!state.purchases) state.purchases=[];
+    state.purchases.unshift({name, amount, currency, ts:Date.now()});
+    if(addInvEl.checked){
+      state.inventory.push({name, qty:1, notes:'', category:'gear', categoryLocked:false});
+    }
+    nameEl.value=''; amountEl.value=''; addInvEl.checked=false;
+    renderItems(); scheduleSave();
+  });
+
   document.getElementById('su-reset').addEventListener('click', ()=>{
     state.superiority.used=0; renderClass(); scheduleSave();
   });
@@ -1554,7 +3269,19 @@ function wireCoreInputs(){
       if(kind==='short' && (it.restType==='short'||it.restType==='both')) it.used=false;
     });
     state.superiority.used=0;
-    renderFeatureBlocks(); renderClass(); renderItems(); scheduleSave();
+    if(state.classResource){
+      const rt = state.classResource.restType;
+      if(kind==='long' && (rt==='short'||rt==='long'||rt==='both')) state.classResource.used=0;
+      if(kind==='short' && (rt==='short'||rt==='both')) state.classResource.used=0;
+    }
+    if(state.spellSlots){
+      const rt = state.spellSlotsRestType || 'long';
+      const recharges = (kind==='long' && (rt==='short'||rt==='long'||rt==='both')) || (kind==='short' && (rt==='short'||rt==='both'));
+      if(recharges){
+        Object.keys(state.spellSlots).forEach(lvl=>{ state.spellSlots[lvl].used=0; });
+      }
+    }
+    renderFeatureBlocks(); renderClass(); renderItems(); renderClassResource(); renderSpellSlots(); scheduleSave();
   }
   document.getElementById('rest-short').addEventListener('click', ()=>takeRest('short'));
   document.getElementById('rest-long').addEventListener('click', ()=>takeRest('long'));
@@ -1562,6 +3289,13 @@ function wireCoreInputs(){
   document.getElementById('future-toggle').addEventListener('click', ()=>{
     state.showFutureLevels = !state.showFutureLevels;
     renderClass(); scheduleSave();
+  });
+
+  document.getElementById('combat-toggle').addEventListener('click', ()=>{
+    state.combatMode = !state.combatMode;
+    renderCombatMode();
+    setCombatModeView(state.combatMode);
+    scheduleSave();
   });
 
   document.getElementById('lu-apply-hp').addEventListener('click', ()=>{
@@ -1577,7 +3311,7 @@ function wireCoreInputs(){
   });
 
   document.getElementById('add-feature').addEventListener('click', ()=>{
-    state.featureBlocks.push({name:'New Feature', tag:'', detail:'', restType:'none', restLocked:false, used:false});
+    state.featureBlocks.push({name:'New Feature', tag:'', category:'feature', detail:'', restType:'none', restLocked:false, used:false});
     renderFeatureBlocks(); scheduleSave();
   });
 
@@ -1638,7 +3372,8 @@ function wireCoreInputs(){
     if(!confirm('Reset this sheet to a blank template? This clears the current character.')) return;
     state = {
       name:'New Character', race:'', classLabel:'', background:'', level:1,
-      ac:10, speed:30, inspiration:false,
+      class2Name:'', class2Level:0,
+      ac:10, speed:30, darkvision:0, inspiration:false, combatMode:false, theme:state.theme||'brass', purchases:[], raceTemplateApplied:false, classTemplateApplied:false, classResource:null, spellSlots:null, baseClassKey:'', subclassName:'', subclassTemplateApplied:false,
       abilities:{STR:10,DEX:10,CON:10,INT:10,WIS:10,CHA:10},
       hp:{max:10,cur:10,tmp:0},
       deathSaves:{success:0,fail:0},
@@ -1648,6 +3383,7 @@ function wireCoreInputs(){
       syncedLevel:1, progression: (LEVEL_FEATURES[1]||[]).map(t=>({level:1,text:t})),
       superiority:{used:0}, showFutureLevels:false, pendingLevelUp:null
     };
+    applyTheme(state.theme);
     renderAll();
     attemptSave();
   });
@@ -1658,8 +3394,21 @@ function wireCoreInputs(){
     document.getElementById('sync-token').value = token || '';
     document.getElementById('sync-gistid').value = gistId || '';
     if(token && gistId){
-      el.textContent = 'Connected — this device syncs live to Gist ' + gistId.slice(0,8) + '…';
-      el.className = 'sync-status connected';
+      if(!/^[0-9a-f]{20,40}$/i.test(gistId)){
+        el.textContent = 'That Gist ID doesn\'t look right — it should be a long string of letters and numbers from your Gist\'s web address, not a name.';
+        el.className = 'sync-status disconnected';
+        return;
+      }
+      el.textContent = 'Checking connection…';
+      el.className = 'sync-status disconnected';
+      gistFetch().then(()=>{
+        el.textContent = 'Connected and verified — syncing to Gist ' + gistId.slice(0,8) + '…';
+        el.className = 'sync-status connected';
+      }).catch(err=>{
+        const m = String(err.message||err);
+        el.textContent = 'Not syncing — GitHub said: ' + m + (m.includes('404') ? ' (Gist ID wrong, or token lacks "gist" scope)' : m.includes('401') ? ' (token wrong or expired)' : '') + '. Your data is still safe on this device.';
+        el.className = 'sync-status disconnected';
+      });
     } else {
       el.textContent = 'Not connected — data is only stored on this device until you set up sync below.';
       el.className = 'sync-status disconnected';
@@ -1669,18 +3418,29 @@ function wireCoreInputs(){
 
   document.getElementById('sync-save-creds').addEventListener('click', async ()=>{
     const token=document.getElementById('sync-token').value.trim();
-    const gistId=document.getElementById('sync-gistid').value.trim();
+    let gistId=document.getElementById('sync-gistid').value.trim();
+    const urlMatch = gistId.match(/([0-9a-f]{20,40})\/?$/i);
+    if(urlMatch) gistId = urlMatch[1];
     if(!token){ alert('Paste a GitHub personal access token first (needs "gist" scope).'); return; }
     setCreds({token, gistId});
     renderSyncStatus();
     if(gistId){
       try{
         const remote = await gistFetch();
-        if(remote){
+        const loc = readLocal();
+        const localNewer = loc && loc.dirty || (state.updatedAt||0) >= ((remote&&remote.updatedAt)||0);
+        if(remote && !localNewer){
           applyDefaults(remote);
+          writeLocal(false);
+          applyTheme(state.theme);
           renderAll();
+          renderThemeSwatches();
+          setCombatModeView(!!state.combatMode);
+          flashSaved(true);
+        } else {
+          await attemptSave();   // this device has the newer data: push it up, never overwrite it
         }
-        flashSaved(true);
+        renderSyncStatus();
         startSyncPolling();
       }catch(e){
         alert('Could not load that Gist — check the token and Gist ID are correct.');
@@ -1723,8 +3483,11 @@ function wireCoreInputs(){
 
 (async function init(){
   await loadState();
+  applyTheme(state.theme);
   renderAll();
+  renderThemeSwatches();
   wireCoreInputs();
+  setCombatModeView(!!state.combatMode);
   startSyncPolling();
 })();
 </script>
