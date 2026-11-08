@@ -751,17 +751,17 @@
     </div>
     <div class="sync-field">
       <label>Gist ID</label>
-      <input type="text" id="sync-gistid" placeholder="leave blank to create new">
+      <input type="text" id="sync-gistid" placeholder="Paste existing Gist ID or address — or leave empty and tap Create New Gist">
     </div>
     <div class="backup-row">
-      <button class="hp-btn" id="sync-save-creds">Save &amp; Connect</button>
-      <button class="hp-btn" id="sync-create-gist">Create New Gist</button>
+      <button class="hp-btn" id="sync-save-creds">Connect to existing Gist</button>
+      <button class="hp-btn" id="sync-create-gist">Create New Gist (first time)</button>
     </div>
     <div class="backup-row">
       <button class="hp-btn" id="sync-now-btn">Sync Now</button>
       <button class="hp-btn" id="sync-copy-id">Copy Gist ID</button>
     </div>
-    <div class="backup-note">On your <b>first device</b>: paste your GitHub token, leave Gist ID blank, tap "Save &amp; Connect", then "Create New Gist" — this saves the current sheet as your live copy and shows you the Gist ID. On <b>every other device</b>: paste the <i>same</i> token and that Gist ID, then "Save &amp; Connect". Both devices now read/write the same live data.</div>
+    <div class="backup-note"><b>First time ever:</b> paste your token, leave Gist ID empty, tap <b>Create New Gist (first time)</b>. It saves this sheet and shows you the Gist ID — keep it. <b>Any other device (or if you already have a Gist):</b> paste the same token and the Gist ID, tap <b>Connect to existing Gist</b>.</div>
 
     <div class="section-title">Local Backup</div>
     <div class="backup-row">
@@ -3422,6 +3422,12 @@ function wireCoreInputs(){
     const urlMatch = gistId.match(/([0-9a-f]{20,40})\/?$/i);
     if(urlMatch) gistId = urlMatch[1];
     if(!token){ alert('Paste a GitHub personal access token first (needs "gist" scope).'); return; }
+    if(!gistId){
+      if(confirm('No Gist ID entered.\n\nOK = create a brand-new Gist from this sheet.\nCancel = go back and paste your existing Gist ID.')){
+        document.getElementById('sync-create-gist').click();
+      }
+      return;
+    }
     setCreds({token, gistId});
     renderSyncStatus();
     if(gistId){
@@ -3451,6 +3457,8 @@ function wireCoreInputs(){
   document.getElementById('sync-create-gist').addEventListener('click', async ()=>{
     const token=document.getElementById('sync-token').value.trim();
     if(!token){ alert('Paste a GitHub personal access token first (needs "gist" scope).'); return; }
+    const existing = getCreds().gistId;
+    if(existing && !confirm('You already have a Gist connected (' + existing.slice(0,8) + '…). Creating a new one starts a separate copy and your other devices will keep using the old one.\n\nCreate a new one anyway?')) return;
     setCreds({token, gistId:''});
     try{
       const newId = await gistCreate();
@@ -3458,7 +3466,9 @@ function wireCoreInputs(){
       renderSyncStatus();
       flashSaved(true);
       startSyncPolling();
-      alert('Gist created! ID: ' + newId + '\n\nEnter this same token and Gist ID on your other devices to keep them in sync.');
+      writeLocal(false);
+      document.getElementById('sync-gistid').value = newId;
+      alert('Gist created! Your Gist ID is:\n\n' + newId + '\n\nIt is now filled in for you. Use "Copy Gist ID" to copy it, then enter this same token and Gist ID on your other devices.');
     }catch(e){
       alert('Could not create a Gist — check that the token is valid and has "gist" scope.');
     }
