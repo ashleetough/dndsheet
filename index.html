@@ -3612,15 +3612,13 @@ function wireCoreInputs(){
       try{
         const loaded = JSON.parse(ev.target.result);
         if(!confirm(`Load "${loaded.name || 'this character'}" and replace everything currently on the sheet?`)) return;
-        state = loaded;
-        if(state.syncedLevel===undefined) state.syncedLevel = state.level;
-        if(!state.progression) state.progression = [];
-        if(!state.superiority) state.superiority = {used:0};
-        if(!state.currency) state.currency = {cp:0,sp:0,ep:0,gp:0,pp:0};
-        if(!state.featureBlocks) state.featureBlocks = [];
-        if(!state.skillExpertise) state.skillExpertise = [];
-        if(state.pendingLevelUp===undefined) state.pendingLevelUp = null;
+        applyDefaults(loaded);
+        state.updatedAt = Date.now();
+        applyTheme(state.theme);
         renderAll();
+        renderThemeSwatches();
+        setCombatModeView(!!state.combatMode);
+        writeLocal(true);
         attemptSave();
       }catch(err){
         alert('That file could not be read as a character backup.');
