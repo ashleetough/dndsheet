@@ -526,6 +526,35 @@
     padding:9px 11px;margin-bottom:12px;font-family:'Archivo',sans-serif;font-size:12px;
     color:var(--ink-dim);line-height:1.5;
   }
+
+  .fx-chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px;}
+  .fx-chip{font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:16px;border:1px solid var(--line);background:var(--card);color:var(--ink-dim);cursor:pointer;}
+  .fx-chip.on{background:var(--brass);border-color:var(--brass);color:var(--bg);}
+  .fx-strip{display:none;margin:0 0 10px;padding:7px 10px;border:1px dashed var(--brass-dim);border-radius:var(--radius);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--brass);line-height:1.6;}
+  .fx-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:10px;margin-bottom:10px;}
+  .fx-card.on{border-color:var(--brass);}
+  .fx-top{display:flex;gap:8px;align-items:center;margin-bottom:6px;}
+  .fx-top input.fx-name{flex:1;background:var(--card-2);border:1px solid var(--line);color:var(--ink);padding:6px;border-radius:2px;font-family:'Special Elite',monospace;font-size:14px;}
+  .fx-mods{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:8px;}
+  .fx-mods label{display:flex;flex-direction:column;font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--ink-dim);gap:2px;}
+  .fx-mods input{width:100%;background:var(--card-2);border:1px solid var(--line);color:var(--ink);text-align:center;border-radius:2px;padding:4px 2px;}
+  .fx-text{width:100%;margin-top:6px;background:var(--card-2);border:1px solid var(--line);color:var(--ink);padding:6px;border-radius:2px;font-size:12px;}
+  .jn-input{width:100%;background:var(--card-2);border:1px solid var(--line);color:var(--ink);padding:8px;border-radius:2px;font-family:'Archivo',sans-serif;font-size:14px;margin-bottom:6px;box-sizing:border-box;}
+  textarea.jn-input{resize:vertical;line-height:1.45;}
+  .jn-filters{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 10px;}
+  .jn-card{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--brass-dim);border-radius:var(--radius);padding:10px;margin-bottom:10px;}
+  .jn-card.pinned{border-left-color:var(--brass);}
+  .jn-top{display:flex;gap:6px;align-items:center;}
+  .jn-top .jn-title{flex:1;margin:0;font-family:'Special Elite',monospace;font-size:15px;}
+  .jn-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);margin:6px 0 4px;}
+  .jn-card textarea.jn-input{margin:0;min-height:60px;}
+  .jn-pin{background:none;border:1px solid var(--line);color:var(--ink-dim);border-radius:2px;padding:4px 7px;cursor:pointer;font-size:13px;}
+  .jn-pin.on{color:var(--brass);border-color:var(--brass);}
+  .fx-adj-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);margin:10px 0 4px;}
+  .fx-adj-row{display:flex;gap:6px;margin-bottom:6px;align-items:center;}
+  .fx-adj-row select{flex:1;min-width:0;background:var(--card-2);border:1px solid var(--line);color:var(--ink);padding:6px;border-radius:2px;font-size:12px;}
+  .fx-adj-row input{width:56px;background:var(--card-2);border:1px solid var(--line);color:var(--ink);text-align:center;border-radius:2px;padding:6px 2px;}
+  .ability-card .ability-base{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--brass);min-height:11px;}
 </style>
 </head>
 <body>
@@ -603,6 +632,9 @@
     </div>
   </div>
 
+  <div class="fx-chips" id="fx-chips"></div>
+  <div class="fx-strip" id="fx-strip"></div>
+
   <div class="hp-block">
     <div class="hp-top">
       <div class="hp-label">Hit Points</div>
@@ -647,13 +679,30 @@
     <div class="tab" data-tab="skills">Skills</div>
     <div class="tab" data-tab="class">Features</div>
     <div class="tab" data-tab="gear">Gear</div>
-    <div class="tab" data-tab="notes">Notes</div>
+    <div class="tab" data-tab="journal">Journal</div>
+    <div class="tab" data-tab="notes">Profile</div>
   </div>
 
   <div class="panel active" id="panel-abilities">
     <div class="ability-grid" id="ability-grid"></div>
     <div class="section-title">Saving Throws</div>
     <div id="save-list"></div>
+    <div class="section-title">Temporary Effects (buffs, potions, spells)</div>
+    <div class="backup-note" style="margin-top:0;">Add anything that boosts your stats for a while. Switch it on to apply it everywhere (ability mods, saves, skills, AC, speed, attack and damage rolls) and off when it ends. Temp HP is the box under Hit Points.</div>
+    <div id="fx-list"></div>
+    <div class="backup-row">
+      <select id="fx-preset" class="chip-input" style="flex:1;">
+        <option value="">+ Blank effect</option>
+        <option value="shield">Shield of Faith (+2 AC)</option>
+        <option value="haste">Haste (+2 AC, +30 speed)</option>
+        <option value="bless">Bless (+1d4 attacks and saves)</option>
+      </select>
+      <button class="hp-btn" id="fx-add">Add</button>
+    </div>
+    <div class="backup-row">
+      <button class="hp-btn" id="fx-alloff">Turn all effects off</button>
+      <button class="hp-btn" id="fx-clear">Delete all effects</button>
+    </div>
   </div>
 
   <div class="panel" id="panel-skills">
@@ -739,9 +788,24 @@
     </div>
   </div>
 
+  <div class="panel" id="panel-journal">
+    <div class="section-title">Journal — things to remember</div>
+    <div class="jn-form">
+      <input id="jn-title" class="jn-input" placeholder="Title (e.g. Innkeeper's rumour, Quest from Escalante)">
+      <textarea id="jn-body" class="jn-input" rows="3" placeholder="What do you want to remember?"></textarea>
+      <div class="backup-row">
+        <select id="jn-cat" class="chip-input" style="flex:1;"></select>
+        <button class="hp-btn" id="jn-add">Add note</button>
+      </div>
+    </div>
+    <input id="jn-search" class="jn-input" placeholder="Search notes…" style="margin-top:12px;">
+    <div class="jn-filters" id="jn-filters"></div>
+    <div id="jn-list"></div>
+  </div>
+
   <div class="panel" id="panel-notes">
-    <div class="section-title">Notes</div>
-    <textarea id="f-notes" placeholder="Personality, bonds, flaws, session notes..."></textarea>
+    <div class="section-title">Backstory, Personality &amp; Allies</div>
+    <textarea id="f-notes" placeholder="Backstory, appearance, ideals, bonds, flaws, allies and organizations..."></textarea>
 
     <div class="section-title">Live Sync (GitHub Gist)</div>
     <div id="sync-status" class="sync-status"></div>
@@ -751,17 +815,17 @@
     </div>
     <div class="sync-field">
       <label>Gist ID</label>
-      <input type="text" id="sync-gistid" placeholder="Paste existing Gist ID or address — or leave empty and tap Create New Gist">
+      <input type="text" id="sync-gistid" placeholder="Don't know it? Leave empty — it will be found for you">
     </div>
     <div class="backup-row">
-      <button class="hp-btn" id="sync-save-creds">Connect to existing Gist</button>
+      <button class="hp-btn" id="sync-save-creds">Connect (finds your Gist)</button>
       <button class="hp-btn" id="sync-create-gist">Create New Gist (first time)</button>
     </div>
     <div class="backup-row">
       <button class="hp-btn" id="sync-now-btn">Sync Now</button>
       <button class="hp-btn" id="sync-copy-id">Copy Gist ID</button>
     </div>
-    <div class="backup-note"><b>First time ever:</b> paste your token, leave Gist ID empty, tap <b>Create New Gist (first time)</b>. It saves this sheet and shows you the Gist ID — keep it. <b>Any other device (or if you already have a Gist):</b> paste the same token and the Gist ID, tap <b>Connect to existing Gist</b>.</div>
+    <div class="backup-note"><b>Easiest:</b> paste your token, leave Gist ID empty, tap <b>Connect (finds your Gist)</b>. It searches your GitHub account for your sheet and fills in the ID. Only if none exists will it offer to create one. <b>Other devices:</b> same steps — the token alone is enough.</div>
 
     <div class="section-title">Local Backup</div>
     <div class="backup-row">
@@ -1634,7 +1698,9 @@ const DEFAULT_STATE = {
   progression:[1,2,3,4].flatMap(lv=>LEVEL_FEATURES[lv].map(t=>({level:lv,text:t}))),
   superiority:{used:0},
   showFutureLevels:false,
-  pendingLevelUp:null
+  pendingLevelUp:null,
+  effects:[],
+  journal:[]
 };
 
 let state = null;
@@ -1678,6 +1744,17 @@ async function gistSave(){
   });
   if(!res.ok) throw new Error(`Gist save failed: ${res.status}`);
   return true;
+}
+
+async function gistFind(token){
+  const res = await fetch('https://api.github.com/gists?per_page=100', {
+    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
+  });
+  if(!res.ok) throw new Error(`Could not list your Gists: ${res.status}`);
+  const list = await res.json();
+  const hits = list.filter(g=>g.files && g.files[GIST_FILENAME]);
+  hits.sort((a,b)=> new Date(b.updated_at)-new Date(a.updated_at));
+  return hits.length ? hits[0].id : null;
 }
 
 async function gistCreate(){
@@ -1741,6 +1818,16 @@ function applyDefaults(loaded){
     });
   }
   if(state.pendingLevelUp===undefined) state.pendingLevelUp = null;
+  if(!Array.isArray(state.effects)) state.effects = [];
+  if(!Array.isArray(state.journal)) state.journal = [];
+  state.effects.forEach(e=>{
+    if(!Array.isArray(e.adj)){
+      e.adj = [];
+      const mp = {SAVES:'SAVE:ALL', CHECKS:'SKILL:ALL'};
+      Object.keys(e.mods||{}).forEach(k=>{ if(e.mods[k]) e.adj.push({t: mp[k]||k, v:e.mods[k]}); });
+      delete e.mods;
+    }
+  });
 }
 
 // ---- Local autosave cache: every change is written to this device first, so a refresh can never lose data ----
@@ -1878,6 +1965,113 @@ function updateStamp(){
   stamp.innerHTML=text;
 }
 
+// ---- Temporary effects: each effect has a list of adjustments {t: target, v: number} ----
+function fxTargets(){
+  return [
+    ['Ability scores', ABILS.map(a=>[a, a+' score'])],
+    ['Combat', [['AC','AC'],['SPEED','Speed'],['INIT','Initiative'],['ATK','All attack rolls'],['DMG','All damage rolls']]],
+    ['Saving throws', [['SAVE:ALL','All saving throws']].concat(ABILS.map(a=>['SAVE:'+a, a+' save']))],
+    ['Skills', [['SKILL:ALL','All skill checks']].concat(SKILLS.map(([n])=>['SKILL:'+n, n])).concat([['PASSIVE','Passive Perception only']])]
+  ];
+}
+function fxLabel(t){
+  for(const [,opts] of fxTargets()){ const f=opts.find(o=>o[0]===t); if(f) return f[1]; }
+  return t;
+}
+function fx(key){
+  return (state.effects||[]).filter(e=>e.active).reduce((n,e)=>
+    n + (e.adj||[]).filter(a=>a.t===key).reduce((m,a)=>m+(parseInt(a.v)||0),0), 0);
+}
+function effScore(a){ return state.abilities[a] + fx(a); }
+function effMod(a){ return mod(effScore(a)); }
+function renderFxStrip(){
+  const effects = state.effects||[];
+  const chips = document.getElementById('fx-chips');
+  chips.innerHTML = effects.map((e,i)=>`<span class="fx-chip${e.active?' on':''}" data-i="${i}">${escapeHtml(e.name||'Effect')}</span>`).join('');
+  chips.style.display = effects.length ? 'flex' : 'none';
+  chips.querySelectorAll('.fx-chip').forEach(c=>c.addEventListener('click', ()=>{
+    const e = state.effects[c.dataset.i]; e.active = !e.active;
+    refreshDerived(); renderEffects(); scheduleSave();
+  }));
+  const strip = document.getElementById('fx-strip');
+  const totals = {};
+  effects.filter(e=>e.active).forEach(e=>(e.adj||[]).forEach(a=>{
+    const v=parseInt(a.v)||0; if(a.t && v) totals[a.t]=(totals[a.t]||0)+v;
+  }));
+  const parts = Object.keys(totals).filter(t=>totals[t]).map(t=>{
+    if(t==='AC') return `AC ${state.ac+totals[t]} (${fmt(totals[t])})`;
+    if(t==='SPEED') return `Speed ${state.speed+totals[t]} (${fmt(totals[t])})`;
+    if(ABILS.includes(t)) return `${t} ${effScore(t)} (${fmt(totals[t])})`;
+    return `${fxLabel(t)} ${fmt(totals[t])}`;
+  });
+  effects.filter(e=>e.active && e.dice).forEach(e=>parts.push(`${e.name}: ${e.dice}`));
+  effects.filter(e=>e.active && !e.dice && !(e.adj||[]).some(a=>a.t&&(parseInt(a.v)||0)) ).forEach(e=>parts.push(e.name+(e.note?': '+e.note:' active')));
+  strip.innerHTML = parts.join(' &nbsp;·&nbsp; ');
+  strip.style.display = parts.length ? 'block' : 'none';
+}
+function refreshDerivedLight(){
+  ABILS.forEach(a=>{
+    const m=document.getElementById('mod-'+a); if(m) m.textContent = fmt(effMod(a));
+    const b=document.getElementById('base-'+a); if(b) b.textContent = fx(a) ? `effective ${effScore(a)}` : '';
+  });
+  renderCore(); renderSaves(); renderSkills(); renderFxStrip();
+}
+function refreshDerived(){ refreshDerivedLight(); renderCombatMode(); }
+function renderEffects(){
+  const wrap=document.getElementById('fx-list');
+  if(!wrap) return;
+  const effects=state.effects||[];
+  if(!effects.length){ wrap.innerHTML='<div class="combat-empty">No temporary effects yet.</div>'; return; }
+  const optHtml = (sel)=>'<option value="">— choose what it changes —</option>' + fxTargets().map(([g,opts])=>
+    `<optgroup label="${g}">${opts.map(([k,l])=>`<option value="${k}"${k===sel?' selected':''}>${l}</option>`).join('')}</optgroup>`).join('');
+  wrap.innerHTML = effects.map((e,i)=>`
+    <div class="fx-card${e.active?' on':''}">
+      <div class="fx-top">
+        <input class="fx-name" data-i="${i}" data-f="name" value="${escapeHtml(e.name||'')}" placeholder="Effect name (e.g. Potion of Stealth)">
+        <button class="hp-btn fx-toggle" data-i="${i}">${e.active?'On':'Off'}</button>
+        <button class="li-del fx-del" data-i="${i}">×</button>
+      </div>
+      <input class="fx-text" data-i="${i}" data-f="note" value="${escapeHtml(e.note||'')}" placeholder="What it does / duration / where it came from">
+      <input class="fx-text" data-i="${i}" data-f="dice" value="${escapeHtml(e.dice||'')}" placeholder="Reminder shown while on (e.g. +1d4 to attack rolls, advantage on…)">
+      <div class="fx-adj-label">Number changes</div>
+      ${(e.adj||[]).map((a,k)=>`
+        <div class="fx-adj-row">
+          <select class="fx-adj-t" data-i="${i}" data-k="${k}">${optHtml(a.t)}</select>
+          <input class="fx-adj-v" type="number" data-i="${i}" data-k="${k}" value="${a.v===undefined||a.v===''?'':a.v}" placeholder="+0">
+          <button class="li-del fx-adj-del" data-i="${i}" data-k="${k}">×</button>
+        </div>`).join('')}
+      <button class="hp-btn fx-adj-add" data-i="${i}" style="margin-top:6px;">+ Add a change (skill, save, stat…)</button>
+    </div>`).join('');
+  wrap.querySelectorAll('.fx-text, .fx-name').forEach(inp=>inp.addEventListener('input', ()=>{
+    state.effects[inp.dataset.i][inp.dataset.f]=inp.value; renderFxStrip(); scheduleSave();
+  }));
+  wrap.querySelectorAll('.fx-adj-t').forEach(sel=>sel.addEventListener('change', ()=>{
+    state.effects[sel.dataset.i].adj[sel.dataset.k].t = sel.value; refreshDerived(); scheduleSave();
+  }));
+  wrap.querySelectorAll('.fx-adj-v').forEach(inp=>inp.addEventListener('input', ()=>{
+    const v=parseInt(inp.value);
+    state.effects[inp.dataset.i].adj[inp.dataset.k].v = isNaN(v) ? 0 : v;
+    refreshDerivedLight(); scheduleSave();
+  }));
+  wrap.querySelectorAll('.fx-adj-del').forEach(b=>b.addEventListener('click', ()=>{
+    state.effects[b.dataset.i].adj.splice(parseInt(b.dataset.k),1); renderEffects(); refreshDerived(); scheduleSave();
+  }));
+  wrap.querySelectorAll('.fx-adj-add').forEach(b=>b.addEventListener('click', ()=>{
+    const e=state.effects[b.dataset.i]; if(!e.adj) e.adj=[]; e.adj.push({t:'',v:0}); renderEffects(); scheduleSave();
+  }));
+  wrap.querySelectorAll('.fx-toggle').forEach(b=>b.addEventListener('click', ()=>{
+    const e=state.effects[b.dataset.i]; e.active=!e.active; renderEffects(); refreshDerived(); scheduleSave();
+  }));
+  wrap.querySelectorAll('.fx-del').forEach(b=>b.addEventListener('click', ()=>{
+    state.effects.splice(parseInt(b.dataset.i),1); renderEffects(); refreshDerived(); scheduleSave();
+  }));
+}
+const FX_PRESETS = {
+  shield:{name:'Shield of Faith', note:'Concentration, up to 10 minutes. Bonus action, 60 ft.', dice:'', adj:[{t:'AC',v:2}]},
+  haste:{name:'Haste', note:'Concentration, up to 1 minute. Extra action (one attack, Dash, Disengage, Hide or Use Object). When it ends you lose a turn.', dice:'Advantage on DEX saves', adj:[{t:'AC',v:2},{t:'SPEED',v:30}]},
+  bless:{name:'Bless', note:'Concentration, up to 1 minute, up to 3 creatures.', dice:'+1d4 to attack rolls and saving throws', adj:[]}
+};
+
 function renderCore(){
   document.getElementById('f-name').value=state.name;
   document.getElementById('f-race').value=state.race;
@@ -1888,7 +2082,7 @@ function renderCore(){
   document.getElementById('f-ac').value=state.ac;
   document.getElementById('f-speed').value=state.speed;
   document.getElementById('f-darkvision').value=state.darkvision||0;
-  document.getElementById('f-init').textContent=fmt(mod(state.abilities.DEX));
+  document.getElementById('f-init').textContent=fmt(effMod('DEX') + fx('INIT'));
   document.getElementById('f-prof').textContent=fmt(profBonus(totalLevel()));
   document.getElementById('f-hpcur').value=state.hp.cur;
   document.getElementById('f-hpmax').value=state.hp.max;
@@ -1962,8 +2156,9 @@ function renderAbilities(){
     div.className='ability-card';
     div.innerHTML=`
       <div class="ability-name">${a}</div>
-      <div class="ability-mod" id="mod-${a}">${fmt(mod(state.abilities[a]))}</div>
+      <div class="ability-mod" id="mod-${a}">${fmt(effMod(a))}</div>
       <input class="ability-score-input" data-a="${a}" type="number" value="${state.abilities[a]}">
+      <div class="ability-base" id="base-${a}">${fx(a)?'effective '+effScore(a):''}</div>
     `;
     grid.appendChild(div);
   });
@@ -1971,8 +2166,7 @@ function renderAbilities(){
     inp.addEventListener('input', ()=>{
       const a=inp.dataset.a;
       state.abilities[a]=parseInt(inp.value)||0;
-      document.getElementById(`mod-${a}`).textContent=fmt(mod(state.abilities[a]));
-      renderCore(); renderSaves(); renderSkills();
+      refreshDerivedLight();
       scheduleSave();
     });
   });
@@ -1984,7 +2178,7 @@ function renderSaves(){
   const pb=profBonus(totalLevel());
   ABILS.forEach(a=>{
     const isProf=state.saveProfs.includes(a);
-    const bonus=mod(state.abilities[a]) + (isProf?pb:0);
+    const bonus=effMod(a) + (isProf?pb:0) + fx('SAVE:ALL') + fx('SAVE:'+a);
     const row=document.createElement('div');
     row.className='row-line';
     row.innerHTML=`
@@ -2009,7 +2203,7 @@ function renderSkills(){
     const isProf=state.skillProfs.includes(name);
     const isExpert=state.skillExpertise.includes(name);
     const profMult = isExpert ? 2 : (isProf ? 1 : 0);
-    const bonus=mod(state.abilities[abil]) + pb*profMult;
+    const bonus=effMod(abil) + pb*profMult + fx('SKILL:ALL') + fx('SKILL:'+name);
     const dotClass = isExpert ? 'expertise' : (isProf ? 'on' : '');
     const row=document.createElement('div');
     row.className='row-line';
@@ -2038,7 +2232,7 @@ function renderSkills(){
     wrap.appendChild(row);
   });
   const percProfMult = state.skillExpertise.includes('Perception') ? 2 : (state.skillProfs.includes('Perception') ? 1 : 0);
-  const percBonus = mod(state.abilities.WIS) + pb*percProfMult;
+  const percBonus = effMod('WIS') + pb*percProfMult + fx('SKILL:ALL') + fx('SKILL:Perception') + fx('PASSIVE');
   document.getElementById('passive-perc').textContent = 10+percBonus;
 }
 
@@ -2624,7 +2818,49 @@ function onFeatureDragStart(e){
   document.addEventListener('pointerup', onUp, {once:true});
 }
 
+const JN_CATS = ['General','Quest','NPC','Place','Loot','Rules','Plot / Clue','Other'];
+let jnFilter = 'All';
+function fmtJnDate(ts){
+  try{ return new Date(ts).toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}); }catch(e){ return ''; }
+}
+function renderJournal(){
+  const catSel=document.getElementById('jn-cat');
+  if(!catSel.options.length) catSel.innerHTML = JN_CATS.map(c=>`<option>${c}</option>`).join('');
+  const notes = state.journal||[];
+  const used = ['All'].concat(JN_CATS.filter(c=>notes.some(n=>n.cat===c)));
+  if(!used.includes(jnFilter)) jnFilter='All';
+  const f=document.getElementById('jn-filters');
+  f.innerHTML = used.map(c=>`<span class="fx-chip${c===jnFilter?' on':''}" data-c="${c}">${c}</span>`).join('');
+  f.querySelectorAll('.fx-chip').forEach(ch=>ch.addEventListener('click', ()=>{ jnFilter=ch.dataset.c; renderJournal(); }));
+  const q=(document.getElementById('jn-search').value||'').trim().toLowerCase();
+  const shown = notes.map((n,i)=>({n,i}))
+    .filter(({n})=>(jnFilter==='All'||n.cat===jnFilter) && (!q || (n.title||'').toLowerCase().includes(q) || (n.body||'').toLowerCase().includes(q)))
+    .sort((a,b)=> (b.n.pinned?1:0)-(a.n.pinned?1:0) || (b.n.created||0)-(a.n.created||0));
+  const wrap=document.getElementById('jn-list');
+  if(!shown.length){ wrap.innerHTML = `<div class="combat-empty">${notes.length?'No notes match.':'No notes yet — add the first one above.'}</div>`; return; }
+  wrap.innerHTML = shown.map(({n,i})=>`
+    <div class="jn-card${n.pinned?' pinned':''}">
+      <div class="jn-top">
+        <input class="jn-input jn-title" data-i="${i}" data-f="title" value="${escapeHtml(n.title||'')}" placeholder="Title">
+        <button class="jn-pin${n.pinned?' on':''}" data-i="${i}" title="Pin to top">★</button>
+        <button class="li-del jn-del" data-i="${i}">×</button>
+      </div>
+      <div class="jn-meta">${escapeHtml(n.cat||'General')} · ${fmtJnDate(n.created)}</div>
+      <textarea class="jn-input jn-bodyedit" data-i="${i}" data-f="body" rows="3">${escapeHtml(n.body||'')}</textarea>
+    </div>`).join('');
+  wrap.querySelectorAll('.jn-title, .jn-bodyedit').forEach(inp=>inp.addEventListener('input', ()=>{
+    state.journal[inp.dataset.i][inp.dataset.f]=inp.value; scheduleSave();
+  }));
+  wrap.querySelectorAll('.jn-pin').forEach(b=>b.addEventListener('click', ()=>{
+    const n=state.journal[b.dataset.i]; n.pinned=!n.pinned; renderJournal(); scheduleSave();
+  }));
+  wrap.querySelectorAll('.jn-del').forEach(b=>b.addEventListener('click', ()=>{
+    const n=state.journal[b.dataset.i];
+    if(confirm('Delete note "'+(n.title||'Untitled')+'"?')){ state.journal.splice(parseInt(b.dataset.i),1); renderJournal(); scheduleSave(); }
+  }));
+}
 function renderNotes(){
+  renderJournal();
   document.getElementById('f-notes').value=state.notes||'';
 }
 
@@ -2660,9 +2896,9 @@ function renderCombatMode(){
           <span class="combat-row-name">${escapeHtml(atk.name||'Attack')}</span>
         </div>
         <div class="combat-row-detail">
-          <span class="atk-dmg-tag">ATK</span> ${escapeHtml(atk.bonus||'—')}
+          <span class="atk-dmg-tag">ATK</span> ${escapeHtml(atk.bonus||'—')}${fx('ATK')?` <span style="color:var(--brass);">(${fmt(fx('ATK'))} effect)</span>`:''}
           &nbsp;&nbsp;
-          <span class="atk-dmg-tag">DMG</span> ${escapeHtml(atk.dmg||'—')}
+          <span class="atk-dmg-tag">DMG</span> ${escapeHtml(atk.dmg||'—')}${fx('DMG')?` <span style="color:var(--brass);">(${fmt(fx('DMG'))} effect)</span>`:''}
           ${atk.notes ? `<br><span style="color:var(--ink-dim);">${escapeHtml(atk.notes)}</span>` : ''}
         </div>
         ${(propBadges || masteryBadge) ? `<div class="wp-chip-row">${propBadges}${masteryBadge}</div>` : ''}
@@ -2686,7 +2922,7 @@ function renderCombatMode(){
         const atk=state.attacks[inp.dataset.i];
         const rolled=parseInt(inp.value);
         const totalEl=document.getElementById('roll-atk-total-'+inp.dataset.i);
-        totalEl.textContent = isNaN(rolled) ? '' : `= ${rolled + parseAttackBonus(atk.bonus)}`;
+        totalEl.textContent = isNaN(rolled) ? '' : `= ${rolled + parseAttackBonus(atk.bonus) + fx('ATK')}`;
       });
     });
     atkWrap.querySelectorAll('.roll-dmg-input').forEach(inp=>{
@@ -2694,7 +2930,7 @@ function renderCombatMode(){
         const atk=state.attacks[inp.dataset.i];
         const rolled=parseInt(inp.value);
         const totalEl=document.getElementById('roll-dmg-total-'+inp.dataset.i);
-        totalEl.textContent = isNaN(rolled) ? '' : `= ${rolled + parseDamageMod(atk.dmg)}`;
+        totalEl.textContent = isNaN(rolled) ? '' : `= ${rolled + parseDamageMod(atk.dmg) + fx('DMG')}`;
       });
     });
   }
@@ -2910,7 +3146,7 @@ function renderSpellSlots(){
 
 function renderAll(){
   renderCore(); renderAbilities(); renderSaves(); renderSkills(); renderClass(); renderFeatureBlocks(); renderAttacks(); renderItems(); renderNotes(); renderCombatMode();
-  renderClassResource(); renderSpellSlots();
+  renderClassResource(); renderSpellSlots(); renderEffects(); renderFxStrip();
 }
 
 function checkLevelUp(newLevel){
@@ -2935,6 +3171,32 @@ function checkLevelUp(newLevel){
 }
 
 function wireCoreInputs(){
+  document.getElementById('fx-alloff').addEventListener('click', ()=>{
+    state.effects.forEach(e=>e.active=false); renderEffects(); refreshDerived(); scheduleSave();
+  });
+  document.getElementById('fx-clear').addEventListener('click', ()=>{
+    if(!state.effects.length) return;
+    if(confirm('Delete all temporary effects? (Use "Turn all effects off" to keep them for later.)')){
+      state.effects=[]; renderEffects(); refreshDerived(); scheduleSave();
+    }
+  });
+  document.getElementById('jn-add').addEventListener('click', ()=>{
+    const title=document.getElementById('jn-title').value.trim();
+    const body=document.getElementById('jn-body').value.trim();
+    if(!title && !body) return;
+    state.journal.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), title, body, cat:document.getElementById('jn-cat').value||'General', pinned:false, created:Date.now()});
+    document.getElementById('jn-title').value=''; document.getElementById('jn-body').value='';
+    renderJournal(); scheduleSave();
+  });
+  document.getElementById('jn-search').addEventListener('input', renderJournal);
+  document.getElementById('fx-add').addEventListener('click', ()=>{
+    const key=document.getElementById('fx-preset').value;
+    const base = FX_PRESETS[key] ? JSON.parse(JSON.stringify(FX_PRESETS[key])) : {name:'New effect', note:'', dice:'', adj:[]};
+    base.active = true;
+    state.effects.push(base);
+    document.getElementById('fx-preset').value='';
+    renderEffects(); refreshDerived(); scheduleSave();
+  });
   document.getElementById('f-name').addEventListener('input', e=>{ state.name=e.target.value; scheduleSave(); });
   document.getElementById('f-race').addEventListener('input', e=>{ state.race=e.target.value; scheduleSave(); });
   document.getElementById('f-class').addEventListener('input', e=>{ state.classLabel=e.target.value; scheduleSave(); });
@@ -3423,10 +3685,21 @@ function wireCoreInputs(){
     if(urlMatch) gistId = urlMatch[1];
     if(!token){ alert('Paste a GitHub personal access token first (needs "gist" scope).'); return; }
     if(!gistId){
-      if(confirm('No Gist ID entered.\n\nOK = create a brand-new Gist from this sheet.\nCancel = go back and paste your existing Gist ID.')){
-        document.getElementById('sync-create-gist').click();
+      const st=document.getElementById('sync-status');
+      st.textContent='Looking for your existing sheet Gist…'; st.className='sync-status disconnected';
+      try{
+        const found = await gistFind(token);
+        if(found){
+          gistId = found;
+          document.getElementById('sync-gistid').value = found;
+        } else if(confirm('No existing sheet Gist found on your GitHub account.\n\nCreate a brand-new one from this sheet?')){
+          document.getElementById('sync-create-gist').click();
+          return;
+        } else { renderSyncStatus(); return; }
+      }catch(e){
+        st.textContent='Could not look up your Gists: '+(e.message||e)+' — check the token is a classic token with the "gist" scope.';
+        return;
       }
-      return;
     }
     setCreds({token, gistId});
     renderSyncStatus();
