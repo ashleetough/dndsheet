@@ -550,6 +550,19 @@
   .jn-card textarea.jn-input{margin:0;min-height:60px;}
   .jn-pin{background:none;border:1px solid var(--line);color:var(--ink-dim);border-radius:2px;padding:4px 7px;cursor:pointer;font-size:13px;}
   .jn-pin.on{color:var(--brass);border-color:var(--brass);}
+  .char-switch{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.06em;color:var(--brass);border:1px solid var(--brass-dim);border-radius:14px;padding:4px 10px;cursor:pointer;margin-bottom:6px;background:transparent;}
+  #char-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:100;padding:16px;overflow:auto;}
+  #char-overlay.open{display:block;}
+  .char-panel{max-width:480px;margin:40px auto 0;background:var(--card);border:1px solid var(--brass-dim);border-radius:var(--radius);padding:12px;}
+  .char-panel h3{margin:0 0 8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:var(--brass-dim);font-weight:400;text-transform:uppercase;}
+  .char-row{display:flex;align-items:center;gap:8px;background:var(--card-2);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:8px;padding:8px 10px;}
+  .char-row.active{border-color:var(--brass);}
+  .char-main{flex:1;cursor:pointer;min-width:0;}
+  .char-row.trash .char-main{cursor:default;}
+  .char-name{font-family:'Special Elite',monospace;font-size:16px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .char-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);margin-top:2px;}
+  .char-trash-title{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);margin:12px 0 6px;}
+  .char-foot{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);line-height:1.5;margin-top:10px;}
   .fx-adj-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-dim);margin:10px 0 4px;}
   .fx-adj-row{display:flex;gap:6px;margin-bottom:6px;align-items:center;}
   .fx-adj-row select{flex:1;min-width:0;background:var(--card-2);border:1px solid var(--line);color:var(--ink);padding:6px;border-radius:2px;font-size:12px;}
@@ -562,7 +575,7 @@
 
   <div class="letterhead">
     <div class="lh-left">
-      <div class="eyebrow">Field Record</div>
+      <button class="char-switch" id="char-switch-btn" type="button">Characters ▾</button>
       <input id="f-name" class="name-input" value="Trent Yubin">
       <div class="subline">
         <input id="f-race" class="chip-input" value="Human">
@@ -811,7 +824,7 @@
     <div id="sync-status" class="sync-status"></div>
     <div class="sync-field">
       <label>GitHub Token</label>
-      <input type="password" id="sync-token" placeholder="ghp_xxxxxxxxxxxx">
+      <input type="password" id="sync-token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="new-password" autocapitalize="off" autocorrect="off" spellcheck="false">
     </div>
     <div class="sync-field">
       <label>Gist ID</label>
@@ -852,7 +865,18 @@
     <div id="combat-trackables"></div>
   </div>
 
-  <div class="reset-link" id="reset-link">Reset to blank sheet</div>
+  <div class="reset-link" id="reset-link">Clear this character (keeps a restorable copy)</div>
+</div>
+
+<div id="char-overlay">
+  <div class="char-panel">
+    <h3>My characters</h3>
+    <div id="char-list"></div>
+    <button class="hp-btn" id="char-new" style="width:100%;">+ New character</button>
+    <div id="char-trash"></div>
+    <div class="char-foot">Every character is saved on this device and only removed when you remove it. Connect sync in Profile to keep them all on your other devices too.</div>
+    <button class="hp-btn" id="char-close" style="width:100%;margin-top:10px;">Close</button>
+  </div>
 </div>
 
 <div class="save-flag" id="save-flag">Saved</div>
@@ -1712,6 +1736,10 @@ function mod(score){ return Math.floor((score-10)/2); }
 function fmt(n){ return (n>=0?'+':'') + n; }
 function profBonus(level){ return Math.floor((level-1)/4) + 2; }
 
+function tokenPreview(t){
+  if(!t) return 'no token';
+  return t.slice(0,4)+'…'+t.slice(-4)+' ('+t.length+' characters)';
+}
 function getCreds(){
   try{ return JSON.parse(localStorage.getItem(CRED_KEY)) || {token:'', gistId:''}; }
   catch(e){ return {token:'', gistId:''}; }
@@ -1720,39 +1748,47 @@ function setCreds(creds){
   localStorage.setItem(CRED_KEY, JSON.stringify(creds));
 }
 
-async function gistFetch(){
-  const {token, gistId} = getCreds();
-  if(!token || !gistId) return null;
-  const res = await fetch(`https://api.github.com/gists/${gistId}`, {
-    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
-  });
-  if(!res.ok) throw new Error(`Gist fetch failed: ${res.status}`);
-  const data = await res.json();
-  const file = data.files && data.files[GIST_FILENAME];
-  if(!file) return null;
-  return JSON.parse(file.content);
+const clone = o => JSON.parse(JSON.stringify(o));
+function ghHeaders(token){ return { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }; }
+function fileFor(id){ return id==='main' ? GIST_FILENAME : 'char_'+id+'.json'; }
+function idFromFile(name){
+  if(name===GIST_FILENAME) return 'main';
+  const m = name.match(/^char_(.+)\.json$/);
+  return m ? m[1] : null;
 }
 
-async function gistSave(){
+// Reads every character file in the Gist: { chars:{id:state}, partial:boolean }
+async function gistFetchAll(){
   const {token, gistId} = getCreds();
-  if(!token || !gistId) throw new Error('No GitHub token / Gist ID configured');
-  state.updatedAt = Date.now();
+  if(!token || !gistId) return null;
+  const res = await fetch(`https://api.github.com/gists/${gistId}`, { headers: ghHeaders(token) });
+  if(!res.ok) throw new Error(`Gist fetch failed: ${res.status}`);
+  const data = await res.json();
+  const chars = {};
+  let partial = !!data.truncated;
+  Object.keys(data.files||{}).forEach(fn=>{
+    const id = idFromFile(fn);
+    if(!id) return;
+    const f = data.files[fn];
+    if(!f || f.truncated || typeof f.content!=='string'){ partial = true; return; }
+    try{ chars[id] = JSON.parse(f.content); }catch(e){ partial = true; }
+  });
+  return {chars, partial};
+}
+
+async function gistPatch(files){
+  const {token, gistId} = getCreds();
   const res = await fetch(`https://api.github.com/gists/${gistId}`, {
-    method:'PATCH',
-    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' },
-    body: JSON.stringify({ files: { [GIST_FILENAME]: { content: JSON.stringify(state) } } })
+    method:'PATCH', headers: ghHeaders(token), body: JSON.stringify({ files })
   });
   if(!res.ok) throw new Error(`Gist save failed: ${res.status}`);
-  return true;
 }
 
 async function gistFind(token){
-  const res = await fetch('https://api.github.com/gists?per_page=100', {
-    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' }
-  });
+  const res = await fetch('https://api.github.com/gists?per_page=100', { headers: ghHeaders(token) });
   if(!res.ok) throw new Error(`Could not list your Gists: ${res.status}`);
   const list = await res.json();
-  const hits = list.filter(g=>g.files && g.files[GIST_FILENAME]);
+  const hits = list.filter(g=>g.files && Object.keys(g.files).some(fn=>idFromFile(fn)));
   hits.sort((a,b)=> new Date(b.updated_at)-new Date(a.updated_at));
   return hits.length ? hits[0].id : null;
 }
@@ -1760,17 +1796,18 @@ async function gistFind(token){
 async function gistCreate(){
   const {token} = getCreds();
   if(!token) throw new Error('No GitHub token configured');
+  const files = {};
+  Object.values(lib.chars).forEach(c=>{
+    if(!c.pristine || c.id===lib.activeId) files[fileFor(c.id)] = { content: JSON.stringify(c.state) };
+  });
   const res = await fetch('https://api.github.com/gists', {
-    method:'POST',
-    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github+json' },
-    body: JSON.stringify({
-      description: "Trent Yubin D&D character sheet data — don't edit directly, use the sheet",
-      public: false,
-      files: { [GIST_FILENAME]: { content: JSON.stringify(state) } }
-    })
+    method:'POST', headers: ghHeaders(token),
+    body: JSON.stringify({ description: "D&D character sheet data — don't edit directly, use the sheet", public: false, files })
   });
   if(!res.ok) throw new Error(`Gist create failed: ${res.status}`);
   const data = await res.json();
+  Object.values(lib.chars).forEach(c=>{ c.dirty=false; c.inCloud=true; });
+  saveLib();
   return data.id;
 }
 
@@ -1817,6 +1854,11 @@ function applyDefaults(loaded){
       }
     });
   }
+  if(state.hp){
+    if(!Number.isFinite(state.hp.max)) state.hp.max = 10;
+    if(!Number.isFinite(state.hp.cur)) state.hp.cur = state.hp.max;   // repairs HP that an old bug set to NaN
+    if(!Number.isFinite(state.hp.tmp)) state.hp.tmp = 0;
+  }
   if(state.pendingLevelUp===undefined) state.pendingLevelUp = null;
   if(!Array.isArray(state.effects)) state.effects = [];
   if(!Array.isArray(state.journal)) state.journal = [];
@@ -1830,48 +1872,182 @@ function applyDefaults(loaded){
   });
 }
 
-// ---- Local autosave cache: every change is written to this device first, so a refresh can never lose data ----
-const LOCAL_KEY = 'trent_sheet_local_cache';
-function readLocal(){
-  try{ return JSON.parse(localStorage.getItem(LOCAL_KEY)); }catch(e){ return null; }
+// =====================================================================
+// CHARACTER LIBRARY — every character lives on this device and is only removed when you remove it.
+// Cloud: one Gist, one file per character (the original sheet stays in trent_yubin_sheet_data.json).
+// =====================================================================
+const LIB_KEY = 'dnd_sheet_library_v2';
+const TRASH_KEY = 'dnd_sheet_trash_v1';
+const OLD_LOCAL_KEY = 'trent_sheet_local_cache';
+let lib = null;
+
+function newCharId(){ return 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
+function saveLib(){
+  try{ localStorage.setItem(LIB_KEY, JSON.stringify(lib)); }
+  catch(e){ console.error('Library write failed', e); }
 }
-function writeLocal(dirty){
-  if(!state) return;
-  try{
-    const prev = readLocal();
-    const isDirty = (dirty===undefined) ? !!(prev && prev.dirty) : dirty;
-    if(dirty===true) state.updatedAt = Date.now();
-    localStorage.setItem(LOCAL_KEY, JSON.stringify({state:state, savedAt:Date.now(), dirty:isDirty}));
-  }catch(e){ console.error('Local cache write failed', e); }
+function loadLib(){
+  try{ lib = JSON.parse(localStorage.getItem(LIB_KEY)); }catch(e){ lib = null; }
+  if(!lib || !lib.chars) lib = {activeId:null, chars:{}, pendingDelete:[]};
+  if(!Array.isArray(lib.pendingDelete)) lib.pendingDelete = [];
+  if(!Object.keys(lib.chars).length){
+    // carry over the single-character cache from the previous version of the sheet
+    let old=null; try{ old = JSON.parse(localStorage.getItem(OLD_LOCAL_KEY)); }catch(e){}
+    if(old && old.state){
+      lib.chars.main = {id:'main', state:old.state, dirty:!!old.dirty, inCloud:false, pristine:false};
+      lib.activeId = 'main';
+    }
+  }
 }
-function markLocalClean(){
-  try{
-    const prev = readLocal();
-    if(prev){ prev.dirty=false; localStorage.setItem(LOCAL_KEY, JSON.stringify(prev)); }
-  }catch(e){}
+function charSummary(st){
+  const cls = (st.classLabel||'').trim() || 'No class yet';
+  return `${cls} · Lv ${st.level||1}`;
 }
 
-let lastLoadSource = 'default';
+// ---- Active-character cache helpers (names kept so existing calls keep working) ----
+function writeLocal(dirty){
+  if(!state || !lib || !lib.activeId) return;
+  const c = lib.chars[lib.activeId];
+  if(!c) return;
+  if(dirty===true){ state.updatedAt = Date.now(); c.dirty = true; c.pristine = false; }
+  else if(dirty===false){ c.dirty = false; }
+  c.state = state;
+  saveLib();
+}
+function activateChar(id){
+  const c = lib.chars[id];
+  if(!c) return;
+  applyDefaults(c.state);   // sets global `state` to c.state and fills any new fields
+  c.state = state;
+  lib.activeId = id;
+  saveLib();
+}
+
+// ---- "Recently removed" safety net (device only, last 8) ----
+function trashRead(){ try{ return JSON.parse(localStorage.getItem(TRASH_KEY)) || []; }catch(e){ return []; } }
+function trashAdd(c){
+  try{
+    let t = trashRead();
+    t.unshift({id:c.id, removedAt:Date.now(), state:c.state});
+    t = t.slice(0,8);
+    localStorage.setItem(TRASH_KEY, JSON.stringify(t));
+  }catch(e){ console.error('Trash write failed', e); }
+}
+
+function blankState(keepTheme){
+  return {
+    name:'New Character', race:'', classLabel:'', background:'', level:1,
+    class2Name:'', class2Level:0,
+    ac:10, speed:30, darkvision:0, inspiration:false, combatMode:false, theme:keepTheme||'brass', purchases:[], raceTemplateApplied:false, classTemplateApplied:false, classResource:null, spellSlots:null, baseClassKey:'', subclassName:'', subclassTemplateApplied:false,
+    abilities:{STR:10,DEX:10,CON:10,INT:10,WIS:10,CHA:10},
+    hp:{max:10,cur:10,tmp:0},
+    deathSaves:{success:0,fail:0},
+    saveProfs:[], skillProfs:[], skillExpertise:[],
+    attacks:[], inventory:[], features:'', notes:'',
+    currency:{cp:0,sp:0,ep:0,gp:0,pp:0}, featureBlocks:[],
+    syncedLevel:1, progression: (LEVEL_FEATURES[1]||[]).map(t=>({level:1,text:t})),
+    superiority:{used:0}, showFutureLevels:false, pendingLevelUp:null, effects:[], journal:[]
+  };
+}
+
+// Called when the Gist changes: everything on this device needs uploading to the new one.
+function onGistChanged(){
+  Object.values(lib.chars).forEach(c=>{ c.inCloud=false; if(!c.pristine) c.dirty=true; });
+  lib.pendingDelete = [];
+  saveLib();
+}
+
+// ---- Cloud sync: merge by newest edit per character, push what's newer here, honour removals ----
+let syncBusy = false;
+// All cloud reads/writes run one at a time so a background sync can never act on stale data mid-save.
+let cloudChain = Promise.resolve();
+function cloudExclusive(fn){
+  const run = cloudChain.then(fn, fn);
+  cloudChain = run.catch(()=>{});
+  return run;
+}
+function fullSync(){ return cloudExclusive(fullSyncInner); }
+async function fullSyncInner(){
+  const remote = await gistFetchAll();
+  if(!remote) return {changedActive:false};
+  let changedActive = false;
+
+  Object.keys(remote.chars).forEach(id=>{
+    const r = remote.chars[id];
+    const c = lib.chars[id];
+    if(!c){
+      if(lib.pendingDelete.includes(id)) return;
+      lib.chars[id] = {id, state:r, dirty:false, inCloud:true, pristine:false};
+      return;
+    }
+    const lt = c.state.updatedAt||0, rt = r.updatedAt||0;
+    if(c.pristine){ c.state=r; c.pristine=false; c.dirty=false; c.inCloud=true; if(id===lib.activeId) changedActive=true; return; }
+    if(lt>rt || (c.dirty && lt>=rt)){ c.dirty=true; c.inCloud=true; return; }   // this device is newer: it will be pushed
+    if(rt>lt){ c.state=r; c.dirty=false; c.inCloud=true; if(id===lib.activeId) changedActive=true; return; }
+    c.inCloud = true;
+  });
+
+  // removed on another device -> move to this device's "recently removed"
+  if(!remote.partial){
+    Object.keys(lib.chars).forEach(id=>{
+      const c = lib.chars[id];
+      if(c.inCloud && !remote.chars[id]){
+        if(c.dirty){ c.inCloud=false; return; }          // edited here since: keep it and re-upload
+        trashAdd(c); delete lib.chars[id];
+        if(id===lib.activeId) changedActive = true;
+      }
+    });
+  }
+
+  // the untouched starter sheet is dropped once real characters exist
+  const real = Object.values(lib.chars).filter(c=>!c.pristine);
+  if(real.length) Object.keys(lib.chars).forEach(id=>{ if(lib.chars[id].pristine) delete lib.chars[id]; });
+  if(!Object.keys(lib.chars).length){ const id=newCharId(); lib.chars[id]={id,state:blankState(),dirty:true,inCloud:false,pristine:false}; lib.activeId=id; changedActive=true; }
+  if(!lib.chars[lib.activeId]){ lib.activeId = mostRecentId(); changedActive = true; }
+
+  // push local changes and removals in a single request
+  const files = {}, snap = {};
+  Object.values(lib.chars).forEach(c=>{
+    if(c.dirty){ files[fileFor(c.id)] = {content: JSON.stringify(c.state)}; snap[c.id] = c.state.updatedAt||0; }
+  });
+  lib.pendingDelete.forEach(id=>{ if(remote.chars[id]) files[fileFor(id)] = null; });
+  lib.pendingDelete = [];
+  saveLib();
+  if(Object.keys(files).length){
+    await gistPatch(files);
+    Object.keys(snap).forEach(id=>{
+      const c = lib.chars[id];
+      if(c){ c.inCloud = true; if((c.state.updatedAt||0)===snap[id]) c.dirty = false; }
+    });
+    saveLib();
+  }
+  if(changedActive) activateChar(lib.activeId);
+  return {changedActive};
+}
+
+function rerenderEverything(){
+  applyTheme(state.theme);
+  renderAll();
+  renderThemeSwatches();
+  setCombatModeView(!!state.combatMode);
+  renderCharSwitcher();
+}
+
 async function loadState(){
+  loadLib();
+  const rebuiltFromCloud = !Object.keys(lib.chars).length;
+  if(!Object.keys(lib.chars).length){
+    lib.chars.main = {id:'main', state:clone(DEFAULT_STATE), dirty:false, inCloud:false, pristine:true};
+    lib.activeId = 'main';
+  }
   const {token, gistId} = getCreds();
-  const local = readLocal();
-  let remote = null, remoteError = null;
   if(token && gistId){
-    try{ remote = await gistFetch(); }
-    catch(e){ remoteError = e; console.error('Initial Gist load failed', e); }
+    try{ await fullSync(); }catch(e){ console.error('Initial sync failed — using this device\'s copies', e); }
   }
-  const localState = local && local.state ? local.state : null;
-  const localTime = localState ? (localState.updatedAt||local.savedAt||0) : 0;
-  const remoteTime = remote ? (remote.updatedAt||0) : 0;
-  if(localState && (!remote || (local.dirty && localTime>=remoteTime) || localTime>remoteTime)){
-    applyDefaults(localState);
-    lastLoadSource = 'local';
-    return;
-  }
-  if(remote){ applyDefaults(remote); lastLoadSource='gist'; writeLocal(false); return; }
-  if(localState){ applyDefaults(localState); lastLoadSource='local'; return; }
-  state = JSON.parse(JSON.stringify(DEFAULT_STATE));
-  lastLoadSource = 'default';
+  if(!lib.chars[lib.activeId]) lib.activeId = mostRecentId();
+  if(rebuiltFromCloud && Object.values(lib.chars).some(c=>!c.pristine)) lib.activeId = mostRecentId();
+  activateChar(lib.activeId);
+  try{ if(navigator.storage && navigator.storage.persist) navigator.storage.persist(); }catch(e){}
 }
 
 let saveTimer=null;
@@ -1883,16 +2059,29 @@ function scheduleSave(){
   clearTimeout(backgroundRetryTimer);
   saveTimer=setTimeout(()=>attemptSave(), 600);
 }
+function pushPending(){ return cloudExclusive(pushPendingInner); }
+async function pushPendingInner(){
+  const files = {}, snap = {};
+  Object.values(lib.chars).forEach(c=>{
+    if(c.dirty){ files[fileFor(c.id)] = {content: JSON.stringify(c.state)}; snap[c.id] = c.state.updatedAt||0; }
+  });
+  if(!Object.keys(files).length) return;
+  await gistPatch(files);
+  Object.keys(snap).forEach(id=>{
+    const c = lib.chars[id];
+    if(c){ c.inCloud = true; if((c.state.updatedAt||0)===snap[id]) c.dirty = false; }
+  });
+  saveLib();
+}
 async function attemptSave(){
   const {token, gistId} = getCreds();
   writeLocal();
   if(!token || !gistId){
-    flashSaved(false, 'Saved on this device only — set up sync in Settings');
+    flashSaved(false, 'Saved on this device only — set up sync in Profile');
     return;
   }
   try{
-    await gistSave();
-    markLocalClean();
+    await pushPending();
     saveRetries=0;
     flashSaved(true);
   }catch(e){
@@ -1927,26 +2116,129 @@ function flashSaved(success, message){
 let pollTimer=null;
 async function pullRemoteIfNewer(){
   const {token, gistId} = getCreds();
-  if(!token || !gistId) return;
+  if(!token || !gistId || syncBusy) return;
+  syncBusy = true;
   try{
-    const remote = await gistFetch();
-    if(remote && (remote.updatedAt||0) > (state.updatedAt||0)){
-      applyDefaults(remote);
-      writeLocal(false);
-      applyTheme(state.theme);
-      renderAll();
-      renderThemeSwatches();
-      setCombatModeView(!!state.combatMode);
-      flashSaved(true);
-    }
-  }catch(e){ console.error('Background pull failed', e); }
+    const r = await fullSync();
+    if(r.changedActive){ rerenderEverything(); flashSaved(true); }
+    else renderCharSwitcher();
+  }catch(e){ console.error('Background sync failed', e); }
+  finally{ syncBusy = false; }
 }
+let pollWired = false;
 function startSyncPolling(){
   clearInterval(pollTimer);
   pollTimer=setInterval(pullRemoteIfNewer, 20000);
-  document.addEventListener('visibilitychange', ()=>{
-    if(document.visibilityState==='visible') pullRemoteIfNewer();
-  });
+  if(!pollWired){
+    pollWired = true;
+    document.addEventListener('visibilitychange', ()=>{
+      if(document.visibilityState==='visible') pullRemoteIfNewer();
+    });
+  }
+}
+
+// ---- Character switcher (dropdown) ----
+function mostRecentId(){
+  const list = Object.values(lib.chars).sort((a,b)=>(b.state.updatedAt||0)-(a.state.updatedAt||0));
+  return list.length ? list[0].id : null;
+}
+function charList(){
+  return Object.values(lib.chars).sort((a,b)=>(a.state.name||'').localeCompare(b.state.name||''));
+}
+function switchChar(id){
+  if(id===lib.activeId){ closeCharPanel(); return; }
+  writeLocal();
+  activateChar(id);
+  rerenderEverything();
+  closeCharPanel();
+  document.querySelector('.tab[data-tab="abilities"]').click();
+  window.scrollTo(0,0);
+}
+function newCharacter(){
+  writeLocal();
+  const id = newCharId();
+  lib.chars[id] = {id, state:blankState(state.theme), dirty:true, inCloud:false, pristine:false};
+  lib.chars[id].state.updatedAt = Date.now();
+  activateChar(id);
+  rerenderEverything();
+  closeCharPanel();
+  document.querySelector('.tab[data-tab="abilities"]').click();
+  window.scrollTo(0,0);
+  attemptSave();
+}
+async function removeChar(id){
+  const c = lib.chars[id];
+  if(!c) return;
+  const nm = c.state.name || 'this character';
+  if(!confirm(`Remove "${nm}"?\n\nIt is removed from this device and from your cloud Gist, so it disappears on your other devices too.\n\nA copy is kept under "Recently removed" on this device so you can bring it back.`)) return;
+  trashAdd(c);
+  delete lib.chars[id];
+  lib.pendingDelete.push(id);
+  if(!Object.keys(lib.chars).length){
+    const nid = newCharId();
+    lib.chars[nid] = {id:nid, state:blankState(state.theme), dirty:true, inCloud:false, pristine:false};
+    lib.chars[nid].state.updatedAt = Date.now();
+    lib.activeId = nid;
+  }
+  const wasActive = (lib.activeId===id) || !lib.chars[lib.activeId];
+  if(wasActive) lib.activeId = charList()[0].id;
+  saveLib();
+  if(wasActive){ activateChar(lib.activeId); rerenderEverything(); }
+  renderCharSwitcher();
+  const {token, gistId} = getCreds();
+  if(token && gistId){ try{ await fullSync(); renderCharSwitcher(); }catch(e){ console.error(e); } }
+}
+function restoreChar(idx){
+  const t = trashRead();
+  const item = t[idx];
+  if(!item) return;
+  writeLocal();
+  const id = newCharId();
+  lib.chars[id] = {id, state:item.state, dirty:true, inCloud:false, pristine:false};
+  lib.chars[id].state.updatedAt = Date.now();
+  t.splice(idx,1);
+  try{ localStorage.setItem(TRASH_KEY, JSON.stringify(t)); }catch(e){}
+  activateChar(id);
+  rerenderEverything();
+  closeCharPanel();
+  attemptSave();
+}
+function openCharPanel(){
+  renderCharSwitcher();
+  document.getElementById('char-overlay').classList.add('open');
+}
+function closeCharPanel(){ document.getElementById('char-overlay').classList.remove('open'); }
+function renderCharSwitcher(){
+  const btn = document.getElementById('char-switch-btn');
+  if(!btn || !lib) return;
+  const list = charList();
+  btn.textContent = `Characters (${list.length}) ▾`;
+  const wrap = document.getElementById('char-list');
+  if(!wrap) return;
+  const {token, gistId} = getCreds();
+  const cloudOn = !!(token && gistId);
+  wrap.innerHTML = list.map(c=>{
+    const active = c.id===lib.activeId;
+    const syncTxt = !cloudOn ? 'this device only' : (c.dirty ? 'waiting to sync' : (c.inCloud ? 'synced' : 'not yet synced'));
+    return `<div class="char-row${active?' active':''}" data-id="${c.id}">
+      <div class="char-main" data-id="${c.id}">
+        <div class="char-name">${active?'✓ ':''}${escapeHtml(c.state.name||'Unnamed')}</div>
+        <div class="char-sub">${escapeHtml(charSummary(c.state))} · ${syncTxt}</div>
+      </div>
+      <button class="li-del char-del" data-id="${c.id}" title="Remove character">×</button>
+    </div>`;
+  }).join('');
+  wrap.querySelectorAll('.char-main').forEach(el=>el.addEventListener('click', ()=>switchChar(el.dataset.id)));
+  wrap.querySelectorAll('.char-del').forEach(el=>el.addEventListener('click', (e)=>{ e.stopPropagation(); removeChar(el.dataset.id); }));
+  const trash = trashRead();
+  const tw = document.getElementById('char-trash');
+  tw.innerHTML = trash.length
+    ? `<div class="char-trash-title">Recently removed (${trash.length})</div>` + trash.map((t,i)=>`
+        <div class="char-row trash"><div class="char-main"><div class="char-name">${escapeHtml(t.state.name||'Unnamed')}</div>
+        <div class="char-sub">${escapeHtml(charSummary(t.state))}</div></div>
+        <button class="hp-btn char-restore" data-i="${i}">Restore</button></div>`).join('')
+    : '';
+  tw.querySelectorAll('.char-restore').forEach(el=>el.addEventListener('click', ()=>restoreChar(parseInt(el.dataset.i))));
 }
 
 window.addEventListener('pagehide', ()=>{ writeLocal(); });
@@ -3171,6 +3463,10 @@ function checkLevelUp(newLevel){
 }
 
 function wireCoreInputs(){
+  document.getElementById('char-switch-btn').addEventListener('click', openCharPanel);
+  document.getElementById('char-close').addEventListener('click', closeCharPanel);
+  document.getElementById('char-new').addEventListener('click', newCharacter);
+  document.getElementById('char-overlay').addEventListener('click', (e)=>{ if(e.target.id==='char-overlay') closeCharPanel(); });
   document.getElementById('fx-alloff').addEventListener('click', ()=>{
     state.effects.forEach(e=>e.active=false); renderEffects(); refreshDerived(); scheduleSave();
   });
@@ -3437,9 +3733,10 @@ function wireCoreInputs(){
     state.hp.tmp=parseInt(e.target.value)||0; scheduleSave();
   });
 
-  document.querySelectorAll('.hp-btn').forEach(btn=>{
+  document.querySelectorAll('.hp-btn[data-d]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const d=parseInt(btn.dataset.d);
+      if(isNaN(d)) return;
       if(d<0 && state.hp.tmp>0){
         const absorb=Math.min(state.hp.tmp, -d);
         state.hp.tmp-=absorb;
@@ -3611,13 +3908,20 @@ function wireCoreInputs(){
     reader.onload = async (ev)=>{
       try{
         const loaded = JSON.parse(ev.target.result);
-        if(!confirm(`Load "${loaded.name || 'this character'}" and replace everything currently on the sheet?`)) return;
-        applyDefaults(loaded);
+        const nm = loaded.name || 'this character';
+        writeLocal();
+        if(confirm(`Add "${nm}" as a NEW character?\n\nOK = add it alongside your others.\nCancel = you'll be asked about replacing the current character instead.`)){
+          const id = newCharId();
+          lib.chars[id] = {id, state:loaded, dirty:true, inCloud:false, pristine:false};
+          activateChar(id);
+        } else if(confirm(`Replace the current character with "${nm}"?\n\nThe current one is kept under "Recently removed" so you can restore it.`)){
+          trashAdd(lib.chars[lib.activeId]);
+          const c = lib.chars[lib.activeId];
+          c.state = loaded; c.dirty = true; c.pristine = false;
+          activateChar(lib.activeId);
+        } else { return; }
         state.updatedAt = Date.now();
-        applyTheme(state.theme);
-        renderAll();
-        renderThemeSwatches();
-        setCombatModeView(!!state.combatMode);
+        rerenderEverything();
         writeLocal(true);
         attemptSave();
       }catch(err){
@@ -3629,22 +3933,12 @@ function wireCoreInputs(){
   });
 
   document.getElementById('reset-link').addEventListener('click', async ()=>{
-    if(!confirm('Reset this sheet to a blank template? This clears the current character.')) return;
-    state = {
-      name:'New Character', race:'', classLabel:'', background:'', level:1,
-      class2Name:'', class2Level:0,
-      ac:10, speed:30, darkvision:0, inspiration:false, combatMode:false, theme:state.theme||'brass', purchases:[], raceTemplateApplied:false, classTemplateApplied:false, classResource:null, spellSlots:null, baseClassKey:'', subclassName:'', subclassTemplateApplied:false,
-      abilities:{STR:10,DEX:10,CON:10,INT:10,WIS:10,CHA:10},
-      hp:{max:10,cur:10,tmp:0},
-      deathSaves:{success:0,fail:0},
-      saveProfs:[], skillProfs:[], skillExpertise:[],
-      attacks:[], inventory:[], features:'', notes:'',
-      currency:{cp:0,sp:0,ep:0,gp:0,pp:0}, featureBlocks:[],
-      syncedLevel:1, progression: (LEVEL_FEATURES[1]||[]).map(t=>({level:1,text:t})),
-      superiority:{used:0}, showFutureLevels:false, pendingLevelUp:null
-    };
-    applyTheme(state.theme);
-    renderAll();
+    if(!confirm('Clear this character back to a blank template?\n\nA copy is kept under "Recently removed" so you can restore it. To start a second character instead, use Characters ▾ → New character.')) return;
+    trashAdd(lib.chars[lib.activeId]);
+    state = blankState(state.theme||'brass');
+    lib.chars[lib.activeId].state = state;
+    writeLocal(true);
+    rerenderEverything();
     attemptSave();
   });
 
@@ -3661,12 +3955,13 @@ function wireCoreInputs(){
       }
       el.textContent = 'Checking connection…';
       el.className = 'sync-status disconnected';
-      gistFetch().then(()=>{
-        el.textContent = 'Connected and verified — syncing to Gist ' + gistId.slice(0,8) + '…';
+      gistFetchAll().then((r)=>{
+        const n = r ? Object.keys(r.chars).length : 0;
+        el.textContent = 'Connected and verified — syncing to Gist ' + gistId.slice(0,8) + '… (' + n + ' character' + (n===1?'':'s') + ' in the cloud)';
         el.className = 'sync-status connected';
       }).catch(err=>{
         const m = String(err.message||err);
-        el.textContent = 'Not syncing — GitHub said: ' + m + (m.includes('404') ? ' (Gist ID wrong, or token lacks "gist" scope)' : m.includes('401') ? ' (token wrong or expired)' : '') + '. Your data is still safe on this device.';
+        el.textContent = 'Not syncing (token ' + tokenPreview(token) + ') — GitHub said: ' + m + (m.includes('404') ? ' (Gist ID wrong, or token lacks "gist" scope)' : m.includes('401') ? ' (token wrong or expired)' : '') + '. Your data is still safe on this device.';
         el.className = 'sync-status disconnected';
       });
     } else {
@@ -3677,7 +3972,7 @@ function wireCoreInputs(){
   renderSyncStatus();
 
   document.getElementById('sync-save-creds').addEventListener('click', async ()=>{
-    const token=document.getElementById('sync-token').value.trim();
+    const token=document.getElementById('sync-token').value.replace(/[^\x21-\x7E]/g,'');
     let gistId=document.getElementById('sync-gistid').value.trim();
     const urlMatch = gistId.match(/([0-9a-f]{20,40})\/?$/i);
     if(urlMatch) gistId = urlMatch[1];
@@ -3695,49 +3990,40 @@ function wireCoreInputs(){
           return;
         } else { renderSyncStatus(); return; }
       }catch(e){
-        st.textContent='Could not look up your Gists: '+(e.message||e)+' — check the token is a classic token with the "gist" scope.';
+        st.textContent='Could not look up your Gists: '+(e.message||e)+'. Token the sheet sent: '+tokenPreview(token)+'. A classic token is 40 characters and starts ghp_ — if that doesn\'t match what you copied, paste it again.';
         return;
       }
     }
+    const prevGist = getCreds().gistId;
     setCreds({token, gistId});
+    if(prevGist !== gistId) onGistChanged();
     renderSyncStatus();
-    if(gistId){
-      try{
-        const remote = await gistFetch();
-        const loc = readLocal();
-        const localNewer = loc && loc.dirty || (state.updatedAt||0) >= ((remote&&remote.updatedAt)||0);
-        if(remote && !localNewer){
-          applyDefaults(remote);
-          writeLocal(false);
-          applyTheme(state.theme);
-          renderAll();
-          renderThemeSwatches();
-          setCombatModeView(!!state.combatMode);
-          flashSaved(true);
-        } else {
-          await attemptSave();   // this device has the newer data: push it up, never overwrite it
-        }
-        renderSyncStatus();
-        startSyncPolling();
-      }catch(e){
-        alert('Could not load that Gist — check the token and Gist ID are correct.');
-      }
+    try{
+      writeLocal();
+      const r = await fullSync();
+      if(r.changedActive) rerenderEverything(); else renderCharSwitcher();
+      flashSaved(true);
+      renderSyncStatus();
+      startSyncPolling();
+    }catch(e){
+      alert('Could not load that Gist — check the token and Gist ID are correct. (' + (e.message||e) + ')');
     }
   });
 
   document.getElementById('sync-create-gist').addEventListener('click', async ()=>{
-    const token=document.getElementById('sync-token').value.trim();
+    const token=document.getElementById('sync-token').value.replace(/[^\x21-\x7E]/g,'');
     if(!token){ alert('Paste a GitHub personal access token first (needs "gist" scope).'); return; }
     const existing = getCreds().gistId;
     if(existing && !confirm('You already have a Gist connected (' + existing.slice(0,8) + '…). Creating a new one starts a separate copy and your other devices will keep using the old one.\n\nCreate a new one anyway?')) return;
     setCreds({token, gistId:''});
     try{
+      writeLocal();
       const newId = await gistCreate();
       setCreds({token, gistId:newId});
       renderSyncStatus();
       flashSaved(true);
       startSyncPolling();
-      writeLocal(false);
+      renderCharSwitcher();
       document.getElementById('sync-gistid').value = newId;
       alert('Gist created! Your Gist ID is:\n\n' + newId + '\n\nIt is now filled in for you. Use "Copy Gist ID" to copy it, then enter this same token and Gist ID on your other devices.');
     }catch(e){
@@ -3769,6 +4055,7 @@ function wireCoreInputs(){
   renderThemeSwatches();
   wireCoreInputs();
   setCombatModeView(!!state.combatMode);
+  renderCharSwitcher();
   startSyncPolling();
 })();
 </script>
